@@ -162,7 +162,7 @@ export const testimonies = [
     initials: "DR",
     meta: "18 min ago · Forex",
     quote:
-      "The trade ideas chat pays for itself. Three setups I passed on, three wins — and every entry shows the reasoning, not just the entry.",
+      "The trade ideas chat pays for itself. Easy copy and paste system, they show exactly how to do it, and make sure you are set up for success.",
     tags: ["Forex", "Trade Ideas"],
   },
   {
