@@ -140,3 +140,29 @@ export const marqueeItems = [
   "Community Chat",
 ];
 
+export const testimonies = [
+  {
+    name: "Marcus A.",
+    initials: "MA",
+    meta: "2 min ago · Business",
+    quote:
+      "Credit score went from 512 → 641 in five months. Sharing the exact dispute letter template I used — the strategy worked.",
+    tags: ["Credit Repair", "Wins"],
+  },
+  {
+    name: "Darnell R.",
+    initials: "DR",
+    meta: "18 min ago · Forex",
+    quote:
+      "The trade ideas chat pays for itself. Three setups I passed on, three wins — and every entry shows the reasoning, not just the entry.",
+    tags: ["Forex", "Trade Ideas"],
+  },
+  {
+    name: "Alicia W.",
+    initials: "AW",
+    meta: "1 hr ago · Mindset",
+    quote:
+      "I joined to fix my credit and stayed for the people. Building alongside other members changed how I see my own progress.",
+    tags: ["Community", "Growth"],
+  },
+];

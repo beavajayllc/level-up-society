@@ -11,6 +11,7 @@ import {
 } from "motion/react";
 import { ArrowUpRight, Check, Sparkles } from "lucide-react";
 import { PillButton, SectionLabel } from "./ui";
+import { Testimony } from "./Testimony";
 
 const headline: Variants = {
   hidden: {},
@@ -184,33 +185,7 @@ export function Hero() {
                 </span>
               </div>
 
-              <div className="mt-6 rounded-card border border-silver/8 bg-silver/4 p-5">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-chrome to-chrome-deep text-sm font-bold text-ink">
-                    MA
-                  </div>
-                  <div className="min-w-0">
-                    <p className="truncate text-sm font-medium text-silver">
-                      Marcus A.
-                    </p>
-                    <p className="text-xs text-silver/40">2 min ago · Business</p>
-                  </div>
-                </div>
-                <p className="mt-3.5 text-[14.5px] leading-relaxed text-silver/78">
-                  Credit score went from 512 → 641 in five months. Sharing the
-                  exact dispute letter template I used — the strategy worked.
-                </p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {["Credit Repair", "Wins"].map((t) => (
-                    <span
-                      key={t}
-                      className="rounded-pill bg-chrome/12 px-3 py-1 text-[11px] font-medium text-chrome/85"
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              </div>
+              <Testimony />
 
               <div className="mt-4 grid grid-cols-2 gap-4">
                 <div className="rounded-card border border-silver/8 bg-silver/4 p-5">
