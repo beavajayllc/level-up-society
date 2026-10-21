@@ -60,7 +60,8 @@ export function Hero() {
           alt=""
           width={2225}
           height={992}
-          className="absolute -right-[10%] top-[4%] w-[760px] opacity-[0.06]"
+          style={{ width: 620, height: "auto" }}
+          className="absolute -right-[10%] top-[4%] opacity-[0.06]"
         />
         <div className="absolute left-1/2 top-[-18%] h-[720px] w-[1100px] -translate-x-1/2 rounded-full bg-chrome/12 blur-[140px]" />
         <div

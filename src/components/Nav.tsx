@@ -47,7 +47,7 @@ export function Nav() {
         >
           <nav className="container-x flex h-[74px] items-center justify-between gap-6">
             <a href="#top" className="shrink-0" aria-label="Level Up Society home">
-              <LogoMark className="h-8 w-auto sm:h-9" priority />
+              <LogoMark priority />
             </a>
 
             <div className="hidden items-center gap-1 md:flex">
@@ -99,7 +99,7 @@ export function Nav() {
             className="fixed inset-0 z-[60] bg-ink/95 backdrop-blur-xl md:hidden"
           >
             <div className="container-x flex h-[74px] items-center justify-between">
-              <LogoMark className="h-8 w-auto" />
+              <LogoMark />
               <button
                 onClick={() => setOpen(false)}
                 aria-label="Close menu"

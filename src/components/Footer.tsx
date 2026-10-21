@@ -21,7 +21,7 @@ export function Footer() {
       <div className="container-x py-16">
         <div className="grid gap-12 lg:grid-cols-[1.4fr_2fr]">
           <div>
-            <LogoLockup className="w-[172px]" />
+            <LogoLockup />
             <p className="mt-5 max-w-xs text-[14.5px] leading-relaxed text-silver/45">
               Where entrepreneurs grow and live. Education and community —
               individual results vary.

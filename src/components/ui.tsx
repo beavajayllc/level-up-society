@@ -102,9 +102,11 @@ export function SectionLabel({
 /** The chrome LS mark — used in the nav and as a brand accent. */
 export function LogoMark({
   className = "",
+  height = 34,
   priority = false,
 }: {
   className?: string;
+  height?: number;
   priority?: boolean;
 }) {
   return (
@@ -114,20 +116,28 @@ export function LogoMark({
       width={2225}
       height={992}
       priority={priority}
-      className={`h-auto w-auto drop-shadow-[0_5px_16px_rgba(0,0,0,0.65)] ${className}`}
+      style={{ height, width: "auto" }}
+      className={`drop-shadow-[0_5px_16px_rgba(0,0,0,0.65)] ${className}`}
     />
   );
 }
 
 /** Full lockup — mark plus the LEVEL UP SOCIETY wordmark. */
-export function LogoLockup({ className = "" }: { className?: string }) {
+export function LogoLockup({
+  className = "",
+  width = 172,
+}: {
+  className?: string;
+  width?: number;
+}) {
   return (
     <Image
       src="/brand/lus-lockup.png"
       alt="Level Up Society"
       width={2225}
       height={1150}
-      className={`h-auto w-auto drop-shadow-[0_6px_20px_rgba(0,0,0,0.7)] ${className}`}
+      style={{ width, height: "auto" }}
+      className={`drop-shadow-[0_6px_20px_rgba(0,0,0,0.7)] ${className}`}
     />
   );
 }
