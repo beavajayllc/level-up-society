@@ -140,9 +140,3 @@ export const marqueeItems = [
   "Community Chat",
 ];
 
-export const socialProof = [
-  { value: "97", suffix: "/mo", label: "One membership" },
-  { value: "5", suffix: "", label: "Growth pillars" },
-  { value: "24/7", suffix: "", label: "Community access" },
-  { value: "0", suffix: "", label: "Contracts to break" },
-];

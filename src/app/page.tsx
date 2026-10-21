@@ -1,7 +1,6 @@
 import { SmoothScroll } from "@/components/SmoothScroll";
 import { Nav } from "@/components/Nav";
 import { Hero } from "@/components/Hero";
-import { Stats } from "@/components/Stats";
 import { Pillars } from "@/components/Pillars";
 import { Journey } from "@/components/Journey";
 import { Philosophy } from "@/components/Philosophy";
@@ -17,7 +16,6 @@ export default function Home() {
       <Nav />
       <main className="flex-1">
         <Hero />
-        <Stats />
         <Pillars />
         <Journey />
         <Philosophy />
