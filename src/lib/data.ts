@@ -176,9 +176,9 @@ export const testimonies = [
   {
     name: "Priya S.",
     initials: "PS",
-    meta: "2 hrs ago · Funding",
+    meta: "3 hrs ago · Funding",
     quote:
-      "Closed my first funding round inside the Society. Walking in with a plan — and someone to call when it got messy — changed everything.",
-    tags: ["Funding", "Wins"],
+      "Needed to get access to some capital to take my business to the next level and they did just that! Pointed me in the right direction and showed me the options available that made the most sense for me!",
+    tags: ["Funding", "Capital"],
   },
 ];

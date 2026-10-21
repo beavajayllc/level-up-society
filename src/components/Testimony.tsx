@@ -55,7 +55,7 @@ export function Testimony() {
                 <p className="text-xs text-silver/40">{current.meta}</p>
               </div>
             </div>
-            <p className="mt-3.5 min-h-[94px] text-[14.5px] leading-relaxed text-silver/78">
+            <p className="mt-3.5 min-h-[96px] text-[14.5px] leading-relaxed text-silver/78">
               {current.quote}
             </p>
             <div className="mt-4 flex flex-wrap gap-2">
