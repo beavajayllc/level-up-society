@@ -3,7 +3,7 @@ import { LogoLockup } from "./ui";
 const columns = [
   {
     title: "Platform",
-    links: ["Business Education", "Skills Training", "Credit & Funding", "Community"],
+    links: ["Business Education", "Skills Training", "Funding & Credit", "Personal Growth", "Community"],
   },
   {
     title: "Company",

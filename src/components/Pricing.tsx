@@ -96,9 +96,9 @@ export function Pricing() {
                     <span className="pb-2 text-lg text-silver/45">/mo</span>
                   </div>
                   <p className="mt-4 text-[15px] leading-relaxed text-silver/50">
-                    Business education and personal growth, community access,
-                    credit repair and business funding support, plus live
-                    sessions and entrepreneur calls.
+                    Business education, skills training, personal growth, funding and
+                    credit support, live sessions and entrepreneur calls —
+                    everything an entrepreneur needs, in one membership.
                   </p>
                   <div className="mt-8">
                     <PillButton href="#waitlist" size="lg" className="w-full">

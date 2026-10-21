@@ -28,9 +28,9 @@ export function Pillars() {
           </Reveal>
           <Reveal delay={0.12} className="lg:pb-3 lg:pl-8">
             <p className="max-w-md text-[17px] leading-relaxed text-ink/60">
-              One membership, no piecemeal purchases. Education, training,
-              credit and funding support, and a room full of people who get it
-              — all in one place.
+              One membership, no piecemeal purchases. Education, real-world
+              skills, funding and credit support, and a room full of people who
+              get it — all in one place.
             </p>
           </Reveal>
         </div>

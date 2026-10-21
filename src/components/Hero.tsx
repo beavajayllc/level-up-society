@@ -10,6 +10,7 @@ import {
   type Variants,
 } from "motion/react";
 import { ArrowUpRight, Check, Sparkles } from "lucide-react";
+import { heroChips } from "@/lib/data";
 import { PillButton, SectionLabel } from "./ui";
 import { Testimony } from "./Testimony";
 
@@ -28,13 +29,6 @@ const line: Variants = {
   },
 };
 
-const chips = [
-  "Business education",
-  "Skills training",
-  "Credit repair & funding",
-  "Personal growth",
-  "Community",
-];
 
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
@@ -141,7 +135,7 @@ export function Hero() {
             }}
             className="mt-11 flex flex-wrap items-center gap-x-6 gap-y-3"
           >
-            {chips.map((chip) => (
+            {heroChips.map((chip) => (
               <motion.li
                 key={chip}
                 variants={line}
@@ -245,7 +239,7 @@ export function Hero() {
       >
         <div className="flex overflow-hidden">
           <div className="flex shrink-0 animate-marquee items-center gap-10 pr-10">
-            {[...chips, ...chips].map((chip, i) => (
+            {[...heroChips, ...heroChips].map((chip, i) => (
               <span
                 key={`${chip}-${i}`}
                 className="flex shrink-0 items-center gap-10 text-sm font-medium tracking-[-0.01em] text-silver/35"
