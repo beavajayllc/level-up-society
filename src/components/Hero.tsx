@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import Image from "next/image";
 import {
   motion,
   useReducedMotion,
@@ -54,13 +55,20 @@ export function Hero() {
     >
       {/* ambient light */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-1/2 top-[-18%] h-[720px] w-[1100px] -translate-x-1/2 rounded-full bg-gold/12 blur-[140px]" />
+        <Image
+          src="/brand/lus-mark.png"
+          alt=""
+          width={2225}
+          height={992}
+          className="absolute -right-[10%] top-[4%] w-[760px] opacity-[0.06]"
+        />
+        <div className="absolute left-1/2 top-[-18%] h-[720px] w-[1100px] -translate-x-1/2 rounded-full bg-chrome/12 blur-[140px]" />
         <div
-          className="absolute -left-40 top-[18%] h-[520px] w-[520px] rounded-full bg-gold-deep/10 blur-[130px]"
+          className="absolute -left-40 top-[18%] h-[520px] w-[520px] rounded-full bg-chrome-deep/10 blur-[130px]"
           style={reduce ? undefined : { animation: "drift 18s ease-in-out infinite" }}
         />
         <div
-          className="absolute -right-32 bottom-[6%] h-[560px] w-[560px] rounded-full bg-[#4b3a12]/30 blur-[140px]"
+          className="absolute -right-32 bottom-[6%] h-[560px] w-[560px] rounded-full bg-[#1d2733]/45 blur-[140px]"
           style={reduce ? undefined : { animation: "drift 22s ease-in-out infinite reverse" }}
         />
         <div className="grain-layer absolute inset-0 opacity-[0.05] mix-blend-overlay" />
@@ -74,7 +82,7 @@ export function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
           >
-            <span className="inline-flex items-center gap-2 rounded-pill border border-gold/25 bg-gold/8 px-4 py-2 text-[12px] font-medium tracking-[0.14em] uppercase text-gold">
+            <span className="inline-flex items-center gap-2 rounded-pill border border-chrome/25 bg-chrome/8 px-4 py-2 text-[12px] font-medium tracking-[0.14em] uppercase text-chrome">
               <Sparkles size={13} />
               Opening Soon
             </span>
@@ -84,16 +92,16 @@ export function Hero() {
             variants={headline}
             initial="hidden"
             animate="show"
-            className="mt-7 text-[clamp(2.75rem,7.4vw,5.5rem)] font-semibold leading-[0.94] tracking-[-0.045em] text-cream"
+            className="mt-7 text-[clamp(2.75rem,7.4vw,5.5rem)] font-semibold leading-[0.94] tracking-[-0.045em] text-silver"
           >
             <motion.span variants={line} className="block">
               Where
             </motion.span>
             <motion.span variants={line} className="block">
-              <span className="display-serif text-gold">Entrepreneurs</span>
+              <span className="display-serif text-chrome-gradient">Entrepreneurs</span>
             </motion.span>
             <motion.span variants={line} className="block">
-              Grow and <span className="display-serif text-cream">Live</span>
+              Grow and <span className="display-serif text-silver">Live</span>
             </motion.span>
           </motion.h1>
 
@@ -101,7 +109,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 22 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-7 max-w-xl text-[17px] leading-relaxed text-cream/62"
+            className="mt-7 max-w-xl text-[17px] leading-relaxed text-silver/62"
           >
             Build your business. Grow as a person. Surround yourself with
             entrepreneurs who are creating a life they love — just like you.
@@ -135,10 +143,10 @@ export function Hero() {
               <motion.li
                 key={chip}
                 variants={line}
-                className="inline-flex items-center gap-2 text-[13.5px] text-cream/50"
+                className="inline-flex items-center gap-2 text-[13.5px] text-silver/50"
               >
-                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-gold/15">
-                  <Check size={11} className="text-gold" strokeWidth={3} />
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-chrome/15">
+                  <Check size={11} className="text-chrome" strokeWidth={3} />
                 </span>
                 {chip}
               </motion.li>
@@ -159,11 +167,11 @@ export function Hero() {
           >
             <div
               aria-hidden
-              className="absolute -inset-6 -z-10 rounded-[3rem] bg-gold/10 blur-3xl"
+              className="absolute -inset-6 -z-10 rounded-[3rem] bg-chrome/10 blur-3xl"
             />
 
             {/* Main card */}
-            <div className="rounded-card-lg border border-cream/10 bg-gradient-to-b from-ink-2 to-ink p-6 shadow-[0_40px_100px_-30px_rgba(0,0,0,0.9)] backdrop-blur-xl sm:p-8">
+            <div className="rounded-card-lg border border-silver/10 bg-gradient-to-b from-ink-2 to-ink p-6 shadow-[0_40px_100px_-30px_rgba(0,0,0,0.9)] backdrop-blur-xl sm:p-8">
               <div className="flex items-center justify-between">
                 <SectionLabel index="LIVE" title="Inside the society" tone="light" />
                 <span className="flex items-center gap-2 rounded-pill bg-emerald-400/10 px-3 py-1.5 text-[11px] font-medium text-emerald-300">
@@ -175,19 +183,19 @@ export function Hero() {
                 </span>
               </div>
 
-              <div className="mt-6 rounded-card border border-cream/8 bg-cream/4 p-5">
+              <div className="mt-6 rounded-card border border-silver/8 bg-silver/4 p-5">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-gold to-gold-deep text-sm font-bold text-ink">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-chrome to-chrome-deep text-sm font-bold text-ink">
                     MA
                   </div>
                   <div className="min-w-0">
-                    <p className="truncate text-sm font-medium text-cream">
+                    <p className="truncate text-sm font-medium text-silver">
                       Marcus A.
                     </p>
-                    <p className="text-xs text-cream/40">2 min ago · Business</p>
+                    <p className="text-xs text-silver/40">2 min ago · Business</p>
                   </div>
                 </div>
-                <p className="mt-3.5 text-[14.5px] leading-relaxed text-cream/78">
+                <p className="mt-3.5 text-[14.5px] leading-relaxed text-silver/78">
                   Credit score went from 512 → 641 in five months. Sharing the
                   exact dispute letter template I used — the strategy worked.
                 </p>
@@ -195,7 +203,7 @@ export function Hero() {
                   {["Credit Repair", "Wins"].map((t) => (
                     <span
                       key={t}
-                      className="rounded-pill bg-gold/12 px-3 py-1 text-[11px] font-medium text-gold/85"
+                      className="rounded-pill bg-chrome/12 px-3 py-1 text-[11px] font-medium text-chrome/85"
                     >
                       {t}
                     </span>
@@ -204,23 +212,23 @@ export function Hero() {
               </div>
 
               <div className="mt-4 grid grid-cols-2 gap-4">
-                <div className="rounded-card border border-cream/8 bg-cream/4 p-5">
-                  <p className="text-[11px] font-semibold tracking-[0.16em] uppercase text-cream/35">
+                <div className="rounded-card border border-silver/8 bg-silver/4 p-5">
+                  <p className="text-[11px] font-semibold tracking-[0.16em] uppercase text-silver/35">
                     Next live
                   </p>
-                  <p className="mt-2 text-[15px] font-semibold text-cream">
+                  <p className="mt-2 text-[15px] font-semibold text-silver">
                     Credit Mastery
                   </p>
-                  <p className="mt-1 text-xs text-gold/80">Thursday · 8PM</p>
+                  <p className="mt-1 text-xs text-chrome/80">Thursday · 8PM</p>
                 </div>
-                <div className="rounded-card border border-cream/8 bg-cream/4 p-5">
-                  <p className="text-[11px] font-semibold tracking-[0.16em] uppercase text-cream/35">
+                <div className="rounded-card border border-silver/8 bg-silver/4 p-5">
+                  <p className="text-[11px] font-semibold tracking-[0.16em] uppercase text-silver/35">
                     Members
                   </p>
-                  <p className="mt-2 text-[15px] font-semibold text-cream">
+                  <p className="mt-2 text-[15px] font-semibold text-silver">
                     1,240+
                   </p>
-                  <p className="mt-1 text-xs text-cream/40">and growing</p>
+                  <p className="mt-1 text-xs text-silver/40">and growing</p>
                 </div>
               </div>
             </div>
@@ -229,10 +237,10 @@ export function Hero() {
             <motion.div
               animate={reduce ? undefined : { y: [0, -12, 0] }}
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -top-7 -right-7 rounded-card border border-cream/10 bg-ink-2/90 px-4 py-3 shadow-xl backdrop-blur-xl sm:-right-6"
+              className="absolute -top-7 -right-7 rounded-card border border-silver/10 bg-ink-2/90 px-4 py-3 shadow-xl backdrop-blur-xl sm:-right-6"
             >
-              <p className="text-[11px] text-cream/45">Business funding</p>
-              <p className="text-sm font-semibold text-gold">+ $250K approved</p>
+              <p className="text-[11px] text-silver/45">Business funding</p>
+              <p className="text-sm font-semibold text-chrome">+ $250K approved</p>
             </motion.div>
 
             <motion.div
@@ -243,10 +251,10 @@ export function Hero() {
                 ease: "easeInOut",
                 delay: 0.6,
               }}
-              className="absolute -bottom-7 -left-7 rounded-card border border-cream/10 bg-ink-2/90 px-4 py-3 shadow-xl backdrop-blur-xl sm:-left-7"
+              className="absolute -bottom-7 -left-7 rounded-card border border-silver/10 bg-ink-2/90 px-4 py-3 shadow-xl backdrop-blur-xl sm:-left-7"
             >
-              <p className="text-[11px] text-cream/45">This month</p>
-              <p className="text-sm font-semibold text-cream">
+              <p className="text-[11px] text-silver/45">This month</p>
+              <p className="text-sm font-semibold text-silver">
                 14 wins shared
               </p>
             </motion.div>
@@ -257,17 +265,17 @@ export function Hero() {
       {/* Marquee strip */}
       <motion.div
         style={reduce ? undefined : { y: orbY }}
-        className="relative border-y border-cream/8 bg-cream/[0.03] py-4"
+        className="relative border-y border-silver/8 bg-silver/[0.03] py-4"
       >
         <div className="flex overflow-hidden">
           <div className="flex shrink-0 animate-marquee items-center gap-10 pr-10">
             {[...chips, ...chips].map((chip, i) => (
               <span
                 key={`${chip}-${i}`}
-                className="flex shrink-0 items-center gap-10 text-sm font-medium tracking-[-0.01em] text-cream/35"
+                className="flex shrink-0 items-center gap-10 text-sm font-medium tracking-[-0.01em] text-silver/35"
               >
                 {chip}
-                <span className="h-1 w-1 rounded-full bg-gold/60" />
+                <span className="h-1 w-1 rounded-full bg-chrome/60" />
               </span>
             ))}
           </div>

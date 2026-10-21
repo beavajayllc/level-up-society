@@ -1,16 +1,16 @@
 @import "tailwindcss";
 
 @theme {
-  /* Brand palette */
-  --color-ink: #0b0b0c;
-  --color-ink-2: #121215;
-  --color-ink-3: #1c1c21;
-  --color-cream: #f7f4ed;
-  --color-cream-2: #efeade;
-  --color-gold: #f7c548;
-  --color-gold-deep: #e8a317;
-  --color-gold-soft: #ffe6a3;
-  --color-muted: #8b8b95;
+  /* Brand palette — chrome on black, matched to the Level Up Society mark */
+  --color-ink: #08090b;
+  --color-ink-2: #0f1013;
+  --color-ink-3: #17191d;
+  --color-silver: #e7eaef;
+  --color-silver-2: #d6dae1;
+  --color-chrome: #f2f5f9;
+  --color-chrome-deep: #99a2af;
+  --color-chrome-soft: #ffffff;
+  --color-muted: #8a9099;
 
   /* Rounded, never sharp */
   --radius-pill: 999px;
@@ -61,7 +61,7 @@
 
 :root {
   --background: var(--color-ink);
-  --foreground: var(--color-cream);
+  --foreground: var(--color-silver);
   color-scheme: dark;
 }
 
@@ -72,7 +72,7 @@ html {
 
 body {
   background: var(--color-ink);
-  color: var(--color-cream);
+  color: var(--color-silver);
   font-family: var(--font-sans);
   overflow-x: clip;
 }
@@ -83,7 +83,7 @@ html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-stopped { overflow: hidden; }
 
 ::selection {
-  background: var(--color-gold);
+  background: var(--color-chrome);
   color: var(--color-ink);
 }
 
@@ -95,7 +95,7 @@ html.lenis, html.lenis body { height: auto; }
   border-radius: 999px;
   border: 2px solid var(--color-ink);
 }
-::-webkit-scrollbar-thumb:hover { background: var(--color-gold-deep); }
+::-webkit-scrollbar-thumb:hover { background: var(--color-chrome-deep); }
 
 @utility container-x {
   width: 100%;
@@ -125,8 +125,32 @@ html.lenis, html.lenis body { height: auto; }
   letter-spacing: -0.01em;
 }
 
+/* Brushed-chrome text, straight off the logo */
+@utility text-chrome-gradient {
+  background-image: linear-gradient(
+    155deg,
+    #ffffff 0%,
+    #e4eaf1 34%,
+    #9aa4b0 68%,
+    #f0f4f8 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Chrome panel — subtle brushed-metal surface */
+@utility bg-chrome-panel {
+  background-image: linear-gradient(
+    180deg,
+    rgba(226, 232, 240, 0.07) 0%,
+    rgba(226, 232, 240, 0.02) 100%
+  );
+}
+
 @utility hairline {
-  border: 1px solid color-mix(in oklab, var(--color-cream) 10%, transparent);
+  border: 1px solid color-mix(in oklab, var(--color-silver) 10%, transparent);
 }
 
 @media (prefers-reduced-motion: reduce) {

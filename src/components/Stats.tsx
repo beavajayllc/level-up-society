@@ -32,14 +32,14 @@ function StatValue({ value, suffix }: { value: string; suffix: string }) {
 
 export function Stats() {
   return (
-    <section className="relative border-t border-cream/8 bg-ink-2 py-16">
+    <section className="relative border-t border-silver/8 bg-ink-2 py-16">
       <Stagger className="container-x grid grid-cols-2 gap-10 lg:grid-cols-4">
         {socialProof.map((stat) => (
           <StaggerItem key={stat.label} className="text-center lg:text-left">
-            <p className="text-[38px] font-semibold leading-none tracking-[-0.045em] text-cream sm:text-[46px]">
+            <p className="text-[38px] font-semibold leading-none tracking-[-0.045em] text-silver sm:text-[46px]">
               <StatValue value={stat.value} suffix={stat.suffix} />
             </p>
-            <p className="mt-2.5 text-[13px] tracking-[0.06em] text-cream/38">
+            <p className="mt-2.5 text-[13px] tracking-[0.06em] text-silver/38">
               {stat.label}
             </p>
           </StaggerItem>

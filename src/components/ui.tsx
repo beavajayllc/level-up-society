@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "motion/react";
 import type { ReactNode } from "react";
 
-type Variant = "gold" | "ghost" | "outline";
+type Variant = "chrome" | "ghost" | "outline";
 type Size = "sm" | "md" | "lg";
 
 const sizes: Record<Size, string> = {
@@ -14,10 +15,11 @@ const sizes: Record<Size, string> = {
 };
 
 const variants: Record<Variant, string> = {
-  gold: "bg-gold text-ink hover:bg-gold-soft shadow-[0_10px_40px_-12px_rgba(247,197,72,0.75)]",
-  ghost: "bg-cream/8 text-cream hover:bg-cream/14 backdrop-blur",
+  chrome:
+    "bg-[linear-gradient(180deg,#ffffff_0%,#e7ecf3_46%,#c2cad5_100%)] text-ink hover:brightness-[1.06] shadow-[0_14px_44px_-14px_rgba(214,226,240,0.75)]",
+  ghost: "bg-silver/8 text-silver hover:bg-silver/14 backdrop-blur",
   outline:
-    "border border-cream/15 text-cream hover:border-gold/60 hover:text-gold hover:bg-gold/5",
+    "border border-silver/18 text-silver hover:border-chrome/60 hover:text-chrome hover:bg-chrome/5",
 };
 
 type ButtonProps = {
@@ -32,7 +34,7 @@ type ButtonProps = {
 export function PillButton({
   children,
   href,
-  variant = "gold",
+  variant = "chrome",
   size = "md",
   className = "",
   onClick,
@@ -41,7 +43,7 @@ export function PillButton({
 
   const inner = (
     <>
-      {variant === "gold" && (
+      {variant === "chrome" && (
         <span
           aria-hidden
           className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/45 to-transparent transition-transform duration-700 group-hover:translate-x-full"
@@ -86,7 +88,7 @@ export function SectionLabel({
   return (
     <div
       className={`inline-flex items-center gap-3 text-[11px] font-semibold tracking-[0.22em] uppercase ${
-        tone === "dark" ? "text-ink/45" : "text-gold/85"
+        tone === "dark" ? "text-ink/45" : "text-chrome/85"
       }`}
     >
       <span className="h-px w-8 bg-current opacity-60" />
@@ -97,15 +99,35 @@ export function SectionLabel({
   );
 }
 
-export function Wordmark({ className = "" }: { className?: string }) {
+/** The chrome LS mark — used in the nav and as a brand accent. */
+export function LogoMark({
+  className = "",
+  priority = false,
+}: {
+  className?: string;
+  priority?: boolean;
+}) {
   return (
-    <span className={`inline-flex flex-col leading-none ${className}`}>
-      <span className="text-[15px] font-bold tracking-[-0.02em] text-cream">
-        LEVEL UP
-      </span>
-      <span className="text-[15px] font-bold tracking-[-0.02em] text-gold">
-        SOCIETY.
-      </span>
-    </span>
+    <Image
+      src="/brand/lus-mark.png"
+      alt="Level Up Society"
+      width={2225}
+      height={992}
+      priority={priority}
+      className={`h-auto w-auto drop-shadow-[0_5px_16px_rgba(0,0,0,0.65)] ${className}`}
+    />
+  );
+}
+
+/** Full lockup — mark plus the LEVEL UP SOCIETY wordmark. */
+export function LogoLockup({ className = "" }: { className?: string }) {
+  return (
+    <Image
+      src="/brand/lus-lockup.png"
+      alt="Level Up Society"
+      width={2225}
+      height={1150}
+      className={`h-auto w-auto drop-shadow-[0_6px_20px_rgba(0,0,0,0.7)] ${className}`}
+    />
   );
 }

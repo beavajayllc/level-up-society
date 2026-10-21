@@ -30,7 +30,7 @@ export const pillars: Pillar[] = [
     title: "Business Education",
     body: "The essentials of starting and running a business — from shaping an idea worth building to finding real customers and growing something that lasts.",
     icon: BookOpen,
-    accent: "from-gold/25",
+    accent: "from-chrome/25",
   },
   {
     id: "training",
@@ -38,7 +38,7 @@ export const pillars: Pillar[] = [
     title: "Skills & Training",
     body: "Practical sessions on the skills you actually use every day — communication, sales, marketing, and the craft of running a business.",
     icon: Dumbbell,
-    accent: "from-gold/20",
+    accent: "from-chrome/20",
   },
   {
     id: "credit",
@@ -46,7 +46,7 @@ export const pillars: Pillar[] = [
     title: "Credit Repair & Funding",
     body: "Put your finances in order. Clean up your credit, understand your reports, and line up the funding your next chapter requires.",
     icon: CreditCard,
-    accent: "from-gold/30",
+    accent: "from-chrome/30",
   },
   {
     id: "growth",
@@ -54,7 +54,7 @@ export const pillars: Pillar[] = [
     title: "Personal Growth",
     body: "Build the mindset, habits and confidence that carry you forward — so you keep growing as a person, not just as a business owner.",
     icon: Compass,
-    accent: "from-gold/20",
+    accent: "from-chrome/20",
   },
   {
     id: "community",
@@ -62,7 +62,7 @@ export const pillars: Pillar[] = [
     title: "The Community",
     body: "Meet entrepreneurs who understand the journey. Share ideas, get honest feedback, celebrate the wins and keep each other moving.",
     icon: Users,
-    accent: "from-gold/25",
+    accent: "from-chrome/25",
   },
 ];
 

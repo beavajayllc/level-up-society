@@ -11,7 +11,7 @@ export function Faq() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="relative bg-cream py-24 text-ink lg:py-32">
+    <section id="faq" className="relative bg-silver py-24 text-ink lg:py-32">
       <div className="container-x grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
         <div className="lg:sticky lg:top-28 lg:self-start">
           <Reveal>
@@ -52,7 +52,7 @@ export function Faq() {
                       animate={{ rotate: isOpen ? 45 : 0 }}
                       transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                       className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full transition-colors duration-300 ${
-                        isOpen ? "bg-ink text-cream" : "bg-ink/8 text-ink/60"
+                        isOpen ? "bg-ink text-silver" : "bg-ink/8 text-ink/60"
                       }`}
                     >
                       <Plus size={16} />

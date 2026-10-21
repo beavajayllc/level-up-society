@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useScroll, useSpring } from "motion/react";
 import { Menu, X } from "lucide-react";
 import { navLinks } from "@/lib/data";
-import { PillButton, Wordmark } from "./ui";
+import { LogoMark, PillButton } from "./ui";
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
@@ -41,13 +41,13 @@ export function Nav() {
         <div
           className={`transition-all duration-500 ${
             scrolled
-              ? "border-b border-cream/8 bg-ink/85 backdrop-blur-xl"
+              ? "border-b border-silver/8 bg-ink/85 backdrop-blur-xl"
               : "border-b border-transparent bg-transparent"
           }`}
         >
           <nav className="container-x flex h-[74px] items-center justify-between gap-6">
             <a href="#top" className="shrink-0" aria-label="Level Up Society home">
-              <Wordmark />
+              <LogoMark className="h-8 w-auto sm:h-9" priority />
             </a>
 
             <div className="hidden items-center gap-1 md:flex">
@@ -55,10 +55,10 @@ export function Nav() {
                 <a
                   key={link.href}
                   href={link.href}
-                  className="group relative rounded-pill px-4 py-2 text-sm text-cream/65 transition-colors duration-300 hover:text-cream"
+                  className="group relative rounded-pill px-4 py-2 text-sm text-silver/65 transition-colors duration-300 hover:text-silver"
                 >
                   {link.label}
-                  <span className="absolute inset-x-4 bottom-1 h-px scale-x-0 bg-gold transition-transform duration-300 group-hover:scale-x-100" />
+                  <span className="absolute inset-x-4 bottom-1 h-px scale-x-0 bg-chrome transition-transform duration-300 group-hover:scale-x-100" />
                 </a>
               ))}
             </div>
@@ -66,7 +66,7 @@ export function Nav() {
             <div className="flex items-center gap-2">
               <a
                 href="#signin"
-                className="hidden rounded-pill px-4 py-2 text-sm text-cream/70 transition-colors duration-300 hover:text-cream sm:inline-flex"
+                className="hidden rounded-pill px-4 py-2 text-sm text-silver/70 transition-colors duration-300 hover:text-silver sm:inline-flex"
               >
                 Member sign in
               </a>
@@ -76,7 +76,7 @@ export function Nav() {
               <button
                 onClick={() => setOpen(true)}
                 aria-label="Open menu"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-cream/15 text-cream transition-colors hover:bg-cream/10 md:hidden"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-silver/15 text-silver transition-colors hover:bg-silver/10 md:hidden"
               >
                 <Menu size={18} />
               </button>
@@ -85,7 +85,7 @@ export function Nav() {
         </div>
         <motion.div
           style={{ scaleX: progress }}
-          className="h-[2px] origin-left bg-gradient-to-r from-gold-deep via-gold to-gold-soft"
+          className="h-[2px] origin-left bg-gradient-to-r from-chrome-deep via-chrome to-chrome-soft"
         />
       </motion.header>
 
@@ -99,11 +99,11 @@ export function Nav() {
             className="fixed inset-0 z-[60] bg-ink/95 backdrop-blur-xl md:hidden"
           >
             <div className="container-x flex h-[74px] items-center justify-between">
-              <Wordmark />
+              <LogoMark className="h-8 w-auto" />
               <button
                 onClick={() => setOpen(false)}
                 aria-label="Close menu"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-cream/15 text-cream"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-silver/15 text-silver"
               >
                 <X size={18} />
               </button>
@@ -117,7 +117,7 @@ export function Nav() {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.06 * i + 0.1, duration: 0.5 }}
-                  className="rounded-2xl border border-cream/8 px-5 py-4 text-2xl font-semibold tracking-[-0.02em] text-cream"
+                  className="rounded-2xl border border-silver/8 px-5 py-4 text-2xl font-semibold tracking-[-0.02em] text-silver"
                 >
                   {link.label}
                 </motion.a>

@@ -1,4 +1,4 @@
-import { Wordmark } from "./ui";
+import { LogoLockup } from "./ui";
 
 const columns = [
   {
@@ -17,12 +17,12 @@ const columns = [
 
 export function Footer() {
   return (
-    <footer className="relative border-t border-cream/8 bg-ink-2">
+    <footer className="relative border-t border-silver/8 bg-ink-2">
       <div className="container-x py-16">
         <div className="grid gap-12 lg:grid-cols-[1.4fr_2fr]">
           <div>
-            <Wordmark className="text-[17px]" />
-            <p className="mt-5 max-w-xs text-[14.5px] leading-relaxed text-cream/45">
+            <LogoLockup className="w-[172px]" />
+            <p className="mt-5 max-w-xs text-[14.5px] leading-relaxed text-silver/45">
               Where entrepreneurs grow and live. Education and community —
               individual results vary.
             </p>
@@ -31,7 +31,7 @@ export function Footer() {
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-3">
             {columns.map((col) => (
               <div key={col.title}>
-                <p className="text-[11px] font-semibold tracking-[0.18em] uppercase text-cream/35">
+                <p className="text-[11px] font-semibold tracking-[0.18em] uppercase text-silver/35">
                   {col.title}
                 </p>
                 <ul className="mt-4 flex flex-col gap-3">
@@ -39,7 +39,7 @@ export function Footer() {
                     <li key={link}>
                       <a
                         href="#top"
-                        className="text-[14px] text-cream/55 transition-colors duration-300 hover:text-gold"
+                        className="text-[14px] text-silver/55 transition-colors duration-300 hover:text-chrome"
                       >
                         {link}
                       </a>
@@ -51,11 +51,11 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-cream/8 pt-8 sm:flex-row">
-          <p className="text-[13px] text-cream/35">
+        <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-silver/8 pt-8 sm:flex-row">
+          <p className="text-[13px] text-silver/35">
             © 2026 Level Up Society. All rights reserved.
           </p>
-          <p className="text-[13px] text-cream/35">
+          <p className="text-[13px] text-silver/35">
             Built for entrepreneurs who build for themselves.
           </p>
         </div>

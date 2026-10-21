@@ -8,7 +8,7 @@ import { SectionLabel } from "./ui";
 
 export function Philosophy() {
   return (
-    <section id="why" className="relative bg-cream-2 py-24 text-ink lg:py-32">
+    <section id="why" className="relative bg-silver-2 py-24 text-ink lg:py-32">
       <div className="container-x">
         <div className="mx-auto max-w-3xl text-center">
           <Reveal className="flex justify-center">
@@ -35,7 +35,7 @@ export function Philosophy() {
           <Reveal>
             <div className="h-full rounded-card border border-ink/8 bg-white p-8 sm:p-10">
               <div className="flex items-center gap-3">
-                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-ink text-cream">
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-ink text-silver">
                   <Check size={17} strokeWidth={2.6} />
                 </span>
                 <h3 className="text-[13px] font-bold tracking-[0.16em] uppercase">
@@ -46,7 +46,7 @@ export function Philosophy() {
                 {forYou.map((item) => (
                   <StaggerItem key={item}>
                     <div className="flex items-start gap-3.5">
-                      <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
+                      <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-chrome" />
                       <p className="text-[15.5px] leading-relaxed text-ink/70">
                         {item}
                       </p>
@@ -61,13 +61,13 @@ export function Philosophy() {
             <motion.div
               whileHover={{ y: -4 }}
               transition={{ type: "spring", stiffness: 300, damping: 24 }}
-              className="h-full rounded-card border border-ink/8 bg-ink p-8 text-cream sm:p-10"
+              className="h-full rounded-card border border-ink/8 bg-ink p-8 text-silver sm:p-10"
             >
               <div className="flex items-center gap-3">
-                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-cream/10 text-cream/60">
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-silver/10 text-silver/60">
                   <X size={17} strokeWidth={2.6} />
                 </span>
-                <h3 className="text-[13px] font-bold tracking-[0.16em] uppercase text-cream/70">
+                <h3 className="text-[13px] font-bold tracking-[0.16em] uppercase text-silver/70">
                   This isn&apos;t for you if
                 </h3>
               </div>
@@ -75,8 +75,8 @@ export function Philosophy() {
                 {notForYou.map((item) => (
                   <StaggerItem key={item}>
                     <div className="flex items-start gap-3.5">
-                      <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-cream/25" />
-                      <p className="text-[15.5px] leading-relaxed text-cream/60">
+                      <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-silver/25" />
+                      <p className="text-[15.5px] leading-relaxed text-silver/60">
                         {item}
                       </p>
                     </div>

@@ -16,7 +16,7 @@ const spans = [
 
 export function Pillars() {
   return (
-    <section id="platform" className="relative bg-cream py-24 text-ink lg:py-32">
+    <section id="platform" className="relative bg-silver py-24 text-ink lg:py-32">
       <div className="container-x">
         <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-end">
           <Reveal>
@@ -50,11 +50,11 @@ export function Pillars() {
                 >
                   <div
                     aria-hidden
-                    className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-gold/0 blur-3xl transition-all duration-700 group-hover:bg-gold/45"
+                    className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-chrome/0 blur-3xl transition-all duration-700 group-hover:bg-chrome/45"
                   />
 
                   <div className="relative flex items-start justify-between">
-                    <span className="flex h-12 w-12 items-center justify-center rounded-tile bg-ink text-cream transition-transform duration-500 group-hover:scale-105 group-hover:bg-gold group-hover:text-ink">
+                    <span className="flex h-12 w-12 items-center justify-center rounded-tile bg-ink text-silver transition-transform duration-500 group-hover:scale-105 group-hover:bg-chrome group-hover:text-ink">
                       <Icon size={21} strokeWidth={1.8} />
                     </span>
                     <span className="font-mono text-[13px] text-ink/25">

@@ -20,6 +20,7 @@ const instrumentSerif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://level-up-society-nu.vercel.app"),
   title: "Level Up Society — Where Entrepreneurs Grow and Live",
   description:
     "A paid community for entrepreneurs. Business education, skills training, credit repair and funding, personal growth, and the people who keep you moving. $97/month.",
@@ -35,6 +36,14 @@ export const metadata: Metadata = {
     description:
       "Business education, credit repair & funding, personal growth, and a community of entrepreneurs building real businesses.",
     type: "website",
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Level Up Society" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Level Up Society — Where Entrepreneurs Grow and Live",
+    description:
+      "Business education, credit repair & funding, personal growth, and a community of entrepreneurs building real businesses.",
+    images: ["/og.png"],
   },
 };
 
@@ -44,7 +53,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-ink text-cream">{children}</body>
+      <body className="min-h-full flex flex-col bg-ink text-silver">{children}</body>
     </html>
   );
 }
