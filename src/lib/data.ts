@@ -154,8 +154,8 @@ export const testimonies = [
     initials: "MA",
     meta: "2 min ago · Business",
     quote:
-      "Credit score went from 512 → 641 in five months. Sharing the exact dispute letter template I used — the strategy worked.",
-    tags: ["Credit Repair", "Wins"],
+      "Credit score went from 512 → 704 in four months. The team took care of everything and now I am getting ready for funding! Can’t wait.",
+    tags: ["Credit Repair", "Funding"],
   },
   {
     name: "Darnell R.",
