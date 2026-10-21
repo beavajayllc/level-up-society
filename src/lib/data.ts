@@ -170,7 +170,7 @@ export const testimonies = [
     initials: "AW",
     meta: "1 hr ago · Mindset",
     quote:
-      "I joined to fix my credit and stayed for the people. Building alongside other members changed how I see my own progress.",
+      "I joined not knowing exactly what to expect but the community has definitely kept me here. The events, the calls, the growth in my network, it's all amazing and has boosted my confidence!",
     tags: ["Community", "Growth"],
   },
   {
