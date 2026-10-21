@@ -29,6 +29,7 @@ export type Pillar = {
   body: string;
   icon: LucideIcon;
   accent: string;
+  image: string;
 };
 
 export const pillars: Pillar[] = [
@@ -39,6 +40,7 @@ export const pillars: Pillar[] = [
     body: "The essentials of starting and running a business — from shaping an idea worth building to finding real customers and growing something that lasts.",
     icon: BookOpen,
     accent: "from-chrome/25",
+    image: "/pillars/business-education.webp",
   },
   {
     id: "training",
@@ -47,6 +49,7 @@ export const pillars: Pillar[] = [
     body: "Practical sessions on the skills you actually use every day — marketing, sales, communication, and the craft of running a business.",
     icon: Dumbbell,
     accent: "from-chrome/20",
+    image: "/pillars/skills-training.webp",
   },
   {
     id: "funding",
@@ -55,6 +58,7 @@ export const pillars: Pillar[] = [
     body: "Put the money side in order. Repair your credit, learn how business funding really works, and line up the capital your next chapter requires.",
     icon: Landmark,
     accent: "from-chrome/30",
+    image: "/pillars/funding-credit.webp",
   },
   {
     id: "growth",
@@ -63,6 +67,7 @@ export const pillars: Pillar[] = [
     body: "Build the mindset, habits and confidence that carry you forward — so you keep growing as a person, not just as a business owner.",
     icon: Compass,
     accent: "from-chrome/20",
+    image: "/pillars/personal-growth.webp",
   },
   {
     id: "community",
@@ -71,6 +76,7 @@ export const pillars: Pillar[] = [
     body: "Meet entrepreneurs who understand the journey. Share ideas, get honest feedback, celebrate the wins and keep each other moving.",
     icon: Users,
     accent: "from-chrome/25",
+    image: "/pillars/community.webp",
   },
 ];
 
