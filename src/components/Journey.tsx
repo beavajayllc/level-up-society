@@ -28,7 +28,7 @@ export function Journey() {
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute -left-[14%] bottom-[-14%] h-[560px] w-[560px] rounded-full bg-chrome/8 blur-[150px]"
+        className="pointer-events-none absolute -left-[6%] bottom-[-8%] h-[560px] w-[560px] rounded-full bg-chrome/8 blur-[150px]"
       />
 
       <div className="container-x grid gap-14 lg:grid-cols-[1fr_1fr] lg:gap-20">
