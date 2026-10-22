@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { motion, useScroll, useSpring, useTransform } from "motion/react";
 import { ArrowDown } from "lucide-react";
-import { journey } from "@/lib/data";
+import { journey, pillars } from "@/lib/data";
 import { Reveal } from "./Reveal";
 import { SectionLabel } from "./ui";
 
@@ -26,6 +26,10 @@ export function Journey() {
         aria-hidden
         className="pointer-events-none absolute right-[-10%] top-1/4 h-[600px] w-[600px] rounded-full bg-chrome/8 blur-[150px]"
       />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -left-[14%] bottom-[-14%] h-[560px] w-[560px] rounded-full bg-chrome/8 blur-[150px]"
+      />
 
       <div className="container-x grid gap-14 lg:grid-cols-[1fr_1fr] lg:gap-20">
         <div className="lg:sticky lg:top-28 lg:self-start">
@@ -43,6 +47,41 @@ export function Journey() {
               <ArrowDown size={15} className="text-chrome" />
               Scroll to see the path
             </div>
+
+            <motion.div
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, margin: "-80px" }}
+              variants={{
+                hidden: {},
+                show: { transition: { staggerChildren: 0.07, delayChildren: 0.15 } },
+              }}
+              className="mt-12 border-t border-silver/8 pt-8"
+            >
+              <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-silver/30">
+                Backed by five pillars
+              </p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {pillars.map((pillar) => (
+                  <motion.span
+                    key={pillar.id}
+                    variants={{
+                      hidden: { opacity: 0, y: 12 },
+                      show: {
+                        opacity: 1,
+                        y: 0,
+                        transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
+                      },
+                    }}
+                    whileHover={{ y: -2 }}
+                    className="inline-flex items-center gap-2 rounded-pill border border-silver/10 bg-silver/[0.03] px-3.5 py-2 text-[13px] text-silver/55 transition-colors duration-300 hover:border-chrome/35 hover:text-silver/90"
+                  >
+                    <span className="h-1.5 w-1.5 rounded-full bg-chrome/60" />
+                    {pillar.title}
+                  </motion.span>
+                ))}
+              </div>
+            </motion.div>
           </Reveal>
         </div>
 
