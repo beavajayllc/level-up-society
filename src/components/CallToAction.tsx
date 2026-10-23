@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion } from "motion/react";
 import { ArrowRight, Check } from "lucide-react";
 import { Reveal } from "./Reveal";
+import { Glow } from "./ui";
 
 export function CallToAction() {
   const [email, setEmail] = useState("");
@@ -12,7 +13,7 @@ export function CallToAction() {
   return (
     <section id="waitlist" className="relative overflow-hidden bg-ink py-24 lg:py-32">
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-1/2 top-1/2 h-[560px] w-[900px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-chrome/12 blur-[150px]" />
+        <Glow className="left-1/2 top-1/2 h-[560px] w-[900px] -translate-x-1/2 -translate-y-1/2" opacity={0.12} />
         <div className="grain-layer absolute inset-0 opacity-[0.04] mix-blend-overlay" />
       </div>
 

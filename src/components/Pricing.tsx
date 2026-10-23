@@ -6,7 +6,7 @@ import { Check, Sparkles } from "lucide-react";
 import { membershipFeatures } from "@/lib/data";
 import { checkoutHref } from "@/lib/checkout";
 import { Reveal, Stagger, StaggerItem } from "./Reveal";
-import { SectionLabel } from "./ui";
+import { Glow, SectionLabel } from "./ui";
 import { PillButton } from "./ui";
 
 function CountUp({ target }: { target: number }) {
@@ -31,7 +31,7 @@ export function Pricing() {
   return (
     <section id="memberships" className="relative overflow-hidden bg-ink py-24 lg:py-32">
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-1/2 top-1/2 h-[760px] w-[1100px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-chrome/10 blur-[160px]" />
+        <Glow className="left-1/2 top-1/2 h-[760px] w-[1100px] -translate-x-1/2 -translate-y-1/2" opacity={0.1} />
       </div>
 
       <div className="container-x">

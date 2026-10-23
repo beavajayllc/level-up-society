@@ -15,7 +15,7 @@ import {
 import type { LiveCallsState } from "@/lib/whop-livestream";
 import type { ChatMessage, ChatState } from "@/lib/whop-chat";
 import { Reveal } from "./Reveal";
-import { SectionLabel } from "./ui";
+import { Glow, SectionLabel } from "./ui";
 
 /**
  * The live calls room.
@@ -174,10 +174,7 @@ export function LiveCallsRoom({
 
   return (
     <main className="relative flex-1 overflow-hidden bg-ink">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute right-[-10%] top-[-10%] h-[520px] w-[520px] rounded-full bg-chrome/8 blur-[150px]"
-      />
+      <Glow className="right-[-10%] top-[-10%] h-[520px] w-[520px]" opacity={0.08} />
 
       <div className="container-x relative py-16 lg:py-20">
         <Link

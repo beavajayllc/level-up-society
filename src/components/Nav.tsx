@@ -42,7 +42,7 @@ export function Nav() {
         <div
           className={`transition-all duration-500 ${
             scrolled
-              ? "border-b border-silver/8 bg-ink/85 backdrop-blur-xl"
+              ? "border-b border-silver/8 bg-ink/95"
               : "border-b border-transparent bg-transparent"
           }`}
         >
@@ -97,7 +97,7 @@ export function Nav() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-[60] bg-ink/95 backdrop-blur-xl md:hidden"
+            className="fixed inset-0 z-[60] bg-ink/97 md:hidden"
           >
             <div className="container-x flex h-[74px] items-center justify-between">
               <LogoMark />

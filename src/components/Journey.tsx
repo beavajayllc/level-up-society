@@ -5,7 +5,7 @@ import { motion, useScroll, useSpring, useTransform } from "motion/react";
 import { ArrowDown } from "lucide-react";
 import { journey, pillars } from "@/lib/data";
 import { Reveal } from "./Reveal";
-import { SectionLabel } from "./ui";
+import { Glow, SectionLabel } from "./ui";
 
 export function Journey() {
   const ref = useRef<HTMLDivElement>(null);
@@ -22,14 +22,8 @@ export function Journey() {
 
   return (
     <section id="education" className="relative overflow-x-clip bg-ink py-24 lg:py-32">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute right-[-10%] top-1/4 h-[600px] w-[600px] rounded-full bg-chrome/8 blur-[150px]"
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -left-[6%] bottom-[-8%] h-[560px] w-[560px] rounded-full bg-chrome/8 blur-[150px]"
-      />
+      <Glow className="right-[-10%] top-1/4 h-[600px] w-[600px]" opacity={0.08} />
+      <Glow className="-left-[6%] bottom-[-8%] h-[560px] w-[560px]" opacity={0.08} />
 
       <div className="container-x grid gap-14 lg:grid-cols-[1fr_1fr] lg:gap-20">
         <div className="lg:sticky lg:top-28 lg:self-start">

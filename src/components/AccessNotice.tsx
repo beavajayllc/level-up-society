@@ -3,6 +3,7 @@ import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { PillButton } from "@/components/ui";
 import { checkoutHref } from "@/lib/checkout";
+import { Glow } from "./ui";
 
 const copy: Record<string, { title: string; body: string }> = {
   no_membership: {
@@ -47,10 +48,7 @@ export function AccessNotice({ reason }: { reason: string }) {
     <>
       <Nav />
       <main className="relative flex flex-1 items-center justify-center overflow-hidden bg-ink px-6 py-32">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute left-1/2 top-1/3 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-chrome/8 blur-[150px]"
-        />
+        <Glow className="left-1/2 top-1/3 h-[520px] w-[520px] -translate-x-1/2" opacity={0.08} />
         <div className="relative w-full max-w-lg rounded-card border border-silver/10 bg-silver/[0.04] p-9 text-center sm:p-12">
           <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-tile border border-chrome/25 bg-chrome/10 font-mono text-[15px] text-chrome">
             LS

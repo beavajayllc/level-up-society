@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ArrowUpRight, LogOut, ShieldCheck } from "lucide-react";
 import { memberResources } from "@/lib/data";
 import { Reveal, Stagger, StaggerItem } from "./Reveal";
-import { SectionLabel } from "./ui";
+import { Glow, SectionLabel } from "./ui";
 import type { WhopUserInfo } from "@/lib/whop-oauth";
 
 function displayName(user: WhopUserInfo): string {
@@ -22,14 +22,8 @@ export function MembersArea({
 
   return (
     <main className="relative flex-1 overflow-hidden bg-ink">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute right-[-8%] top-[-6%] h-[560px] w-[560px] rounded-full bg-chrome/8 blur-[150px]"
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -left-[10%] bottom-[-10%] h-[460px] w-[460px] rounded-full bg-chrome/6 blur-[150px]"
-      />
+      <Glow className="right-[-8%] top-[-6%] h-[560px] w-[560px]" opacity={0.08} />
+      <Glow className="-left-[10%] bottom-[-10%] h-[460px] w-[460px]" opacity={0.06} />
 
       <div className="container-x relative py-20 lg:py-28">
         <Reveal>

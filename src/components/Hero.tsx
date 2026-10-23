@@ -12,7 +12,7 @@ import {
 import { ArrowUpRight, Check, Sparkles } from "lucide-react";
 import { heroChips } from "@/lib/data";
 import { checkoutHref } from "@/lib/checkout";
-import { PillButton, SectionLabel } from "./ui";
+import { Glow, PillButton, SectionLabel } from "./ui";
 import { Testimony } from "./Testimony";
 
 const headline: Variants = {
@@ -52,22 +52,28 @@ export function Hero() {
       {/* ambient light */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
         <Image
-          src="/brand/lus-mark.png"
+          src="/brand/lus-mark-hero.webp"
           alt=""
-          width={2225}
-          height={992}
+          width={900}
+          height={405}
+          quality={50}
+          sizes="620px"
           style={{ width: 620, height: "auto" }}
           className="absolute -right-[10%] top-[4%] opacity-[0.06]"
         />
-        <div className="absolute left-1/2 top-[-18%] h-[720px] w-[1100px] -translate-x-1/2 rounded-full bg-chrome/12 blur-[140px]" />
+        <Glow className="left-1/2 top-[-18%] h-[720px] w-[1100px] -translate-x-1/2" opacity={0.12} />
         <div
-          className="absolute -left-40 top-[18%] h-[520px] w-[520px] rounded-full bg-chrome-deep/10 blur-[130px]"
+          className="absolute -left-40 top-[18%] h-[520px] w-[520px]"
           style={reduce ? undefined : { animation: "drift 18s ease-in-out infinite" }}
-        />
+        >
+          <Glow className="inset-0" rgb="153, 162, 175" opacity={0.1} />
+        </div>
         <div
-          className="absolute -right-32 bottom-[6%] h-[560px] w-[560px] rounded-full bg-[#1d2733]/45 blur-[140px]"
+          className="absolute -right-32 bottom-[6%] h-[560px] w-[560px]"
           style={reduce ? undefined : { animation: "drift 22s ease-in-out infinite reverse" }}
-        />
+        >
+          <Glow className="inset-0" rgb="29, 39, 51" opacity={0.45} />
+        </div>
         <div className="grain-layer absolute inset-0 opacity-[0.05] mix-blend-overlay" />
       </div>
 
@@ -168,7 +174,7 @@ export function Hero() {
             />
 
             {/* Main card */}
-            <div className="rounded-card-lg border border-silver/10 bg-gradient-to-b from-ink-2 to-ink p-6 shadow-[0_40px_100px_-30px_rgba(0,0,0,0.9)] backdrop-blur-xl sm:p-8">
+            <div className="rounded-card-lg border border-silver/10 bg-gradient-to-b from-ink-2 to-ink p-6 shadow-[0_40px_100px_-30px_rgba(0,0,0,0.9)] sm:p-8">
               <div className="flex items-center justify-between">
                 <SectionLabel index="LIVE" title="Inside the society" tone="light" />
                 <span className="flex items-center gap-2 rounded-pill bg-emerald-400/10 px-3 py-1.5 text-[11px] font-medium text-emerald-300">
@@ -208,7 +214,7 @@ export function Hero() {
             <motion.div
               animate={reduce ? undefined : { y: [0, -12, 0] }}
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -top-7 -right-7 rounded-card border border-silver/10 bg-ink-2/90 px-4 py-3 shadow-xl backdrop-blur-xl sm:-right-6"
+              className="absolute -top-7 -right-7 rounded-card border border-silver/10 bg-ink-2/95 px-4 py-3 shadow-xl sm:-right-6"
             >
               <p className="text-[11px] text-silver/45">Business funding</p>
               <p className="text-sm font-semibold text-chrome">+ $250K approved</p>
@@ -222,7 +228,7 @@ export function Hero() {
                 ease: "easeInOut",
                 delay: 0.6,
               }}
-              className="absolute -bottom-7 -left-7 rounded-card border border-silver/10 bg-ink-2/90 px-4 py-3 shadow-xl backdrop-blur-xl sm:-left-7"
+              className="absolute -bottom-7 -left-7 rounded-card border border-silver/10 bg-ink-2/95 px-4 py-3 shadow-xl sm:-left-7"
             >
               <p className="text-[11px] text-silver/45">This month</p>
               <p className="text-sm font-semibold text-silver">

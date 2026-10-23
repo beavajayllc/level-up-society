@@ -113,8 +113,9 @@ export function LogoMark({
     <Image
       src="/brand/lus-mark.png"
       alt="Level Up Society"
-      width={2225}
-      height={992}
+      width={560}
+      height={250}
+      sizes="120px"
       priority={priority}
       style={{ height, width: "auto" }}
       className={`drop-shadow-[0_5px_16px_rgba(0,0,0,0.65)] ${className}`}
@@ -134,10 +135,44 @@ export function LogoLockup({
     <Image
       src="/brand/lus-lockup.png"
       alt="Level Up Society"
-      width={2225}
-      height={1150}
+      width={620}
+      height={320}
+      sizes="200px"
       style={{ width, height: "auto" }}
       className={`drop-shadow-[0_6px_20px_rgba(0,0,0,0.7)] ${className}`}
+    />
+  );
+}
+
+/**
+ * A soft ambient light blob.
+ *
+ * The site used to render these as a solid circle with a `blur(150px)` filter.
+ * A Gaussian blur that wide is one of the most expensive things a browser can
+ * paint — it re-rasterises a huge layer on every scroll frame, and the site
+ * has a dozen of them. A radial gradient with a Gaussian-ish falloff looks
+ * the same and costs nothing, because it is painted straight into the layer.
+ */
+export function Glow({
+  className = "",
+  rgb = "242, 245, 249",
+  opacity = 0.12,
+  fade = 74,
+}: {
+  className?: string;
+  rgb?: string;
+  opacity?: number;
+  fade?: number;
+}) {
+  const core = fade * 0.3;
+  const mid = fade * 0.62;
+  const background = `radial-gradient(circle at 50% 50%, rgba(${rgb}, ${opacity}) 0%, rgba(${rgb}, ${opacity}) ${core}%, rgba(${rgb}, ${opacity * 0.45}) ${mid}%, rgba(${rgb}, 0) ${fade}%)`;
+
+  return (
+    <div
+      aria-hidden
+      className={`pointer-events-none absolute rounded-full ${className}`}
+      style={{ background }}
     />
   );
 }
