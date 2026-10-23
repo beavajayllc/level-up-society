@@ -17,8 +17,8 @@ import { getEnv, whopSdkBaseUrl, type Env } from "@/lib/env";
  * the community and merge their feeds.
  *
  * WHOP does not expose a playback URL for a live stream through its public
- * API, so the live player is WHOP's own room embedded on the page, and the
- * finished recording is played back here from WHOP's CDN.
+ * API, so live viewing opens WHOP's own room in a first-party tab. Finished
+ * recordings are played back here from WHOP's CDN.
  */
 
 const livestreamSchema = z.object({
@@ -60,7 +60,7 @@ export interface LiveCallsState {
   recordings: LivestreamFeed[];
   /** Streams that have been scheduled but have not started. */
   upcoming: LivestreamFeed[];
-  /** WHOP's live room, embedded as the player when a call is live. */
+  /** WHOP's live room, opened in a first-party tab when a call is live. */
   roomUrl: string | null;
   /** WHOP's Level Up Pro product page. */
   productUrl: string | null;

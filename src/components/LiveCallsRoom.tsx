@@ -20,10 +20,10 @@ import { Glow, SectionLabel } from "./ui";
 /**
  * The live calls room.
  *
- * This page is the members' home during a call: the live session on one side,
- * the live chat on the other. WHOP owns both, so this component reads WHOP's
- * livestream feed and WHOP's chat and renders them here. Nothing on this
- * page pretends a call is live when it is not.
+ * This page is the members' home during a call: live status and WHOP chat stay
+ * here, while the video opens in WHOP's first-party page so its membership
+ * sign-in is recognized. Nothing on this page pretends a call is live when it
+ * is not.
  */
 
 const LIVE_POLL_MS = 15_000;
@@ -239,16 +239,36 @@ export function LiveCallsRoom({
 
             <div className="overflow-hidden rounded-tile border border-silver/10 bg-ink">
               <div className="aspect-video w-full">
-                {state.live && state.roomUrl ? (
-                  <iframe
-                    src={state.roomUrl}
-                    title="Level Up Society live room"
-                    className="h-full w-full border-0"
-                    allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
-                    allowFullScreen
-                    loading="lazy"
-                    referrerPolicy="strict-origin-when-cross-origin"
-                  />
+                {state.live ? (
+                  <div className="flex h-full w-full flex-col items-center justify-center gap-4 bg-silver/[0.03] px-6 text-center sm:px-8">
+                    <span className="inline-flex h-16 w-16 items-center justify-center rounded-tile border border-silver/10 bg-ink/80 text-chrome">
+                      <Video size={24} strokeWidth={1.6} />
+                    </span>
+                    <p className="max-w-md text-[15px] leading-relaxed text-silver/65">
+                      Open this live room on WHOP so it can recognize your
+                      Level Up Pro membership. If WHOP asks you to sign in, use
+                      the same account you used here. You won&apos;t need to
+                      purchase again.
+                    </p>
+                    {state.roomUrl ? (
+                      <a
+                        href={state.roomUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group inline-flex h-11 items-center justify-center gap-2 rounded-pill bg-[linear-gradient(180deg,#ffffff_0%,#e7ecf3_46%,#c2cad5_100%)] px-5 text-sm font-medium text-ink shadow-[0_14px_44px_-14px_rgba(214,226,240,0.75)] transition-[filter] duration-300 hover:brightness-105"
+                      >
+                        Watch live on WHOP
+                        <ArrowUpRight
+                          size={15}
+                          className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                        />
+                      </a>
+                    ) : (
+                      <p className="text-[13px] text-[#ff8a82]">
+                        The WHOP live room link is not configured right now.
+                      </p>
+                    )}
+                  </div>
                 ) : (
                   <div
                     className="flex h-full w-full flex-col items-center justify-center gap-4 bg-silver/[0.03] px-8 text-center"
@@ -267,29 +287,11 @@ export function LiveCallsRoom({
                     </span>
                     <p className="max-w-sm text-[15px] leading-relaxed text-silver/55">
                       Nothing is on air right now. When the host goes live, the
-                      room switches on here by itself.
+                      WHOP watch link will appear here automatically.
                     </p>
                   </div>
                 )}
               </div>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-3 px-4 py-4 sm:px-5">
-              <a
-                href={state.roomUrl ?? "https://whop.com/na-fc3c"}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group inline-flex h-11 items-center justify-center gap-2 rounded-pill bg-[linear-gradient(180deg,#ffffff_0%,#e7ecf3_46%,#c2cad5_100%)] px-5 text-sm font-medium text-ink shadow-[0_14px_44px_-14px_rgba(214,226,240,0.75)] transition-[filter] duration-300 hover:brightness-105"
-              >
-                Open the live room
-                <ArrowUpRight
-                  size={15}
-                  className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                />
-              </a>
-              <p className="text-[13px] text-silver/40">
-                The room opens on WHOP, where your membership is already active.
-              </p>
             </div>
           </div>
 
