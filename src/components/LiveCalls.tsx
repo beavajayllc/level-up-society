@@ -335,7 +335,7 @@ function QuietPanel({
             onClick={onOpenRoom}
             className="inline-flex h-12 items-center justify-center gap-2 rounded-pill border border-silver/18 px-6 text-sm font-medium text-silver transition-colors duration-300 hover:border-chrome/60 hover:text-chrome"
           >
-            Open the WHOP community
+            Open the WHOP live room
           </button>
           <p className="text-center text-[13px] text-silver/35">
             The live calls page has the room and the live chat.
