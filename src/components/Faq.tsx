@@ -22,8 +22,8 @@ export function Faq() {
               <span className="display-serif">asked</span>
             </h2>
             <p className="mt-6 max-w-sm text-[16px] leading-relaxed text-ink/55">
-              Still deciding? Grab free access and see what the community is
-              about first.
+              Still deciding? Grab a free pass to the newsletter and see what
+              the community is about first.
             </p>
           </Reveal>
         </div>

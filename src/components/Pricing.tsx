@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { animate, motion, useInView } from "motion/react";
 import { Check, Sparkles } from "lucide-react";
 import { membershipFeatures } from "@/lib/data";
+import { checkoutHref } from "@/lib/checkout";
 import { Reveal, Stagger, StaggerItem } from "./Reveal";
 import { SectionLabel } from "./ui";
 import { PillButton } from "./ui";
@@ -83,7 +84,7 @@ export function Pricing() {
                   </div>
                 </div>
                 <span className="rounded-pill border border-chrome/30 bg-chrome/10 px-4 py-2 text-[11px] font-semibold tracking-[0.18em] uppercase text-chrome">
-                  Opening soon
+                  Available now
                 </span>
               </div>
 
@@ -101,8 +102,8 @@ export function Pricing() {
                     everything an entrepreneur needs, in one membership.
                   </p>
                   <div className="mt-8">
-                    <PillButton href="#waitlist" size="lg" className="w-full">
-                      Join the waitlist
+                    <PillButton href={checkoutHref()} size="lg" className="w-full">
+                      Join Level Up Pro
                     </PillButton>
                     <p className="mt-4 text-center text-[12.5px] text-silver/35">
                       Renews monthly · Cancel any time

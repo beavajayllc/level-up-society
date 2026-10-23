@@ -11,6 +11,7 @@ import {
 } from "motion/react";
 import { ArrowUpRight, Check, Sparkles } from "lucide-react";
 import { heroChips } from "@/lib/data";
+import { checkoutHref } from "@/lib/checkout";
 import { PillButton, SectionLabel } from "./ui";
 import { Testimony } from "./Testimony";
 
@@ -80,7 +81,7 @@ export function Hero() {
           >
             <span className="inline-flex items-center gap-2 rounded-pill border border-chrome/25 bg-chrome/8 px-4 py-2 text-[12px] font-medium tracking-[0.14em] uppercase text-chrome">
               <Sparkles size={13} />
-              Opening Soon
+              Now Enrolling
             </span>
           </motion.div>
 
@@ -117,8 +118,8 @@ export function Hero() {
             transition={{ duration: 0.8, delay: 0.62, ease: [0.16, 1, 0.3, 1] }}
             className="mt-9 flex flex-wrap items-center gap-3"
           >
-            <PillButton href="#waitlist" size="lg">
-              Get Free Access
+            <PillButton href={checkoutHref()} size="lg">
+              Join Level Up Pro — $97/mo
               <ArrowUpRight size={17} />
             </PillButton>
             <PillButton href="#memberships" size="lg" variant="outline">

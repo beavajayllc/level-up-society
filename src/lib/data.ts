@@ -3,6 +3,8 @@ import {
   Compass,
   Dumbbell,
   Landmark,
+  Mic,
+  TrendingUp,
   Users,
   type LucideIcon,
 } from "lucide-react";
@@ -146,7 +148,7 @@ export const faqs = [
   },
   {
     q: "How do I join?",
-    a: "Join the waitlist or upgrade to Level Up Pro from the membership section. Membership opens soon and members get first access when it does.",
+    a: "Join Level Up Pro from the membership section — checkout takes about a minute, and your membership unlocks the members area as soon as it clears. Sign in with the WHOP account you purchased with, and the member sign-in will let you straight in.",
   },
   {
     q: "Can I cancel anytime?",
@@ -186,5 +188,43 @@ export const testimonies = [
     quote:
       "Needed to get access to some capital to take my business to the next level and they did just that! Pointed me in the right direction and showed me the options available that made the most sense for me!",
     tags: ["Funding", "Capital"],
+  },
+];
+
+export const memberResources = [
+  {
+    id: "live-calls",
+    title: "Live calls",
+    body: "Weekly entrepreneur calls with special guests. Bring the problem you are actually stuck on, not a hypothetical.",
+    icon: Mic,
+    tag: "Weekly",
+  },
+  {
+    id: "trade-ideas",
+    title: "Trade ideas chat",
+    body: "The copy-and-paste forex trade ideas system, kept current by members sharing what worked.",
+    icon: TrendingUp,
+    tag: "Always on",
+  },
+  {
+    id: "library",
+    title: "Business education library",
+    body: "Structured courses on building, marketing and selling a business that holds up.",
+    icon: BookOpen,
+    tag: "On demand",
+  },
+  {
+    id: "funding-desk",
+    title: "Funding & credit desk",
+    body: "Get pointed to the capital and credit options that actually make sense for where you are.",
+    icon: Landmark,
+    tag: "By request",
+  },
+  {
+    id: "community",
+    title: "Member community",
+    body: "The room itself. Trade ideas, get honest feedback, and meet people who get the journey.",
+    icon: Users,
+    tag: "24/7",
   },
 ];

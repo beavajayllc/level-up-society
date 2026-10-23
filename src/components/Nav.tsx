@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useScroll, useSpring } from "motion/react";
 import { Menu, X } from "lucide-react";
 import { navLinks } from "@/lib/data";
+import { checkoutHref } from "@/lib/checkout";
 import { LogoMark, PillButton } from "./ui";
 
 export function Nav() {
@@ -65,12 +66,12 @@ export function Nav() {
 
             <div className="flex items-center gap-2">
               <a
-                href="#signin"
+                href="/api/auth/login?next=%2Fmembers"
                 className="hidden rounded-pill px-4 py-2 text-sm text-silver/70 transition-colors duration-300 hover:text-silver sm:inline-flex"
               >
                 Member sign in
               </a>
-              <PillButton href="#memberships" size="sm" className="hidden sm:inline-flex">
+              <PillButton href={checkoutHref()} size="sm" className="hidden sm:inline-flex">
                 Join the Society
               </PillButton>
               <button
@@ -122,7 +123,7 @@ export function Nav() {
                   {link.label}
                 </motion.a>
               ))}
-              <PillButton href="#memberships" size="lg" className="mt-6 w-full">
+              <PillButton href={checkoutHref()} size="lg" className="mt-6 w-full">
                 Join the Society
               </PillButton>
             </div>

@@ -25,7 +25,7 @@ export function CallToAction() {
           </Reveal>
           <Reveal delay={0.08}>
             <h2 className="mt-7 text-[clamp(2.25rem,5.5vw,4rem)] font-semibold leading-[1.02] tracking-[-0.04em] text-silver">
-              Get <span className="display-serif text-chrome-gradient">free access</span>
+              Stay <span className="display-serif text-chrome-gradient">in the loop</span>
             </h2>
           </Reveal>
           <Reveal delay={0.14}>
@@ -69,7 +69,7 @@ export function CallToAction() {
                     </>
                   ) : (
                     <>
-                      Get Free Access
+                      Keep Me Posted
                       <ArrowRight
                         size={16}
                         className="transition-transform duration-300 group-hover:translate-x-1"
