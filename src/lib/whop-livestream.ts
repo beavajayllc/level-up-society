@@ -1,7 +1,7 @@
 import "server-only";
 
 import { z } from "zod";
-import { getEnv, whopSdkBaseUrl } from "@/lib/env";
+import { getEnv, whopSdkBaseUrl, type Env } from "@/lib/env";
 
 /**
  * WHOP live calls.
@@ -10,6 +10,11 @@ import { getEnv, whopSdkBaseUrl } from "@/lib/env";
  * lives on the Level Up Pro product owns one experience, and every stream the
  * host starts in the WHOP dashboard lands in that experience. We read that
  * feed server side and render it in the members area.
+ *
+ * A WHOP community can carry more than one Livestreaming app, and the host
+ * can start a call from any of the tabs they see in the sidebar. To make
+ * sure a call never gets missed, we read every Livestreaming experience in
+ * the community and merge their feeds.
  *
  * WHOP does not expose a playback URL for a live stream through its public
  * API, so the live player is WHOP's own room embedded on the page, and the
@@ -34,6 +39,16 @@ const livestreamSchema = z.object({
 
 const listResponseSchema = z.object({
   data: z.array(livestreamSchema).default([]),
+});
+
+const experienceSchema = z.object({
+  id: z.string(),
+  name: z.string().default(""),
+  app: z.object({ id: z.string(), name: z.string() }).nullable().default(null),
+});
+
+const experienceListSchema = z.object({
+  data: z.array(experienceSchema).default([]),
 });
 
 export type LivestreamFeed = z.infer<typeof livestreamSchema>;
@@ -63,6 +78,18 @@ const EMPTY_STATE: LiveCallsState = {
 };
 
 /**
+ * Build a WHOP API URL.
+ *
+ * `whopSdkBaseUrl` returns a base that already carries the `/api/v1`
+ * prefix, so the path has to be joined relatively. An absolute path such as
+ * `/livestreams` would drop the `/api/v1` segment and 404.
+ */
+function whopApiUrl(env: Env, path: string): URL {
+  const base = whopSdkBaseUrl(env);
+  return new URL(path.replace(/^\/+/, ""), `${base}/`);
+}
+
+/**
  * A stream is live once it has started and has not ended. WHOP keeps
  * `ended_at` null for the whole time a call is on air.
  */
@@ -85,10 +112,10 @@ const CACHE_TTL_MS = 15_000;
 let cached: { state: LiveCallsState; expires: number } | null = null;
 
 async function fetchLivestreams(
+  env: Env,
   experienceId: string,
 ): Promise<LivestreamFeed[]> {
-  const env = getEnv();
-  const url = new URL("/livestreams", whopSdkBaseUrl(env));
+  const url = whopApiUrl(env, "livestreams");
   url.searchParams.set("experience_id", experienceId);
   url.searchParams.set("first", "25");
 
@@ -113,13 +140,59 @@ async function fetchLivestreams(
 }
 
 /**
+ * Every Livestreaming experience in the community.
+ *
+ * WHOP lets a community carry several app instances of the same type, and
+ * the host can start a call from whichever Livestreaming tab they open. We
+ * collect them all so a call is never missed. The configured experience is
+ * always included, even if discovery fails.
+ */
+async function resolveExperienceIds(env: Env): Promise<string[]> {
+  const ids = new Set<string>();
+  const configured = env.WHOP_LIVESTREAM_EXPERIENCE_ID;
+  if (configured) ids.add(configured);
+
+  try {
+    const url = whopApiUrl(env, "experiences");
+    url.searchParams.set("company_id", env.WHOP_ACCOUNT_ID);
+
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${env.WHOP_API_KEY}`,
+        Accept: "application/json",
+      },
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      throw new Error(`WHOP experiences responded ${response.status}`);
+    }
+
+    const parsed = experienceListSchema.safeParse(await response.json());
+    if (!parsed.success) {
+      throw new Error("WHOP experiences returned an unexpected shape");
+    }
+
+    for (const experience of parsed.data.data) {
+      if (experience.app?.name === "Livestreaming") {
+        ids.add(experience.id);
+      }
+    }
+  } catch (error) {
+    console.error("[whop] livestream experience discovery failed:", error);
+  }
+
+  return [...ids];
+}
+
+/**
  * The current state of the live calls, ready to render.
  *
  * Never throws. If WHOP is down or not configured the members area still
  * renders, it just shows the "no calls yet" state.
  */
 export async function getLiveCalls(): Promise<LiveCallsState> {
-  let env: ReturnType<typeof getEnv>;
+  let env: Env;
   try {
     env = getEnv();
   } catch {
@@ -129,9 +202,8 @@ export async function getLiveCalls(): Promise<LiveCallsState> {
 
   const roomUrl = env.WHOP_LIVESTREAM_ROOM_URL ?? null;
   const productUrl = env.WHOP_PRODUCT_URL ?? null;
-  const experienceId = env.WHOP_LIVESTREAM_EXPERIENCE_ID;
 
-  if (!experienceId) {
+  if (!env.WHOP_LIVESTREAM_EXPERIENCE_ID) {
     return { ...EMPTY_STATE, roomUrl, productUrl };
   }
 
@@ -139,17 +211,35 @@ export async function getLiveCalls(): Promise<LiveCallsState> {
     return cached.state;
   }
 
-  let streams: LivestreamFeed[];
-  try {
-    streams = await fetchLivestreams(experienceId);
-  } catch (error) {
-    console.error("[whop] livestream feed failed:", error);
+  const experienceIds = await resolveExperienceIds(env);
+
+  const results = await Promise.allSettled(
+    experienceIds.map((id) => fetchLivestreams(env, id)),
+  );
+
+  const streams: LivestreamFeed[] = [];
+  let reachable = false;
+
+  for (const result of results) {
+    if (result.status === "fulfilled") {
+      reachable = true;
+      streams.push(...result.value);
+    } else {
+      console.error("[whop] livestream feed failed:", result.reason);
+    }
+  }
+
+  if (!reachable) {
     return { ...EMPTY_STATE, roomUrl, productUrl };
   }
 
-  const live = streams.find(isLive) ?? null;
+  // The same call can be reported by more than one experience. Keep one.
+  const unique = new Map(streams.map((stream) => [stream.id, stream]));
+  const all = [...unique.values()];
 
-  const recordings = streams
+  const live = all.find(isLive) ?? null;
+
+  const recordings = all
     .filter((stream) => !isLive(stream) && hasRecording(stream))
     .sort((a, b) => {
       const left = a.pinned_at ?? a.ended_at ?? a.created_at;
@@ -158,7 +248,7 @@ export async function getLiveCalls(): Promise<LiveCallsState> {
     })
     .slice(0, 6);
 
-  const upcoming = streams
+  const upcoming = all
     .filter(
       (stream) =>
         !isLive(stream) && !stream.started_at && Boolean(stream.scheduled_at),
