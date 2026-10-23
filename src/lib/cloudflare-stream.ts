@@ -3,10 +3,12 @@ import "server-only";
 import { z } from "zod";
 import { getEnv, type Env } from "@/lib/env";
 
-const lifecycleSchema = z.object({
-  isInput: z.literal(true),
-  videoUID: z.string().nullable(),
-  live: z.boolean(),
+const liveInputVideosSchema = z.object({
+  result: z.array(
+    z.object({
+      status: z.object({ state: z.string() }),
+    }),
+  ),
 });
 
 const tokenResponseSchema = z.object({
@@ -67,15 +69,18 @@ async function getLiveStatus(
 
   try {
     const response = await fetch(
-      `https://customer-${config.customerCode}.cloudflarestream.com/${config.liveInputId}/lifecycle`,
+      `https://api.cloudflare.com/client/v4/accounts/${config.accountId}/stream/live_inputs/${config.liveInputId}/videos`,
       {
-        headers: { Authorization: `Bearer ${config.apiToken}` },
+        headers: {
+          Authorization: `Bearer ${config.apiToken}`,
+          Accept: "application/json",
+        },
         cache: "no-store",
       },
     );
 
     if (!response.ok) {
-      console.error("[cloudflare] Stream lifecycle responded", response.status);
+      console.error("[cloudflare] Live input videos responded", response.status);
       cachedStatus = {
         status: "unavailable",
         expiresAt: Date.now() + STATUS_CACHE_MS,
@@ -83,9 +88,9 @@ async function getLiveStatus(
       return cachedStatus.status;
     }
 
-    const parsed = lifecycleSchema.safeParse(await response.json());
+    const parsed = liveInputVideosSchema.safeParse(await response.json());
     if (!parsed.success) {
-      console.error("[cloudflare] Stream lifecycle returned an unexpected shape");
+      console.error("[cloudflare] Live input videos returned an unexpected shape");
       cachedStatus = {
         status: "unavailable",
         expiresAt: Date.now() + STATUS_CACHE_MS,
@@ -94,12 +99,16 @@ async function getLiveStatus(
     }
 
     cachedStatus = {
-      status: parsed.data.live ? "live" : "offline",
+      status: parsed.data.result.some(
+        (video) => video.status.state === "live-inprogress",
+      )
+        ? "live"
+        : "offline",
       expiresAt: Date.now() + STATUS_CACHE_MS,
     };
     return cachedStatus.status;
   } catch (error) {
-    console.error("[cloudflare] Stream lifecycle request failed:", error);
+    console.error("[cloudflare] Live input videos request failed:", error);
     cachedStatus = {
       status: "unavailable",
       expiresAt: Date.now() + STATUS_CACHE_MS,
