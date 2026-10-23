@@ -4,11 +4,9 @@ import { motion } from "motion/react";
 import Link from "next/link";
 import { ArrowUpRight, LogOut, ShieldCheck } from "lucide-react";
 import { memberResources } from "@/lib/data";
-import { LiveCalls } from "./LiveCalls";
 import { Reveal, Stagger, StaggerItem } from "./Reveal";
 import { SectionLabel } from "./ui";
 import type { WhopUserInfo } from "@/lib/whop-oauth";
-import type { LiveCallsState } from "@/lib/whop-livestream";
 
 function displayName(user: WhopUserInfo): string {
   const raw = user.name ?? user.preferred_username ?? user.email ?? "member";
@@ -17,10 +15,8 @@ function displayName(user: WhopUserInfo): string {
 
 export function MembersArea({
   user,
-  liveCalls,
 }: {
   user: WhopUserInfo;
-  liveCalls: LiveCallsState;
 }) {
   const name = displayName(user);
 
@@ -67,10 +63,6 @@ export function MembersArea({
             ) : null}
           </div>
         </Reveal>
-
-        <div className="mt-16">
-          <LiveCalls initial={liveCalls} />
-        </div>
 
         <Stagger className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {memberResources.map((resource) => {

@@ -14,6 +14,8 @@ import {
 } from "lucide-react";
 import type { LiveCallsState } from "@/lib/whop-livestream";
 import type { ChatMessage, ChatState } from "@/lib/whop-chat";
+import { Reveal } from "./Reveal";
+import { SectionLabel } from "./ui";
 
 /**
  * The live calls room.
@@ -186,24 +188,21 @@ export function LiveCallsRoom({
           Back to the members area
         </Link>
 
-        <div className="mt-8 flex flex-wrap items-end justify-between gap-6">
-          <div>
-            <span className="inline-flex items-center gap-2.5 rounded-pill border border-chrome/25 bg-chrome/10 px-4 py-2 text-[12px] font-semibold tracking-[0.16em] uppercase text-chrome">
-              Live calls
-            </span>
-            <h1 className="mt-5 max-w-2xl text-[clamp(2rem,4.4vw,3.25rem)] font-semibold leading-[1.04] tracking-[-0.04em] text-silver">
-              {isLive ? (
-                <>
-                  The room is <span className="display-serif text-chrome-gradient">open</span>
-                </>
-              ) : (
-                <>
-                  No call is <span className="display-serif text-chrome-gradient">live</span>
-                </>
-              )}
+        <Reveal>
+          <SectionLabel index="08" title="Live calls" />
+          <div className="mt-6 flex flex-wrap items-end justify-between gap-6">
+            <h1 className="max-w-xl text-[clamp(1.9rem,3.6vw,2.9rem)] font-semibold leading-[1.06] tracking-[-0.035em] text-silver">
+              When we go live, it lands{" "}
+              <span className="display-serif text-chrome-gradient">right here</span>
             </h1>
+            <p className="max-w-sm text-[15px] leading-relaxed text-silver/50">
+              Live calls run on WHOP with your Level Up Pro membership. This page
+              picks up the stream automatically the moment it goes on air.
+            </p>
           </div>
+        </Reveal>
 
+        <div className="mt-8 flex flex-wrap items-center gap-3">
           {isLive ? (
             <span className="inline-flex items-center gap-2.5 rounded-pill border border-[#ff3b30]/40 bg-[#ff3b30]/12 px-4 py-2 text-[12px] font-semibold tracking-[0.16em] uppercase text-[#ff8a82]">
               <span className="relative flex h-2 w-2">
@@ -220,6 +219,11 @@ export function LiveCallsRoom({
                 : "Calls run on WHOP"}
             </span>
           )}
+          {!isLive ? (
+            <span className="inline-flex items-center gap-2.5 rounded-pill border border-silver/12 bg-silver/4 px-4 py-2 text-[13px] text-silver/50">
+              No call is live right now
+            </span>
+          ) : null}
         </div>
 
         <div className="mt-10 grid gap-4 lg:grid-cols-[1.55fr_1fr]">
