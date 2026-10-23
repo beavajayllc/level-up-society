@@ -17,6 +17,12 @@ const envSchema = z.object({
   WHOP_CHECKOUT_URL: z.url().optional(),
   /** Same link, exposed to client components so the CTAs can use it. */
   NEXT_PUBLIC_WHOP_CHECKOUT_URL: z.url().optional(),
+  /** The WHOP livestreaming experience that powers the members-area calls. */
+  WHOP_LIVESTREAM_EXPERIENCE_ID: z.string().startsWith("exp_").optional(),
+  /** The WHOP community page that hosts the live room. */
+  WHOP_LIVESTREAM_ROOM_URL: z.url().optional(),
+  /** The WHOP page members land on for the Level Up Pro product. */
+  WHOP_PRODUCT_URL: z.url().optional(),
   WHOP_SANDBOX: z
     .string()
     .optional()
@@ -50,6 +56,9 @@ function readRawEnv(): Record<string, string | undefined> {
     WHOP_CHECKOUT_URL: process.env.WHOP_CHECKOUT_URL,
     NEXT_PUBLIC_WHOP_CHECKOUT_URL:
       process.env.NEXT_PUBLIC_WHOP_CHECKOUT_URL,
+    WHOP_LIVESTREAM_EXPERIENCE_ID: process.env.WHOP_LIVESTREAM_EXPERIENCE_ID,
+    WHOP_LIVESTREAM_ROOM_URL: process.env.WHOP_LIVESTREAM_ROOM_URL,
+    WHOP_PRODUCT_URL: process.env.WHOP_PRODUCT_URL,
     WHOP_SANDBOX: process.env.WHOP_SANDBOX,
     SESSION_SECRET: process.env.SESSION_SECRET,
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,

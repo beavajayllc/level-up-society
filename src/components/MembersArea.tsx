@@ -3,16 +3,24 @@
 import { motion } from "motion/react";
 import { ArrowUpRight, LogOut, ShieldCheck } from "lucide-react";
 import { memberResources } from "@/lib/data";
+import { LiveCalls } from "./LiveCalls";
 import { Reveal, Stagger, StaggerItem } from "./Reveal";
 import { SectionLabel } from "./ui";
 import type { WhopUserInfo } from "@/lib/whop-oauth";
+import type { LiveCallsState } from "@/lib/whop-livestream";
 
 function displayName(user: WhopUserInfo): string {
   const raw = user.name ?? user.preferred_username ?? user.email ?? "member";
   return raw.split(" ")[0] ?? raw;
 }
 
-export function MembersArea({ user }: { user: WhopUserInfo }) {
+export function MembersArea({
+  user,
+  liveCalls,
+}: {
+  user: WhopUserInfo;
+  liveCalls: LiveCallsState;
+}) {
   const name = displayName(user);
 
   return (
@@ -59,7 +67,11 @@ export function MembersArea({ user }: { user: WhopUserInfo }) {
           </div>
         </Reveal>
 
-        <Stagger className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-16">
+          <LiveCalls initial={liveCalls} />
+        </div>
+
+        <Stagger className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {memberResources.map((resource) => {
             const Icon = resource.icon;
             return (
@@ -86,12 +98,19 @@ export function MembersArea({ user }: { user: WhopUserInfo }) {
                   </p>
 
                   <span className="mt-6 inline-flex items-center gap-1.5 text-[13px] font-medium text-silver/40 transition-colors duration-300 group-hover:text-chrome">
-                    Open
+                    {resource.href ? "Go to live calls" : "Open"}
                     <ArrowUpRight
                       size={14}
                       className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                     />
                   </span>
+                  {resource.href ? (
+                    <a
+                      href={resource.href}
+                      aria-label="Go to live calls"
+                      className="absolute inset-0 rounded-card"
+                    />
+                  ) : null}
                 </motion.article>
               </StaggerItem>
             );

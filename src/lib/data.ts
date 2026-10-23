@@ -191,13 +191,24 @@ export const testimonies = [
   },
 ];
 
-export const memberResources = [
+export type MemberResource = {
+  id: string;
+  title: string;
+  body: string;
+  icon: LucideIcon;
+  tag: string;
+  /** Optional deep link into a section of the members area. */
+  href?: string;
+};
+
+export const memberResources: MemberResource[] = [
   {
     id: "live-calls",
     title: "Live calls",
     body: "Weekly entrepreneur calls with special guests. Bring the problem you are actually stuck on, not a hypothetical.",
     icon: Mic,
     tag: "Weekly",
+    href: "#live-calls",
   },
   {
     id: "trade-ideas",
