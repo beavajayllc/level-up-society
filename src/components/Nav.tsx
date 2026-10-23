@@ -123,7 +123,20 @@ export function Nav() {
                   {link.label}
                 </motion.a>
               ))}
-              <PillButton href={checkoutHref()} size="lg" className="mt-6 w-full">
+              <motion.a
+                href="/api/auth/login?next=%2Fmembers"
+                onClick={() => setOpen(false)}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{
+                  delay: 0.06 * navLinks.length + 0.1,
+                  duration: 0.5,
+                }}
+                className="mt-6 inline-flex h-14 items-center justify-center gap-2 rounded-pill border border-silver/18 px-8 text-[15px] font-medium tracking-[-0.01em] text-silver transition-colors duration-300 hover:border-chrome/60 hover:bg-chrome/5 hover:text-chrome"
+              >
+                Member sign in
+              </motion.a>
+              <PillButton href={checkoutHref()} size="lg" className="mt-3 w-full">
                 Join the Society
               </PillButton>
             </div>
