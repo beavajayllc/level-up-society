@@ -34,7 +34,7 @@ export function Journey() {
       <div className="container-x grid gap-14 lg:grid-cols-[1fr_1fr] lg:gap-20">
         <div className="lg:sticky lg:top-28 lg:self-start">
           <Reveal>
-            <SectionLabel index="02" title="Education" />
+            <SectionLabel index="02" title="Education" tone="light" />
             <h2 className="mt-6 text-[clamp(2.25rem,5vw,3.75rem)] font-semibold leading-[1.02] tracking-[-0.04em] text-silver">
               From your first idea to your{" "}
               <span className="display-serif text-chrome-gradient">next chapter</span>

@@ -37,7 +37,7 @@ export function Pricing() {
       <div className="container-x">
         <div className="mx-auto max-w-2xl text-center">
           <Reveal className="flex justify-center">
-            <SectionLabel index="04" title="Memberships" />
+            <SectionLabel index="04" title="Memberships" tone="light" />
           </Reveal>
           <Reveal delay={0.08}>
             <h2 className="mt-6 text-[clamp(2.25rem,5vw,3.75rem)] font-semibold leading-[1.03] tracking-[-0.04em] text-silver">
