@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
+import Link from "next/link";
 import { ArrowUpRight, LogOut, ShieldCheck } from "lucide-react";
 import { memberResources } from "@/lib/data";
 import { LiveCalls } from "./LiveCalls";
@@ -98,16 +99,16 @@ export function MembersArea({
                   </p>
 
                   <span className="mt-6 inline-flex items-center gap-1.5 text-[13px] font-medium text-silver/40 transition-colors duration-300 group-hover:text-chrome">
-                    {resource.href ? "Go to live calls" : "Open"}
+                    {resource.cta ?? "Open"}
                     <ArrowUpRight
                       size={14}
                       className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                     />
                   </span>
                   {resource.href ? (
-                    <a
+                    <Link
                       href={resource.href}
-                      aria-label="Go to live calls"
+                      aria-label={resource.cta ?? `Open ${resource.title}`}
                       className="absolute inset-0 rounded-card"
                     />
                   ) : null}

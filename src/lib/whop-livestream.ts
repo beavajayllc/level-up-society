@@ -64,6 +64,10 @@ export interface LiveCallsState {
   roomUrl: string | null;
   /** WHOP's Level Up Pro product page. */
   productUrl: string | null;
+  /** The Livestreaming experiences we read, so the chat can find its channel. */
+  experienceIds: string[];
+  /** The Chat experiences in the community, candidates for a chat channel. */
+  chatExperienceIds: string[];
   /** False when WHOP is not configured or could not be reached. */
   connected: boolean;
 }
@@ -74,6 +78,8 @@ const EMPTY_STATE: LiveCallsState = {
   upcoming: [],
   roomUrl: null,
   productUrl: null,
+  experienceIds: [],
+  chatExperienceIds: [],
   connected: false,
 };
 
@@ -147,8 +153,11 @@ async function fetchLivestreams(
  * collect them all so a call is never missed. The configured experience is
  * always included, even if discovery fails.
  */
-async function resolveExperienceIds(env: Env): Promise<string[]> {
+async function resolveExperienceIds(
+  env: Env,
+): Promise<{ livestreaming: string[]; chat: string[] }> {
   const ids = new Set<string>();
+  const chatIds = new Set<string>();
   const configured = env.WHOP_LIVESTREAM_EXPERIENCE_ID;
   if (configured) ids.add(configured);
 
@@ -177,12 +186,15 @@ async function resolveExperienceIds(env: Env): Promise<string[]> {
       if (experience.app?.name === "Livestreaming") {
         ids.add(experience.id);
       }
+      if (experience.app?.name === "Chat") {
+        chatIds.add(experience.id);
+      }
     }
   } catch (error) {
     console.error("[whop] livestream experience discovery failed:", error);
   }
 
-  return [...ids];
+  return { livestreaming: [...ids], chat: [...chatIds] };
 }
 
 /**
@@ -211,7 +223,8 @@ export async function getLiveCalls(): Promise<LiveCallsState> {
     return cached.state;
   }
 
-  const experienceIds = await resolveExperienceIds(env);
+  const { livestreaming: experienceIds, chat: chatExperienceIds } =
+    await resolveExperienceIds(env);
 
   const results = await Promise.allSettled(
     experienceIds.map((id) => fetchLivestreams(env, id)),
@@ -230,7 +243,7 @@ export async function getLiveCalls(): Promise<LiveCallsState> {
   }
 
   if (!reachable) {
-    return { ...EMPTY_STATE, roomUrl, productUrl };
+    return { ...EMPTY_STATE, roomUrl, productUrl, experienceIds, chatExperienceIds };
   }
 
   // The same call can be reported by more than one experience. Keep one.
@@ -262,6 +275,8 @@ export async function getLiveCalls(): Promise<LiveCallsState> {
     upcoming,
     roomUrl,
     productUrl,
+    experienceIds,
+    chatExperienceIds,
     connected: true,
   };
 

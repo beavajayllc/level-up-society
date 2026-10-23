@@ -197,8 +197,10 @@ export type MemberResource = {
   body: string;
   icon: LucideIcon;
   tag: string;
-  /** Optional deep link into a section of the members area. */
+  /** Optional deep link into the members area or one of its pages. */
   href?: string;
+  /** Optional label for the card's call to action. */
+  cta?: string;
 };
 
 export const memberResources: MemberResource[] = [
@@ -208,7 +210,8 @@ export const memberResources: MemberResource[] = [
     body: "Weekly entrepreneur calls with special guests. Bring the problem you are actually stuck on, not a hypothetical.",
     icon: Mic,
     tag: "Weekly",
-    href: "#live-calls",
+    href: "/members/live-calls",
+    cta: "Go to live calls",
   },
   {
     id: "trade-ideas",

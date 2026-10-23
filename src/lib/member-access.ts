@@ -20,12 +20,14 @@ export interface MemberAccess {
  * Check 2 runs on every page load, so a membership that lapses or is refunded
  * is cut off immediately rather than at the next login.
  */
-export async function requireMember(): Promise<MemberAccess> {
+export async function requireMember(
+  nextPath = "/members",
+): Promise<MemberAccess> {
   const session = await getSession();
   const user = session.user;
 
   if (!user) {
-    redirect("/api/auth/login?next=%2Fmembers");
+    redirect(`/api/auth/login?next=${encodeURIComponent(nextPath)}`);
   }
 
   const membership = await checkMembershipCached(user.sub);
