@@ -189,7 +189,7 @@ export function LiveCallsRoom({
         </Link>
 
         <Reveal>
-          <SectionLabel index="08" title="Live calls" />
+          <SectionLabel index="08" title="Live calls" tone="light" />
           <div className="mt-6 flex flex-wrap items-end justify-between gap-6">
             <h1 className="max-w-xl text-[clamp(1.9rem,3.6vw,2.9rem)] font-semibold leading-[1.06] tracking-[-0.035em] text-silver">
               When we go live, it lands{" "}

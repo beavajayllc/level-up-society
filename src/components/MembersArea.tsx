@@ -33,7 +33,7 @@ export function MembersArea({
 
       <div className="container-x relative py-20 lg:py-28">
         <Reveal>
-          <SectionLabel index="07" title="Members" />
+          <SectionLabel index="07" title="Members" tone="light" />
           <h1 className="mt-6 max-w-3xl text-[clamp(2.25rem,5vw,3.75rem)] font-semibold leading-[1.02] tracking-[-0.04em] text-silver">
             Welcome inside,{" "}
             <span className="display-serif text-chrome-gradient">{name}</span>
