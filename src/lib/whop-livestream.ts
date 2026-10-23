@@ -2,23 +2,25 @@ import "server-only";
 
 import { z } from "zod";
 import { getEnv, whopSdkBaseUrl, type Env } from "@/lib/env";
+import {
+  getCloudflareStreamStatus,
+  type CloudflareStreamStatus,
+} from "@/lib/cloudflare-stream";
 
 /**
- * WHOP live calls.
+ * WHOP live call metadata and Cloudflare video state.
  *
- * WHOP is the source of truth for what is live. The `Livestreaming` app that
- * lives on the Level Up Pro product owns one experience, and every stream the
- * host starts in the WHOP dashboard lands in that experience. We read that
- * feed server side and render it in the members area.
+ * WHOP provides call titles, schedules, recordings, and chat experience
+ * metadata. Cloudflare Stream reports whether the on-site video input is live.
  *
- * A WHOP community can carry more than one Livestreaming app, and the host
- * can start a call from any of the tabs they see in the sidebar. To make
- * sure a call never gets missed, we read every Livestreaming experience in
- * the community and merge their feeds.
+ * A WHOP community can carry more than one Livestreaming app. We read every
+ * experience so legacy schedules and recordings remain visible during the
+ * move to Cloudflare Stream.
  *
  * WHOP does not expose a playback URL for a live stream through its public
- * API, so live viewing opens WHOP's own room in a first-party tab. Finished
- * recordings are played back here from WHOP's CDN.
+ * API. Video playback is hosted by Cloudflare Stream and gated by WHOP
+ * membership checks. Finished WHOP recordings are played back here from
+ * WHOP's CDN.
  */
 
 const livestreamSchema = z.object({
@@ -60,10 +62,8 @@ export interface LiveCallsState {
   recordings: LivestreamFeed[];
   /** Streams that have been scheduled but have not started. */
   upcoming: LivestreamFeed[];
-  /** WHOP's live room, opened in a first-party tab when a call is live. */
-  roomUrl: string | null;
-  /** WHOP's Level Up Pro product page. */
-  productUrl: string | null;
+  /** Current state of the on-site Cloudflare Stream player. */
+  cloudflareStreamStatus: CloudflareStreamStatus;
   /** The Livestreaming experiences we read, so the chat can find its channel. */
   experienceIds: string[];
   /** The Chat experiences in the community, candidates for a chat channel. */
@@ -76,8 +76,7 @@ const EMPTY_STATE: LiveCallsState = {
   live: null,
   recordings: [],
   upcoming: [],
-  roomUrl: null,
-  productUrl: null,
+  cloudflareStreamStatus: "not_configured",
   experienceIds: [],
   chatExperienceIds: [],
   connected: false,
@@ -204,23 +203,22 @@ async function resolveExperienceIds(
  * renders, it just shows the "no calls yet" state.
  */
 export async function getLiveCalls(): Promise<LiveCallsState> {
+  const cloudflareStreamStatus = await getCloudflareStreamStatus();
+
   let env: Env;
   try {
     env = getEnv();
   } catch {
     // WHOP is not configured yet. The members area still renders.
-    return { ...EMPTY_STATE };
+    return { ...EMPTY_STATE, cloudflareStreamStatus };
   }
 
-  const roomUrl = env.WHOP_LIVESTREAM_ROOM_URL ?? null;
-  const productUrl = env.WHOP_PRODUCT_URL ?? null;
-
   if (!env.WHOP_LIVESTREAM_EXPERIENCE_ID) {
-    return { ...EMPTY_STATE, roomUrl, productUrl };
+    return { ...EMPTY_STATE, cloudflareStreamStatus };
   }
 
   if (cached && cached.expires > Date.now()) {
-    return cached.state;
+    return { ...cached.state, cloudflareStreamStatus };
   }
 
   const { livestreaming: experienceIds, chat: chatExperienceIds } =
@@ -243,7 +241,12 @@ export async function getLiveCalls(): Promise<LiveCallsState> {
   }
 
   if (!reachable) {
-    return { ...EMPTY_STATE, roomUrl, productUrl, experienceIds, chatExperienceIds };
+    return {
+      ...EMPTY_STATE,
+      cloudflareStreamStatus,
+      experienceIds,
+      chatExperienceIds,
+    };
   }
 
   // The same call can be reported by more than one experience. Keep one.
@@ -273,8 +276,7 @@ export async function getLiveCalls(): Promise<LiveCallsState> {
     live,
     recordings,
     upcoming,
-    roomUrl,
-    productUrl,
+    cloudflareStreamStatus,
     experienceIds,
     chatExperienceIds,
     connected: true,

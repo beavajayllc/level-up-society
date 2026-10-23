@@ -1,7 +1,7 @@
 import "server-only";
 
-import { WhopClient } from "@whop/sdk";
-import { getEnv, whopSdkBaseUrl } from "@/lib/env";
+import { WhopClient, type Whop } from "@whop/sdk";
+import { getEnv, whopSdkBaseUrl, type Env } from "@/lib/env";
 
 /**
  * Membership access checks.
@@ -28,43 +28,183 @@ function getClient(): WhopClient {
 }
 
 /**
- * Resolves the resource we gate on.
+ * The resources that grant Level Up Pro access.
  *
- * A product id is the tightest gate (only that product unlocks the area).
- * An experience id covers every product inside that experience. The account id
- * is the loosest gate and unlocks on any active membership on the account.
+ * WHOP lets a seller publish a new version of a product and archive the old
+ * one. A buyer keeps their access on the product they bought, but not on the
+ * new one, so a single product id is not enough to describe "the people who
+ * paid for Level Up Pro".
+ *
+ * The list is read from `WHOP_ACCESS_RESOURCE_ID`, which accepts one id or a
+ * comma separated list of ids. With nothing configured the account itself is
+ * the gate, which is the loosest option: any membership on the account opens
+ * the area.
  */
-function accessResourceId(): string {
-  const env = getEnv();
-  return env.WHOP_ACCESS_RESOURCE_ID ?? env.WHOP_ACCOUNT_ID;
+function accessResourceIds(env: Env): string[] {
+  const ids = new Set<string>();
+
+  for (const id of env.WHOP_ACCESS_RESOURCE_ID?.split(",") ?? []) {
+    const trimmed = id.trim();
+    if (trimmed) ids.add(trimmed);
+  }
+
+  if (ids.size === 0) ids.add(env.WHOP_ACCOUNT_ID);
+
+  return [...ids];
+}
+
+/**
+ * The product the site sells today, taken from the first product id in the
+ * access list. Used to recognise earlier versions of the same offer.
+ */
+function canonicalProductId(env: Env): string | null {
+  return accessResourceIds(env).find((id) => id.startsWith("prod_")) ?? null;
+}
+
+const TITLE_CACHE_MS = 60 * 60 * 1000;
+let canonicalTitleCache: { title: string | null; expires: number } | null = null;
+
+/**
+ * The title of the product the site sells today.
+ *
+ * Cached for an hour: the title changes when the offer is rebuilt, which
+ * happens a handful of times a year at most.
+ */
+async function canonicalProductTitle(env: Env): Promise<string | null> {
+  if (canonicalTitleCache && canonicalTitleCache.expires > Date.now()) {
+    return canonicalTitleCache.title;
+  }
+
+  const productId = canonicalProductId(env);
+  if (!productId) {
+    canonicalTitleCache = { title: null, expires: Date.now() + TITLE_CACHE_MS };
+    return null;
+  }
+
+  let title: string | null = null;
+
+  try {
+    const product = await getClient().products.retrieve({ id: productId });
+    title = product.title ?? null;
+  } catch (error) {
+    console.error("[whop] canonical product lookup failed:", error);
+  }
+
+  canonicalTitleCache = { title, expires: Date.now() + TITLE_CACHE_MS };
+  return title;
+}
+
+/**
+ * True when a membership still grants access.
+ *
+ * WHOP's own rule: `active` and `trialing` memberships grant access,
+ * `completed` one-time purchases keep access, `canceled` and `expired` do
+ * not. A `completed` membership on a renewing plan means the paid period ran
+ * out without a renewal, so it does not grant access; a `completed`
+ * membership with no renewal price is a one-time purchase and does.
+ */
+function membershipGrantsAccess(membership: Whop.Membership): boolean {
+  switch (membership.status) {
+    case "active":
+    case "trialing":
+    case "past_due":
+      return true;
+    case "canceling":
+      // Cancelling at the end of the period keeps access until then.
+      return true;
+    case "completed":
+      return membership.renewal_price === null;
+    default:
+      return false;
+  }
+}
+
+/**
+ * A member who bought an earlier version of the offer.
+ *
+ * When the offer is rebuilt on WHOP the new product id becomes the gate, and
+ * members of the previous product report no access to it even though they
+ * paid. This recognises that case: a paid membership on any product in the
+ * account that carries the same title as the product the site sells today
+ * counts as access.
+ *
+ * The title has to match on purpose. A different product on the same account
+ * (a course, a one-off workshop) must not hand out the membership area.
+ */
+async function hasOfferFamilyAccess(
+  userId: string,
+  env: Env,
+): Promise<boolean> {
+  const title = await canonicalProductTitle(env);
+  if (!title) return false;
+
+  let memberships: Whop.Membership[] = [];
+
+  try {
+    const page = await getClient().memberships.list({
+      account_id: env.WHOP_ACCOUNT_ID,
+      user_id: userId,
+    });
+
+    for await (const membership of page) {
+      memberships.push(membership);
+    }
+  } catch (error) {
+    console.error("[whop] membership list failed:", error);
+    return false;
+  }
+
+  return memberships.some(
+    (membership) =>
+      membership.product?.title === title &&
+      membershipGrantsAccess(membership),
+  );
 }
 
 /**
  * Checks whether a WHOP user currently has access.
  *
- * Prefers `users.checkAccess` against the configured resource, and falls back
- * to listing the user's memberships when no resource id is configured.
+ * Two passes. First WHOP's own access check against every configured
+ * resource. Then, for members of an earlier version of the offer, the paid
+ * membership itself.
  */
 export async function checkMembership(
   userId: string,
 ): Promise<MembershipState> {
-  try {
-    const client = getClient();
-    const resourceId = accessResourceId();
+  const env = getEnv();
+  const client = getClient();
 
-    const access = await client.users.checkAccess({
-      id: userId,
-      resource_id: resourceId,
-    });
+  let accessError: unknown = null;
 
-    if (!access.has_access) return "inactive";
-    if (access.access_level === "customer") return "active";
-    if (access.access_level === "admin") return "active";
-    return "inactive";
-  } catch (error) {
-    console.error("[whop] membership check failed:", error);
+  for (const resourceId of accessResourceIds(env)) {
+    try {
+      const access = await client.users.checkAccess({
+        id: userId,
+        resource_id: resourceId,
+      });
+
+      if (
+        access.has_access &&
+        (access.access_level === "customer" ||
+          access.access_level === "admin")
+      ) {
+        return "active";
+      }
+    } catch (error) {
+      accessError = error;
+    }
+  }
+
+  if (await hasOfferFamilyAccess(userId, env)) {
+    return "active";
+  }
+
+  if (accessError) {
+    console.error("[whop] membership check failed:", accessError);
     return "unknown";
   }
+
+  return "inactive";
 }
 
 /**

@@ -5,7 +5,6 @@ import Link from "next/link";
 import { motion } from "motion/react";
 import {
   ArrowLeft,
-  ArrowUpRight,
   CalendarClock,
   MessageCircle,
   Radio,
@@ -20,14 +19,22 @@ import { Glow, SectionLabel } from "./ui";
 /**
  * The live calls room.
  *
- * This page is the members' home during a call: live status and WHOP chat stay
- * here, while the video opens in WHOP's first-party page so its membership
- * sign-in is recognized. Nothing on this page pretends a call is live when it
- * is not.
+ * This page is the members' home during a call: Cloudflare serves the video
+ * inline, and WHOP remains the membership and chat provider.
  */
 
 const LIVE_POLL_MS = 15_000;
 const CHAT_POLL_MS = 10_000;
+const PLAYER_TOKEN_REFRESH_MS = 45 * 60 * 1000;
+
+type PlayerStatus =
+  | "idle"
+  | "loading"
+  | "ready"
+  | "setup"
+  | "offline"
+  | "unavailable"
+  | "not_authorized";
 
 const TIME_FORMAT = new Intl.DateTimeFormat("en-US", {
   hour: "numeric",
@@ -66,6 +73,10 @@ export function LiveCallsRoom({
   memberName: string;
 }) {
   const [state, setState] = useState<LiveCallsState>(initial);
+  const [playerUrl, setPlayerUrl] = useState<string | null>(null);
+  const [playerStatus, setPlayerStatus] = useState<PlayerStatus>(
+    initial.cloudflareStreamStatus === "live" ? "loading" : "idle",
+  );
   const [chat, setChat] = useState<ChatState>({
     connected: false,
     channelId: null,
@@ -77,7 +88,8 @@ export function LiveCallsRoom({
   const [sendError, setSendError] = useState<string | null>(null);
   const scroller = useRef<HTMLDivElement>(null);
 
-  const isLive = Boolean(state.live);
+  const isLive =
+    Boolean(state.live) || state.cloudflareStreamStatus === "live";
 
   useEffect(() => {
     let cancelled = false;
@@ -123,6 +135,72 @@ export function LiveCallsRoom({
       clearInterval(clock);
     };
   }, []);
+
+  useEffect(() => {
+    if (state.cloudflareStreamStatus !== "live") {
+      setPlayerUrl(null);
+      setPlayerStatus(
+        state.cloudflareStreamStatus === "not_configured"
+          ? "setup"
+          : state.cloudflareStreamStatus,
+      );
+      return;
+    }
+
+    let cancelled = false;
+
+    const refreshPlayer = async () => {
+      try {
+        const response = await fetch("/api/live-stream", {
+          cache: "no-store",
+          headers: { Accept: "application/json" },
+        });
+
+        if (!response.ok) {
+          const payload = (await response.json().catch(() => null)) as {
+            error?: string;
+          } | null;
+          if (cancelled) return;
+
+          if (response.status === 401 || response.status === 403) {
+            setPlayerUrl(null);
+            setPlayerStatus("not_authorized");
+          } else if (payload?.error === "stream_not_live") {
+            setPlayerUrl(null);
+            setPlayerStatus("offline");
+          } else if (payload?.error === "stream_not_configured") {
+            setPlayerUrl(null);
+            setPlayerStatus("setup");
+          } else {
+            setPlayerStatus("unavailable");
+          }
+          return;
+        }
+
+        const payload = (await response.json()) as { embedUrl?: string };
+        if (!payload.embedUrl) {
+          if (!cancelled) setPlayerStatus("unavailable");
+          return;
+        }
+
+        if (!cancelled) {
+          setPlayerUrl(payload.embedUrl);
+          setPlayerStatus("ready");
+        }
+      } catch {
+        if (!cancelled) setPlayerStatus("unavailable");
+      }
+    };
+
+    setPlayerStatus((current) => (current === "ready" ? current : "loading"));
+    void refreshPlayer();
+    const timer = setInterval(refreshPlayer, PLAYER_TOKEN_REFRESH_MS);
+
+    return () => {
+      cancelled = true;
+      clearInterval(timer);
+    };
+  }, [state.cloudflareStreamStatus]);
 
   // Keep the newest message in view.
   useEffect(() => {
@@ -193,8 +271,9 @@ export function LiveCallsRoom({
               <span className="display-serif text-chrome-gradient">right here</span>
             </h1>
             <p className="max-w-sm text-[15px] leading-relaxed text-silver/50">
-              Live calls run on WHOP with your Level Up Pro membership. This page
-              picks up the stream automatically the moment it goes on air.
+              WHOP verifies your Level Up Pro membership. The live video and
+              member chat stay right here and appear as soon as the host goes on
+              air.
             </p>
           </div>
         </Reveal>
@@ -213,7 +292,7 @@ export function LiveCallsRoom({
               <CalendarClock size={14} className="text-chrome/70" />
               {nextCall
                 ? `Next call ${DATE_FORMAT.format(new Date(nextCall.scheduled_at ?? ""))} · ${TIME_FORMAT.format(new Date(nextCall.scheduled_at ?? ""))}`
-                : "Calls run on WHOP"}
+                : "Live calls are announced here"}
             </span>
           )}
           {!isLive ? (
@@ -227,7 +306,8 @@ export function LiveCallsRoom({
           <div className="overflow-hidden rounded-card border border-chrome/20 bg-silver/[0.04] p-3 shadow-[0_34px_90px_-46px_rgba(200,215,235,0.4)]">
             <div className="flex flex-wrap items-center gap-3 px-4 py-3 sm:px-5">
               <h2 className="min-w-0 flex-1 truncate text-[16px] font-medium tracking-[-0.02em] text-silver">
-                {state.live?.title ?? "The live stage"}
+                {state.live?.title ??
+                  (isLive ? "Level Up Pro live call" : "The live stage")}
               </h2>
               {state.live ? (
                 <span className="inline-flex items-center gap-1.5 font-mono text-[12px] text-silver/45">
@@ -238,35 +318,36 @@ export function LiveCallsRoom({
             </div>
 
             <div className="overflow-hidden rounded-tile border border-silver/10 bg-ink">
-              <div className="aspect-video w-full">
-                {state.live ? (
-                  <div className="flex h-full w-full flex-col items-center justify-center gap-4 bg-silver/[0.03] px-6 text-center sm:px-8">
-                    <span className="inline-flex h-16 w-16 items-center justify-center rounded-tile border border-silver/10 bg-ink/80 text-chrome">
-                      <Video size={24} strokeWidth={1.6} />
-                    </span>
-                    <p className="max-w-md text-[15px] leading-relaxed text-silver/65">
-                      Open this live room on WHOP so it can recognize your
-                      Level Up Pro membership. If WHOP asks you to sign in, use
-                      the same account you used here. You won&apos;t need to
-                      purchase again.
-                    </p>
-                    {state.roomUrl ? (
-                      <a
-                        href={state.roomUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group inline-flex h-11 items-center justify-center gap-2 rounded-pill bg-[linear-gradient(180deg,#ffffff_0%,#e7ecf3_46%,#c2cad5_100%)] px-5 text-sm font-medium text-ink shadow-[0_14px_44px_-14px_rgba(214,226,240,0.75)] transition-[filter] duration-300 hover:brightness-105"
-                      >
-                        Watch live on WHOP
-                        <ArrowUpRight
-                          size={15}
-                          className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                        />
-                      </a>
+              <div className="relative aspect-video w-full">
+                {isLive ? (
+                  <div className="absolute inset-0">
+                    {playerUrl ? (
+                      <iframe
+                        key={playerUrl}
+                        src={playerUrl}
+                        title="Level Up Pro live call"
+                        className="absolute inset-0 h-full w-full"
+                        allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
+                        allowFullScreen
+                        referrerPolicy="strict-origin-when-cross-origin"
+                      />
                     ) : (
-                      <p className="text-[13px] text-[#ff8a82]">
-                        The WHOP live room link is not configured right now.
-                      </p>
+                      <div className="flex h-full w-full flex-col items-center justify-center gap-4 bg-silver/[0.03] px-6 text-center sm:px-8">
+                        <span className="inline-flex h-16 w-16 items-center justify-center rounded-tile border border-silver/10 bg-ink/80 text-chrome">
+                          <Video size={24} strokeWidth={1.6} />
+                        </span>
+                        <p className="max-w-md text-[15px] leading-relaxed text-silver/65">
+                          {playerStatus === "setup"
+                            ? "The on-site player is being connected. Please check back shortly."
+                            : playerStatus === "offline"
+                              ? "The video feed has stopped. The page will reconnect when the host is back on air."
+                              : playerStatus === "not_authorized"
+                                ? "Your Level Up Pro access needs to be refreshed. Sign in again to watch."
+                                : playerStatus === "unavailable"
+                                  ? "We can’t reach the live video right now. This page will keep checking for the stream."
+                                  : "Connecting to the live video…"}
+                        </p>
+                      </div>
                     )}
                   </div>
                 ) : (
@@ -286,8 +367,8 @@ export function LiveCallsRoom({
                       <Video size={24} strokeWidth={1.6} />
                     </span>
                     <p className="max-w-sm text-[15px] leading-relaxed text-silver/55">
-                      Nothing is on air right now. When the host goes live, the
-                      WHOP watch link will appear here automatically.
+                      Nothing is on air right now. The live video will appear
+                      here automatically when the host goes live.
                     </p>
                   </div>
                 )}

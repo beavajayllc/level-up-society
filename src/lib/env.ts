@@ -11,7 +11,13 @@ const envSchema = z.object({
   WHOP_CLIENT_SECRET: z.string().min(1),
   WHOP_API_KEY: z.string().min(1),
   WHOP_ACCOUNT_ID: z.string().startsWith("biz_"),
-  /** Optional product / experience / account id used for the access check. */
+  /**
+   * Product / experience / account ids used for the access check.
+   *
+   * One id, or a comma separated list of ids. WHOP lets an offer be rebuilt
+   * as a new product and the old one archived, so the list keeps members of
+   * the previous version from being locked out.
+   */
   WHOP_ACCESS_RESOURCE_ID: z.string().min(1).optional(),
   /** WHOP checkout link used for the "Join" calls to action. */
   WHOP_CHECKOUT_URL: z.url().optional(),
@@ -19,10 +25,20 @@ const envSchema = z.object({
   NEXT_PUBLIC_WHOP_CHECKOUT_URL: z.url().optional(),
   /** The WHOP livestreaming experience that powers the members-area calls. */
   WHOP_LIVESTREAM_EXPERIENCE_ID: z.string().startsWith("exp_").optional(),
-  /** The WHOP community page that hosts the live room. */
-  WHOP_LIVESTREAM_ROOM_URL: z.url().optional(),
-  /** The WHOP page members land on for the Level Up Pro product. */
-  WHOP_PRODUCT_URL: z.url().optional(),
+  /** Cloudflare Stream account that hosts Level Up Society live video. */
+  CLOUDFLARE_STREAM_ACCOUNT_ID: z
+    .string()
+    .regex(/^[a-f0-9]{32}$/i)
+    .optional(),
+  /** Public customer code used to build Stream Player embed URLs. */
+  CLOUDFLARE_STREAM_CUSTOMER_CODE: z.string().regex(/^[a-z0-9-]+$/i).optional(),
+  /** The persistent Cloudflare live input for weekly calls. */
+  CLOUDFLARE_STREAM_LIVE_INPUT_ID: z
+    .string()
+    .regex(/^[a-f0-9]{32}$/i)
+    .optional(),
+  /** Server-only Cloudflare API token with Stream read/write access. */
+  CLOUDFLARE_STREAM_API_TOKEN: z.string().min(1).optional(),
   WHOP_SANDBOX: z
     .string()
     .optional()
@@ -57,8 +73,12 @@ function readRawEnv(): Record<string, string | undefined> {
     NEXT_PUBLIC_WHOP_CHECKOUT_URL:
       process.env.NEXT_PUBLIC_WHOP_CHECKOUT_URL,
     WHOP_LIVESTREAM_EXPERIENCE_ID: process.env.WHOP_LIVESTREAM_EXPERIENCE_ID,
-    WHOP_LIVESTREAM_ROOM_URL: process.env.WHOP_LIVESTREAM_ROOM_URL,
-    WHOP_PRODUCT_URL: process.env.WHOP_PRODUCT_URL,
+    CLOUDFLARE_STREAM_ACCOUNT_ID: process.env.CLOUDFLARE_STREAM_ACCOUNT_ID,
+    CLOUDFLARE_STREAM_CUSTOMER_CODE:
+      process.env.CLOUDFLARE_STREAM_CUSTOMER_CODE,
+    CLOUDFLARE_STREAM_LIVE_INPUT_ID:
+      process.env.CLOUDFLARE_STREAM_LIVE_INPUT_ID,
+    CLOUDFLARE_STREAM_API_TOKEN: process.env.CLOUDFLARE_STREAM_API_TOKEN,
     WHOP_SANDBOX: process.env.WHOP_SANDBOX,
     SESSION_SECRET: process.env.SESSION_SECRET,
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,

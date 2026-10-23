@@ -32,6 +32,12 @@ export async function requireMember(
 
   const membership = await checkMembershipCached(user.sub);
 
+  if (membership === "unknown") {
+    // WHOP could not answer. Do not tell the member their membership is gone
+    // when the truth is that we could not check.
+    redirect("/members?error=check_failed");
+  }
+
   if (membership !== "active" && membership !== "trialing") {
     redirect("/members?error=no_membership");
   }
