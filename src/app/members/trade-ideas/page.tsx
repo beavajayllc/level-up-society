@@ -8,7 +8,7 @@ import { Reveal } from "@/components/Reveal";
 import { Glow, SectionLabel } from "@/components/ui";
 import { isAuthConfigured } from "@/lib/env";
 import { requireMember } from "@/lib/member-access";
-import { tradeIdeasTelegramInviteUrl } from "@/lib/data";
+import { tradeIdeasTelegramAccessUrl } from "@/lib/data";
 
 export const instant = false;
 
@@ -106,23 +106,17 @@ export default async function TradeIdeasPage({
                   Join the trade ideas chat
                 </h2>
                 <p className="mt-3 flex-1 text-[15px] leading-relaxed text-silver/55">
-                  Open the private invite link below in Telegram to join the Level Up Society chat.
+                  Open the secure Telegram access page through your Level Up Pro membership. Once the group is connected, WHOP checks your access and removes it when your subscription ends.
                 </p>
-                {tradeIdeasTelegramInviteUrl ? (
-                  <a
-                    href={tradeIdeasTelegramInviteUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="mt-7 inline-flex h-12 w-fit items-center gap-2 rounded-pill border border-chrome/35 px-6 text-sm font-medium text-silver transition-colors hover:border-chrome hover:bg-chrome/8 hover:text-chrome"
-                  >
-                    Join the chat on Telegram
-                    <ArrowUpRight size={15} />
-                  </a>
-                ) : (
-                  <p className="mt-7 inline-flex min-h-12 w-fit items-center rounded-pill border border-silver/12 px-6 text-sm text-silver/40">
-                    The private invite link will appear here.
-                  </p>
-                )}
+                <a
+                  href={tradeIdeasTelegramAccessUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-7 inline-flex h-12 w-fit items-center gap-2 rounded-pill border border-chrome/35 px-6 text-sm font-medium text-silver transition-colors hover:border-chrome hover:bg-chrome/8 hover:text-chrome"
+                >
+                  Open Telegram access in WHOP
+                  <ArrowUpRight size={15} />
+                </a>
               </section>
             </Reveal>
           </div>

@@ -203,7 +203,8 @@ export type MemberResource = {
   cta?: string;
 };
 
-export const tradeIdeasTelegramInviteUrl = "https://t.me/+l1o7ylR6yo9hOTk5";
+export const tradeIdeasTelegramAccessUrl =
+  "https://whop.com/na-fc3c/exp_Bp7N70ohgnvojH/app/";
 
 export const memberResources: MemberResource[] = [
   {
