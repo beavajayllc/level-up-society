@@ -54,10 +54,10 @@ export default async function TradeIdeasPage({
             <SectionLabel index="09" title="Trade ideas chat" tone="light" />
             <div className="mt-6 max-w-2xl">
               <h1 className="text-[clamp(2rem,4vw,3.2rem)] font-semibold leading-[1.04] tracking-[-0.04em] text-silver">
-                Join the chat in two simple steps
+                Get ready for the trade ideas chat
               </h1>
               <p className="mt-5 max-w-xl text-[16px] leading-relaxed text-silver/55">
-                Follow these steps to get Telegram set up and join the Level Up Society Trade Ideas chat.
+                Download Telegram now. We’re finishing the secure connection between the chat and active Level Up Pro memberships.
               </p>
             </div>
           </Reveal>
