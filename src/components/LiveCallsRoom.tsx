@@ -315,11 +315,6 @@ export function LiveCallsRoom({
               When we go live, it lands{" "}
               <span className="display-serif text-chrome-gradient">right here</span>
             </h1>
-            <p className="max-w-sm text-[15px] leading-relaxed text-silver/50">
-              WHOP verifies your Level Up Pro membership. The live video and
-              member chat stay right here and appear as soon as the host goes on
-              air.
-            </p>
           </div>
         </Reveal>
 
