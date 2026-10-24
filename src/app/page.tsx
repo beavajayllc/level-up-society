@@ -9,6 +9,9 @@ import { Faq } from "@/components/Faq";
 import { CallToAction } from "@/components/CallToAction";
 import { Footer } from "@/components/Footer";
 
+// The shared navigation reads the signed-in user's WHOP session per request.
+export const instant = false;
+
 export default function Home() {
   return (
     <>
