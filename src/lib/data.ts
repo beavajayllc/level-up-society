@@ -203,9 +203,6 @@ export type MemberResource = {
   cta?: string;
 };
 
-export const tradeIdeasTelegramAccessUrl =
-  "https://whop.com/na-fc3c/exp_Bp7N70ohgnvojH/app/";
-
 export const memberResources: MemberResource[] = [
   {
     id: "live-calls",

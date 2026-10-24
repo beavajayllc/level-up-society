@@ -8,7 +8,6 @@ import { Reveal } from "@/components/Reveal";
 import { Glow, SectionLabel } from "@/components/ui";
 import { isAuthConfigured } from "@/lib/env";
 import { requireMember } from "@/lib/member-access";
-import { tradeIdeasTelegramAccessUrl } from "@/lib/data";
 
 export const instant = false;
 
@@ -103,20 +102,14 @@ export default async function TradeIdeasPage({
                   </span>
                 </div>
                 <h2 className="mt-7 text-[24px] font-semibold tracking-[-0.03em] text-silver">
-                  Join the trade ideas chat
+                  Secure member access is coming soon
                 </h2>
                 <p className="mt-3 flex-1 text-[15px] leading-relaxed text-silver/55">
-                  Open the secure Telegram access page through your Level Up Pro membership. Once the group is connected, WHOP checks your access and removes it when your subscription ends.
+                  We’re finishing the connection between your Level Up Pro membership and the Telegram group. We’ll add the join link here once active subscriptions can be verified and expired memberships can be removed automatically.
                 </p>
-                <a
-                  href={tradeIdeasTelegramAccessUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-7 inline-flex h-12 w-fit items-center gap-2 rounded-pill border border-chrome/35 px-6 text-sm font-medium text-silver transition-colors hover:border-chrome hover:bg-chrome/8 hover:text-chrome"
-                >
-                  Open Telegram access in WHOP
-                  <ArrowUpRight size={15} />
-                </a>
+                <span className="mt-7 inline-flex h-12 w-fit items-center rounded-pill border border-silver/15 px-6 text-sm font-medium text-silver/50">
+                  Access setup in progress
+                </span>
               </section>
             </Reveal>
           </div>
