@@ -203,6 +203,8 @@ export type MemberResource = {
   cta?: string;
 };
 
+export const tradeIdeasTelegramInviteUrl = "https://t.me/+l1o7ylR6yo9hOTk5";
+
 export const memberResources: MemberResource[] = [
   {
     id: "live-calls",
@@ -219,6 +221,8 @@ export const memberResources: MemberResource[] = [
     body: "The copy-and-paste forex trade ideas system, kept current by members sharing what worked.",
     icon: TrendingUp,
     tag: "Always on",
+    href: "/members/trade-ideas",
+    cta: "How to join",
   },
   {
     id: "library",
