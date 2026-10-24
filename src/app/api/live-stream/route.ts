@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getSession } from "@/lib/session";
 import { checkMembershipCached } from "@/lib/whop-access";
 import {
-  createCloudflarePlayerUrl,
+  createCloudflareManifestUrl,
   getCloudflareStreamStatus,
 } from "@/lib/cloudflare-stream";
 
@@ -45,8 +45,8 @@ export async function GET(): Promise<NextResponse> {
   }
 
   try {
-    const embedUrl = await createCloudflarePlayerUrl();
-    if (!embedUrl) {
+    const manifestUrl = await createCloudflareManifestUrl();
+    if (!manifestUrl) {
       return NextResponse.json(
         { error: "stream_not_live" },
         { status: 409, headers: { "Cache-Control": "no-store" } },
@@ -54,7 +54,7 @@ export async function GET(): Promise<NextResponse> {
     }
 
     return NextResponse.json(
-      { embedUrl },
+      { manifestUrl },
       { headers: { "Cache-Control": "no-store" } },
     );
   } catch (error) {

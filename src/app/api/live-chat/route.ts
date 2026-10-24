@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getSession } from "@/lib/session";
 import { checkMembershipCached } from "@/lib/whop-access";
 import { getChatMessages, postChatMessage } from "@/lib/whop-chat";
+import { refreshTokens } from "@/lib/whop-oauth";
 import type { WhopUserInfo } from "@/lib/whop-oauth";
 
 /**
@@ -11,12 +12,12 @@ import type { WhopUserInfo } from "@/lib/whop-oauth";
  * this returns a bare, empty chat rather than any message.
  */
 
-function memberName(user: WhopUserInfo): string {
-  const raw = user.name ?? user.preferred_username ?? user.email ?? "Member";
-  return raw.split(" ")[0] ?? raw;
+interface LiveChatMember {
+  user: WhopUserInfo;
+  accessToken: string | null;
 }
 
-async function memberOrNull(): Promise<WhopUserInfo | null> {
+async function memberOrNull(): Promise<LiveChatMember | null> {
   const session = await getSession();
   const user = session.user;
   if (!user) return null;
@@ -24,25 +25,65 @@ async function memberOrNull(): Promise<WhopUserInfo | null> {
   const membership = await checkMembershipCached(user.sub);
   if (membership !== "active" && membership !== "trialing") return null;
 
-  return user;
+  if (!session.tokens) return { user, accessToken: null };
+
+  const tokenExpiresAt =
+    (session.obtainedAt ?? 0) + session.tokens.expires_in * 1000;
+  if (tokenExpiresAt <= Date.now() + 60_000) {
+    try {
+      session.tokens = await refreshTokens(session.tokens.refresh_token);
+      session.obtainedAt = Date.now();
+      await session.save();
+    } catch {
+      console.error("[auth] Whop chat token refresh failed");
+      return { user, accessToken: null };
+    }
+  }
+
+  return { user, accessToken: session.tokens.access_token };
 }
 
 export async function GET(): Promise<NextResponse> {
-  const user = await memberOrNull();
-  if (!user) {
-    return NextResponse.json({ connected: false, messages: [] }, { status: 401 });
+  const member = await memberOrNull();
+  if (!member) {
+    return NextResponse.json(
+      {
+        connected: false,
+        channelId: null,
+        messages: [],
+        requiresReauthorization: false,
+        unavailable: true,
+      },
+      { status: 401, headers: { "Cache-Control": "no-store" } },
+    );
   }
 
-  const chat = await getChatMessages();
+  if (!member.accessToken) {
+    return NextResponse.json(
+      {
+        connected: false,
+        channelId: null,
+        messages: [],
+        requiresReauthorization: true,
+        unavailable: false,
+      },
+      { status: 401, headers: { "Cache-Control": "no-store" } },
+    );
+  }
+
+  const chat = await getChatMessages(member.accessToken);
   return NextResponse.json(chat, {
     headers: { "Cache-Control": "no-store" },
   });
 }
 
 export async function POST(request: Request): Promise<NextResponse> {
-  const user = await memberOrNull();
-  if (!user) {
+  const member = await memberOrNull();
+  if (!member) {
     return NextResponse.json({ error: "not_authorized" }, { status: 401 });
+  }
+  if (!member.accessToken) {
+    return NextResponse.json({ error: "chat_auth_required" }, { status: 401 });
   }
 
   let body: { content?: unknown };
@@ -66,10 +107,13 @@ export async function POST(request: Request): Promise<NextResponse> {
     return NextResponse.json({ error: "message_too_long" }, { status: 400 });
   }
 
-  const message = await postChatMessage(text, memberName(user));
-  if (!message) {
+  const result = await postChatMessage(text, member.accessToken);
+  if (result.requiresReauthorization) {
+    return NextResponse.json({ error: "chat_auth_required" }, { status: 403 });
+  }
+  if (!result.message) {
     return NextResponse.json({ error: "chat_unavailable" }, { status: 503 });
   }
 
-  return NextResponse.json({ message }, { status: 201 });
+  return NextResponse.json({ message: result.message }, { status: 201 });
 }

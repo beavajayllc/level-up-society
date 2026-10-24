@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import type { LiveCallsState } from "@/lib/whop-livestream";
 import type { ChatMessage, ChatState } from "@/lib/whop-chat";
+import { CloudflareLivePlayer } from "./CloudflareLivePlayer";
 import { Reveal } from "./Reveal";
 import { Glow, SectionLabel } from "./ui";
 
@@ -24,8 +25,15 @@ import { Glow, SectionLabel } from "./ui";
  */
 
 const LIVE_POLL_MS = 15_000;
-const CHAT_POLL_MS = 10_000;
+const CHAT_POLL_MS = 2_500;
 const PLAYER_TOKEN_REFRESH_MS = 45 * 60 * 1000;
+const EMPTY_CHAT: ChatState = {
+  connected: false,
+  channelId: null,
+  messages: [],
+  requiresReauthorization: false,
+  unavailable: false,
+};
 
 type PlayerStatus =
   | "idle"
@@ -73,15 +81,11 @@ export function LiveCallsRoom({
   memberName: string;
 }) {
   const [state, setState] = useState<LiveCallsState>(initial);
-  const [playerUrl, setPlayerUrl] = useState<string | null>(null);
+  const [manifestUrl, setManifestUrl] = useState<string | null>(null);
   const [playerStatus, setPlayerStatus] = useState<PlayerStatus>(
     initial.cloudflareStreamStatus === "live" ? "loading" : "idle",
   );
-  const [chat, setChat] = useState<ChatState>({
-    connected: false,
-    channelId: null,
-    messages: [],
-  });
+  const [chat, setChat] = useState<ChatState>(EMPTY_CHAT);
   const [now, setNow] = useState(() => Date.now());
   const [draft, setDraft] = useState("");
   const [sending, setSending] = useState(false);
@@ -90,6 +94,13 @@ export function LiveCallsRoom({
 
   const isLive =
     Boolean(state.live) || state.cloudflareStreamStatus === "live";
+  const visibleChat = isLive ? chat : EMPTY_CHAT;
+  const visiblePlayerStatus: PlayerStatus =
+    state.cloudflareStreamStatus === "live"
+      ? playerStatus
+      : state.cloudflareStreamStatus === "not_configured"
+        ? "setup"
+        : state.cloudflareStreamStatus;
 
   useEffect(() => {
     let cancelled = false;
@@ -108,12 +119,47 @@ export function LiveCallsRoom({
       }
     };
 
+    const liveTimer = setInterval(pullLive, LIVE_POLL_MS);
+    const clock = setInterval(() => setNow(Date.now()), 1000);
+
+    return () => {
+      cancelled = true;
+      clearInterval(liveTimer);
+      clearInterval(clock);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isLive) {
+      return;
+    }
+
+    let cancelled = false;
+
     const pullChat = async () => {
       try {
         const response = await fetch("/api/live-chat", {
           cache: "no-store",
           headers: { Accept: "application/json" },
         });
+
+        if (response.status === 401 || response.status === 403) {
+          const next = (await response.json().catch(() => null)) as
+            | ChatState
+            | null;
+          if (!cancelled) {
+            setChat({
+              connected: false,
+              channelId: null,
+              messages: [],
+              requiresReauthorization:
+                next?.requiresReauthorization ?? false,
+              unavailable: next?.unavailable ?? true,
+            });
+          }
+          return;
+        }
+
         if (!response.ok) return;
         const next = (await response.json()) as ChatState;
         if (!cancelled) setChat(next);
@@ -122,34 +168,25 @@ export function LiveCallsRoom({
       }
     };
 
-    const liveTimer = setInterval(pullLive, LIVE_POLL_MS);
-    const chatTimer = setInterval(pullChat, CHAT_POLL_MS);
-    const clock = setInterval(() => setNow(Date.now()), 1000);
-
-    pullChat();
+    void pullChat();
+    const chatTimer = setInterval(() => void pullChat(), CHAT_POLL_MS);
 
     return () => {
       cancelled = true;
-      clearInterval(liveTimer);
       clearInterval(chatTimer);
-      clearInterval(clock);
     };
-  }, []);
+  }, [isLive]);
 
   useEffect(() => {
     if (state.cloudflareStreamStatus !== "live") {
-      setPlayerUrl(null);
-      setPlayerStatus(
-        state.cloudflareStreamStatus === "not_configured"
-          ? "setup"
-          : state.cloudflareStreamStatus,
-      );
       return;
     }
 
     let cancelled = false;
 
     const refreshPlayer = async () => {
+      setPlayerStatus((current) => (current === "ready" ? current : "loading"));
+
       try {
         const response = await fetch("/api/live-stream", {
           cache: "no-store",
@@ -163,13 +200,13 @@ export function LiveCallsRoom({
           if (cancelled) return;
 
           if (response.status === 401 || response.status === 403) {
-            setPlayerUrl(null);
+            setManifestUrl(null);
             setPlayerStatus("not_authorized");
           } else if (payload?.error === "stream_not_live") {
-            setPlayerUrl(null);
+            setManifestUrl(null);
             setPlayerStatus("offline");
           } else if (payload?.error === "stream_not_configured") {
-            setPlayerUrl(null);
+            setManifestUrl(null);
             setPlayerStatus("setup");
           } else {
             setPlayerStatus("unavailable");
@@ -177,14 +214,14 @@ export function LiveCallsRoom({
           return;
         }
 
-        const payload = (await response.json()) as { embedUrl?: string };
-        if (!payload.embedUrl) {
+        const payload = (await response.json()) as { manifestUrl?: string };
+        if (!payload.manifestUrl) {
           if (!cancelled) setPlayerStatus("unavailable");
           return;
         }
 
         if (!cancelled) {
-          setPlayerUrl(payload.embedUrl);
+          setManifestUrl(payload.manifestUrl);
           setPlayerStatus("ready");
         }
       } catch {
@@ -192,7 +229,6 @@ export function LiveCallsRoom({
       }
     };
 
-    setPlayerStatus((current) => (current === "ready" ? current : "loading"));
     void refreshPlayer();
     const timer = setInterval(refreshPlayer, PLAYER_TOKEN_REFRESH_MS);
 
@@ -226,11 +262,20 @@ export function LiveCallsRoom({
         const payload = (await response.json().catch(() => null)) as {
           error?: string;
         } | null;
-        setSendError(
-          payload?.error === "chat_unavailable"
-            ? "The live room chat is not available right now."
-            : "That message did not send. Try again.",
-        );
+        if (payload?.error === "chat_auth_required") {
+          setChat((current) => ({
+            ...current,
+            connected: false,
+            requiresReauthorization: true,
+          }));
+          setSendError("Reconnect your Whop account to use live chat.");
+        } else {
+          setSendError(
+            payload?.error === "chat_unavailable"
+              ? "The live room chat is not available right now."
+              : "That message did not send. Try again.",
+          );
+        }
         return;
       }
 
@@ -321,15 +366,11 @@ export function LiveCallsRoom({
               <div className="relative aspect-video w-full">
                 {isLive ? (
                   <div className="absolute inset-0">
-                    {playerUrl ? (
-                      <iframe
-                        key={playerUrl}
-                        src={playerUrl}
+                    {manifestUrl && visiblePlayerStatus === "ready" ? (
+                      <CloudflareLivePlayer
+                        key={manifestUrl}
+                        manifestUrl={manifestUrl}
                         title="Level Up Pro live call"
-                        className="absolute inset-0 h-full w-full"
-                        allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
-                        allowFullScreen
-                        referrerPolicy="strict-origin-when-cross-origin"
                       />
                     ) : (
                       <div className="flex h-full w-full flex-col items-center justify-center gap-4 bg-silver/[0.03] px-6 text-center sm:px-8">
@@ -337,13 +378,13 @@ export function LiveCallsRoom({
                           <Video size={24} strokeWidth={1.6} />
                         </span>
                         <p className="max-w-md text-[15px] leading-relaxed text-silver/65">
-                          {playerStatus === "setup"
+                          {visiblePlayerStatus === "setup"
                             ? "The on-site player is being connected. Please check back shortly."
-                            : playerStatus === "offline"
+                            : visiblePlayerStatus === "offline"
                               ? "The video feed has stopped. The page will reconnect when the host is back on air."
-                              : playerStatus === "not_authorized"
+                              : visiblePlayerStatus === "not_authorized"
                                 ? "Your Level Up Pro access needs to be refreshed. Sign in again to watch."
-                                : playerStatus === "unavailable"
+                                : visiblePlayerStatus === "unavailable"
                                   ? "We can’t reach the live video right now. This page will keep checking for the stream."
                                   : "Connecting to the live video…"}
                         </p>
@@ -377,7 +418,7 @@ export function LiveCallsRoom({
           </div>
 
           <ChatPanel
-            chat={chat}
+            chat={visibleChat}
             isLive={isLive}
             draft={draft}
             sending={sending}
@@ -472,7 +513,11 @@ function ChatPanel({
           <p className="text-[12px] text-silver/40">
             {chat.connected
               ? `${chat.messages.length} message${chat.messages.length === 1 ? "" : "s"}`
-              : "Talk with everyone on the call"}
+              : chat.requiresReauthorization
+                ? "Reconnect Whop to join the conversation"
+                : chat.unavailable
+                  ? "Live chat is temporarily unavailable"
+                  : "Talk with everyone on the call"}
           </p>
         </div>
       </div>
@@ -526,8 +571,20 @@ function ChatPanel({
             <p className="max-w-[16rem] text-[14px] leading-relaxed text-silver/45">
               {chat.connected
                 ? "No messages yet. Say hello and get it started."
-                : "The live chat picks up as soon as the call goes live."}
+                : chat.requiresReauthorization
+                  ? "Reconnect your Whop account to turn on live chat."
+                  : chat.unavailable
+                    ? "We couldn’t connect to the live chat. Refresh the page and try again."
+                    : "The live chat picks up as soon as the call goes live."}
             </p>
+            {chat.requiresReauthorization ? (
+              <a
+                href="/api/auth/login?next=%2Fmembers%2Flive-calls"
+                className="text-[13px] font-medium text-chrome underline underline-offset-4"
+              >
+                Reconnect Whop
+              </a>
+            ) : null}
           </div>
         )}
       </div>
@@ -549,12 +606,14 @@ function ChatPanel({
             placeholder={
               isLive ? `Say something, ${memberName}` : "Chat opens when the call is live"
             }
-            disabled={!chat.connected || sending}
+            disabled={!isLive || !chat.connected || sending}
             className="h-11 min-w-0 flex-1 rounded-pill border border-silver/12 bg-ink px-5 text-[14px] text-silver outline-none transition-colors duration-300 placeholder:text-silver/30 focus:border-chrome/45 disabled:opacity-60"
           />
           <button
             type="submit"
-            disabled={!chat.connected || sending || draft.trim().length === 0}
+            disabled={
+              !isLive || !chat.connected || sending || draft.trim().length === 0
+            }
             aria-label="Send message"
             className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-pill bg-[linear-gradient(180deg,#ffffff_0%,#e7ecf3_46%,#c2cad5_100%)] text-ink transition-[filter,opacity] duration-300 hover:brightness-105 disabled:opacity-35"
           >

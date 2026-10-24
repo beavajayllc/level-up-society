@@ -12,6 +12,7 @@ const tokenResponseSchema = z.object({
   access_token: z.string(),
   refresh_token: z.string(),
   id_token: z.string().optional(),
+  scope: z.string().optional(),
   token_type: z.string(),
   expires_in: z.number(),
 });
@@ -75,7 +76,13 @@ export async function buildAuthorizeUrl(pkce: PkceState): Promise<string> {
     response_type: "code",
     client_id: env.WHOP_CLIENT_ID,
     redirect_uri: callbackUrl(),
-    scope: "openid profile email",
+    scope: [
+      "openid",
+      "profile",
+      "email",
+      "chat:read",
+      "chat:message:create",
+    ].join(" "),
     state: pkce.state,
     nonce: pkce.nonce,
     code_challenge: await sha256Challenge(pkce.codeVerifier),

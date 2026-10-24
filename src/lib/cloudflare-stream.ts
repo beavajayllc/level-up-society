@@ -147,7 +147,7 @@ export async function getCloudflareStreamStatus(): Promise<CloudflareStreamStatu
  * Create a short-lived player URL for an authorized member.
  * The caller must check WHOP membership before invoking this function.
  */
-export async function createCloudflarePlayerUrl(): Promise<string | null> {
+export async function createCloudflareManifestUrl(): Promise<string | null> {
   const env = getEnv();
   const config = streamConfig(env);
   if (!config || (await getLiveStatus(config)) !== "live") return null;
@@ -180,5 +180,5 @@ export async function createCloudflarePlayerUrl(): Promise<string | null> {
     throw new Error("Cloudflare Stream returned an invalid playback token response");
   }
 
-  return `https://customer-${config.customerCode}.cloudflarestream.com/${encodeURIComponent(parsed.data.result.token)}/iframe`;
+  return `https://customer-${config.customerCode}.cloudflarestream.com/${encodeURIComponent(parsed.data.result.token)}/manifest/video.m3u8?protocol=llhls`;
 }
