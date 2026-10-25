@@ -25,6 +25,15 @@ declare global {
 
 let calendlyWidgetScriptPromise: Promise<void> | undefined;
 
+function getStyledCalendlyUrl(url: string): string {
+  const bookingUrl = new URL(url);
+  bookingUrl.searchParams.set("background_color", "101113");
+  bookingUrl.searchParams.set("text_color", "e7eaf0");
+  bookingUrl.searchParams.set("primary_color", "c2cad5");
+  bookingUrl.searchParams.set("hide_event_type_details", "1");
+  return bookingUrl.toString();
+}
+
 function loadCalendlyWidget(): Promise<void> {
   if (window.Calendly) return Promise.resolve();
   if (calendlyWidgetScriptPromise) return calendlyWidgetScriptPromise;
@@ -56,6 +65,7 @@ function loadCalendlyWidget(): Promise<void> {
 function CalendlyInlineEmbed({ url }: { url: string }) {
   const embedRef = useRef<HTMLDivElement>(null);
   const [loadError, setLoadError] = useState(false);
+  const styledUrl = getStyledCalendlyUrl(url);
 
   useEffect(() => {
     let cancelled = false;
@@ -68,7 +78,7 @@ function CalendlyInlineEmbed({ url }: { url: string }) {
         if (cancelled || !embedRef.current || !window.Calendly) return;
         embedRef.current.replaceChildren();
         window.Calendly.initInlineWidget({
-          url,
+          url: styledUrl,
           parentElement: embedRef.current,
         });
       })
@@ -80,7 +90,7 @@ function CalendlyInlineEmbed({ url }: { url: string }) {
       cancelled = true;
       embed.replaceChildren();
     };
-  }, [url]);
+  }, [styledUrl]);
 
   return (
     <div className="mt-7">
@@ -91,8 +101,9 @@ function CalendlyInlineEmbed({ url }: { url: string }) {
       )}
       <div
         ref={embedRef}
-        className="min-w-[320px] overflow-hidden rounded-tile bg-white"
-        style={{ height: "760px" }}
+        data-resize="true"
+        className="min-w-[320px] overflow-hidden rounded-tile border border-silver/10 bg-[#101113]"
+        style={{ height: "700px" }}
         aria-label="Calendly booking calendar"
       />
       {loadError && (
