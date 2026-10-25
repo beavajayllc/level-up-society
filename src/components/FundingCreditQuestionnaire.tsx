@@ -102,7 +102,7 @@ function CalendlyInlineEmbed({ url }: { url: string }) {
       <div
         ref={embedRef}
         data-resize="true"
-        className="min-w-[320px] overflow-hidden rounded-tile border border-silver/10 bg-[#101113]"
+        className="mx-auto w-full min-w-[320px] max-w-[420px] overflow-hidden rounded-tile border border-silver/10 bg-[#101113]"
         style={{ height: "700px" }}
         aria-label="Calendly booking calendar"
       />
