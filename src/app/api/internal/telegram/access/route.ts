@@ -4,8 +4,6 @@ import { z } from "zod";
 import { getEnv } from "@/lib/env";
 import { checkMembership } from "@/lib/whop-access";
 
-export const runtime = "nodejs";
-
 const requestSchema = z.object({
   whopUserIds: z
     .array(z.string().startsWith("user_").max(100))

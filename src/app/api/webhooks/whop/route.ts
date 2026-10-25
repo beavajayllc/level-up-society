@@ -2,8 +2,6 @@ import { unwrapWebhook } from "@whop/sdk/helpers";
 import { NextResponse } from "next/server";
 import { getEnv } from "@/lib/env";
 
-export const runtime = "nodejs";
-
 type WhopWebhookEvent = {
   id?: string;
   type?: string;

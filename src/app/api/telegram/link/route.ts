@@ -3,8 +3,6 @@ import { getEnv } from "@/lib/env";
 import { getSession } from "@/lib/session";
 import { checkMembership } from "@/lib/whop-access";
 
-export const runtime = "nodejs";
-
 export async function POST(request: Request) {
   const env = getEnv();
   const origin = request.headers.get("origin");
