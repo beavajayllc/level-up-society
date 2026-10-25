@@ -2,7 +2,13 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, RotateCcw } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  ArrowUpRight,
+  CalendarDays,
+  RotateCcw,
+} from "lucide-react";
 
 const questions = [
   {
@@ -55,10 +61,16 @@ function recommendation(answers: Answers): string {
   return "Explore the funding and credit education in the members area, then revisit your goals as they become clearer.";
 }
 
-export function FundingCreditQuestionnaire() {
+export function FundingCreditQuestionnaire({
+  bookingUrl,
+}: {
+  bookingUrl?: string;
+}) {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Answers>({});
   const complete = step === questions.length;
+  const needsCall =
+    answers.creditRepair === "Yes" || answers.creditRepair === "I'm not sure";
 
   function restart() {
     setAnswers({});
@@ -139,7 +151,13 @@ export function FundingCreditQuestionnaire() {
             <button
               type="button"
               disabled={!answers[questions[step].id]}
-              onClick={() => setStep((current) => current + 1)}
+              onClick={() => {
+                if (step === 0 && needsCall) {
+                  setStep(questions.length);
+                  return;
+                }
+                setStep((current) => current + 1);
+              }}
               className="inline-flex h-11 items-center gap-2 rounded-pill bg-[linear-gradient(180deg,#ffffff_0%,#e7ecf3_46%,#c2cad5_100%)] px-6 text-sm font-medium text-ink transition hover:brightness-[1.06] disabled:cursor-not-allowed disabled:opacity-40"
             >
               {step === questions.length - 1 ? "See your next step" : "Continue"}
@@ -147,6 +165,61 @@ export function FundingCreditQuestionnaire() {
             </button>
           </div>
         </>
+      ) : needsCall ? (
+        <div>
+          <p className="font-mono text-[12px] uppercase tracking-[0.16em] text-chrome">
+            Your next step
+          </p>
+          <h2 className="mt-4 text-[25px] font-semibold tracking-[-0.03em] text-silver">
+            Let&apos;s schedule a call
+          </h2>
+          <p className="mt-3 max-w-2xl text-[16px] leading-relaxed text-silver/60">
+            Thanks for letting us know. A member of our team can talk with you about credit repair and help you figure out the next step that fits.
+          </p>
+          <p className="mt-4 text-[14px] text-silver/45">
+            Your answer: <span className="text-silver/75">{answers.creditRepair}</span>
+          </p>
+          {bookingUrl ? (
+            <a
+              href={bookingUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-7 inline-flex h-12 items-center gap-2 rounded-pill bg-[linear-gradient(180deg,#ffffff_0%,#e7ecf3_46%,#c2cad5_100%)] px-6 text-sm font-medium text-ink transition hover:brightness-[1.06]"
+            >
+              Schedule a call
+              <CalendarDays size={16} />
+              <ArrowUpRight size={14} />
+            </a>
+          ) : (
+            <p className="mt-7 rounded-tile border border-silver/10 bg-ink/50 p-4 text-sm text-silver/50">
+              The booking link needs to be connected before members can schedule here.
+            </p>
+          )}
+          <div className="mt-7 flex flex-wrap gap-3">
+            <button
+              type="button"
+              onClick={() => setStep(0)}
+              className="inline-flex h-11 items-center gap-2 rounded-pill border border-silver/15 px-5 text-sm text-silver/70 transition hover:border-silver/35 hover:text-silver"
+            >
+              <ArrowLeft size={14} />
+              Change answer
+            </button>
+            <button
+              type="button"
+              onClick={restart}
+              className="inline-flex h-11 items-center gap-2 rounded-pill border border-silver/15 px-5 text-sm text-silver/70 transition hover:border-silver/35 hover:text-silver"
+            >
+              <RotateCcw size={14} />
+              Start over
+            </button>
+            <Link
+              href="/members"
+              className="inline-flex h-11 items-center gap-2 rounded-pill border border-silver/15 px-5 text-sm text-silver/70 transition hover:border-silver/35 hover:text-silver"
+            >
+              Back to members area
+            </Link>
+          </div>
+        </div>
       ) : (
         <div>
           <p className="font-mono text-[12px] uppercase tracking-[0.16em] text-chrome">

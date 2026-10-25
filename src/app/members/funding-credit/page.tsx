@@ -63,7 +63,7 @@ export default async function FundingCreditPage({
             </div>
           </Reveal>
 
-          <FundingCreditQuestionnaire />
+          <FundingCreditQuestionnaire bookingUrl="https://calendly.com/beavajayllc-sxr3/30min" />
         </div>
       </main>
       <Footer />
