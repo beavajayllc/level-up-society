@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -9,6 +9,112 @@ import {
   CalendarDays,
   RotateCcw,
 } from "lucide-react";
+
+const CALENDLY_WIDGET_SCRIPT = "https://assets.calendly.com/assets/external/widget.js";
+
+declare global {
+  interface Window {
+    Calendly?: {
+      initInlineWidget: (options: {
+        url: string;
+        parentElement: HTMLElement;
+      }) => void;
+    };
+  }
+}
+
+let calendlyWidgetScriptPromise: Promise<void> | undefined;
+
+function loadCalendlyWidget(): Promise<void> {
+  if (window.Calendly) return Promise.resolve();
+  if (calendlyWidgetScriptPromise) return calendlyWidgetScriptPromise;
+
+  calendlyWidgetScriptPromise = new Promise<void>((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = CALENDLY_WIDGET_SCRIPT;
+    script.async = true;
+    script.onload = () => {
+      if (window.Calendly) {
+        resolve();
+      } else {
+        reject(new Error("Calendly loaded without its booking widget."));
+      }
+    };
+    script.onerror = () => {
+      script.remove();
+      reject(new Error("Calendly's booking widget could not be loaded."));
+    };
+    document.head.appendChild(script);
+  }).catch((error: unknown) => {
+    calendlyWidgetScriptPromise = undefined;
+    throw error;
+  });
+
+  return calendlyWidgetScriptPromise;
+}
+
+function CalendlyInlineEmbed({ url }: { url: string }) {
+  const embedRef = useRef<HTMLDivElement>(null);
+  const [loadError, setLoadError] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    const embed = embedRef.current;
+    if (!embed) return;
+
+    setLoadError(false);
+    void loadCalendlyWidget()
+      .then(() => {
+        if (cancelled || !embedRef.current || !window.Calendly) return;
+        embedRef.current.replaceChildren();
+        window.Calendly.initInlineWidget({
+          url,
+          parentElement: embedRef.current,
+        });
+      })
+      .catch(() => {
+        if (!cancelled) setLoadError(true);
+      });
+
+    return () => {
+      cancelled = true;
+      embed.replaceChildren();
+    };
+  }, [url]);
+
+  return (
+    <div className="mt-7">
+      {!loadError && (
+        <p className="mb-3 text-[13px] text-silver/45" aria-live="polite">
+          Choose an available time below to book your call.
+        </p>
+      )}
+      <div
+        ref={embedRef}
+        className="min-w-[320px] overflow-hidden rounded-tile bg-white"
+        style={{ height: "760px" }}
+        aria-label="Calendly booking calendar"
+      />
+      {loadError && (
+        <div
+          className="mt-3 rounded-tile border border-silver/10 bg-ink/50 p-4 text-sm text-silver/60"
+          role="alert"
+        >
+          The booking calendar didn&apos;t load. You can still schedule your call
+          directly with Calendly.
+          <a
+            href={url}
+            target="_blank"
+            rel="noreferrer"
+            className="ml-1 inline-flex items-center gap-1 text-silver underline underline-offset-4 hover:text-chrome"
+          >
+            Open booking page <ArrowUpRight size={13} />
+          </a>
+        </div>
+      )}
+    </div>
+  );
+}
 
 const questions = [
   {
@@ -180,16 +286,13 @@ export function FundingCreditQuestionnaire({
             Your answer: <span className="text-silver/75">{answers.creditRepair}</span>
           </p>
           {bookingUrl ? (
-            <a
-              href={bookingUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="mt-7 inline-flex h-12 items-center gap-2 rounded-pill bg-[linear-gradient(180deg,#ffffff_0%,#e7ecf3_46%,#c2cad5_100%)] px-6 text-sm font-medium text-ink transition hover:brightness-[1.06]"
-            >
-              Schedule a call
-              <CalendarDays size={16} />
-              <ArrowUpRight size={14} />
-            </a>
+            <>
+              <h3 className="mt-7 flex items-center gap-2 text-[16px] font-semibold text-silver">
+                <CalendarDays size={17} />
+                Choose a time that works for you
+              </h3>
+              <CalendlyInlineEmbed url={bookingUrl} />
+            </>
           ) : (
             <p className="mt-7 rounded-tile border border-silver/10 bg-ink/50 p-4 text-sm text-silver/50">
               The booking link needs to be connected before members can schedule here.
