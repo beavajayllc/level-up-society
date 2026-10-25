@@ -174,6 +174,7 @@ export function FundingCreditQuestionnaire({
 }) {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Answers>({});
+  const [showCalendar, setShowCalendar] = useState(false);
   const complete = step === questions.length;
   const needsCall =
     answers.creditRepair === "Yes" || answers.creditRepair === "I'm not sure";
@@ -181,6 +182,7 @@ export function FundingCreditQuestionnaire({
   function restart() {
     setAnswers({});
     setStep(0);
+    setShowCalendar(false);
   }
 
   return (
@@ -291,7 +293,19 @@ export function FundingCreditQuestionnaire({
                 <CalendarDays size={17} />
                 Choose a time that works for you
               </h3>
-              <CalendlyInlineEmbed url={bookingUrl} />
+              {showCalendar ? (
+                <CalendlyInlineEmbed url={bookingUrl} />
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setShowCalendar(true)}
+                  className="mt-5 inline-flex h-12 items-center gap-2 rounded-pill bg-[linear-gradient(180deg,#ffffff_0%,#e7ecf3_46%,#c2cad5_100%)] px-6 text-sm font-medium text-ink transition hover:brightness-[1.06]"
+                >
+                  <CalendarDays size={16} />
+                  Schedule a call today
+                  <ArrowRight size={15} />
+                </button>
+              )}
             </>
           ) : (
             <p className="mt-7 rounded-tile border border-silver/10 bg-ink/50 p-4 text-sm text-silver/50">
@@ -301,7 +315,10 @@ export function FundingCreditQuestionnaire({
           <div className="mt-7 flex flex-wrap gap-3">
             <button
               type="button"
-              onClick={() => setStep(0)}
+              onClick={() => {
+                setShowCalendar(false);
+                setStep(0);
+              }}
               className="inline-flex h-11 items-center gap-2 rounded-pill border border-silver/15 px-5 text-sm text-silver/70 transition hover:border-silver/35 hover:text-silver"
             >
               <ArrowLeft size={14} />
