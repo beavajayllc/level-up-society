@@ -235,6 +235,8 @@ export const memberResources: MemberResource[] = [
     body: "Get pointed to the capital and credit options that actually make sense for where you are.",
     icon: Landmark,
     tag: "By request",
+    href: "/members/funding-credit",
+    cta: "Find your next step",
   },
   {
     id: "community",
