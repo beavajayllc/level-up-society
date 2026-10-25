@@ -18,6 +18,7 @@ declare global {
       initInlineWidget: (options: {
         url: string;
         parentElement: HTMLElement;
+        resize: boolean;
       }) => void;
     };
   }
@@ -80,6 +81,7 @@ function CalendlyInlineEmbed({ url }: { url: string }) {
         window.Calendly.initInlineWidget({
           url: styledUrl,
           parentElement: embedRef.current,
+          resize: true,
         });
       })
       .catch(() => {
@@ -101,9 +103,8 @@ function CalendlyInlineEmbed({ url }: { url: string }) {
       )}
       <div
         ref={embedRef}
-        data-resize="true"
         className="mx-auto w-full min-w-[320px] max-w-[420px] overflow-hidden rounded-tile border border-silver/10 bg-[#101113]"
-        style={{ height: "700px" }}
+        style={{ height: "600px" }}
         aria-label="Calendly booking calendar"
       />
       {loadError && (
