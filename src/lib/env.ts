@@ -10,6 +10,8 @@ const envSchema = z.object({
   WHOP_CLIENT_ID: z.string().startsWith("app_"),
   WHOP_CLIENT_SECRET: z.string().min(1),
   WHOP_API_KEY: z.string().min(1),
+  /** WHOP company webhook signing secret, starts with ws_. */
+  WHOP_WEBHOOK_SECRET: z.string().min(1).optional(),
   WHOP_ACCOUNT_ID: z.string().startsWith("biz_"),
   /**
    * Product / experience / account ids used for the access check.
@@ -39,6 +41,15 @@ const envSchema = z.object({
     .optional(),
   /** Server-only Cloudflare API token with Stream read/write access. */
   CLOUDFLARE_STREAM_API_TOKEN: z.string().min(1).optional(),
+  /** Private Cloudflare Worker endpoint that handles Telegram + D1 state. */
+  TELEGRAM_GATEWAY_URL: z.url().optional(),
+  /** Shared server-only secret for the app-to-Worker calls. */
+  TELEGRAM_GATEWAY_SECRET: z.string().min(32).optional(),
+  /** Explicit production switch enabled only after the bot token is installed. */
+  TELEGRAM_GATEWAY_READY: z
+    .string()
+    .optional()
+    .transform((value) => value === "true"),
   WHOP_SANDBOX: z
     .string()
     .optional()
@@ -67,6 +78,7 @@ function readRawEnv(): Record<string, string | undefined> {
     WHOP_CLIENT_ID: process.env.WHOP_CLIENT_ID,
     WHOP_CLIENT_SECRET: process.env.WHOP_CLIENT_SECRET,
     WHOP_API_KEY: process.env.WHOP_API_KEY,
+    WHOP_WEBHOOK_SECRET: process.env.WHOP_WEBHOOK_SECRET,
     WHOP_ACCOUNT_ID: process.env.WHOP_ACCOUNT_ID,
     WHOP_ACCESS_RESOURCE_ID: process.env.WHOP_ACCESS_RESOURCE_ID,
     WHOP_CHECKOUT_URL: process.env.WHOP_CHECKOUT_URL,
@@ -79,6 +91,9 @@ function readRawEnv(): Record<string, string | undefined> {
     CLOUDFLARE_STREAM_LIVE_INPUT_ID:
       process.env.CLOUDFLARE_STREAM_LIVE_INPUT_ID,
     CLOUDFLARE_STREAM_API_TOKEN: process.env.CLOUDFLARE_STREAM_API_TOKEN,
+    TELEGRAM_GATEWAY_URL: process.env.TELEGRAM_GATEWAY_URL,
+    TELEGRAM_GATEWAY_SECRET: process.env.TELEGRAM_GATEWAY_SECRET,
+    TELEGRAM_GATEWAY_READY: process.env.TELEGRAM_GATEWAY_READY,
     WHOP_SANDBOX: process.env.WHOP_SANDBOX,
     SESSION_SECRET: process.env.SESSION_SECRET,
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
@@ -105,6 +120,17 @@ export function getEnv(): Env {
 /** True when WHOP auth is fully wired up. Used to render friendly setup states. */
 export function isAuthConfigured(): boolean {
   return envSchema.safeParse(readRawEnv()).success;
+}
+
+/** True once the Telegram gateway has been deployed and privately linked. */
+export function isTelegramGatewayConfigured(): boolean {
+  const env = envSchema.safeParse(readRawEnv());
+  return Boolean(
+    env.success &&
+      env.data.TELEGRAM_GATEWAY_URL &&
+      env.data.TELEGRAM_GATEWAY_SECRET &&
+      env.data.TELEGRAM_GATEWAY_READY,
+  );
 }
 
 /**

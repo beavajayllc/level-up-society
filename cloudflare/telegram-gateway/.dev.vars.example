@@ -1,0 +1,5 @@
+LUS_GATEWAY_SECRET=replace_with_a_random_secret_at_least_32_characters
+TELEGRAM_BOT_TOKEN=replace_with_the_token_from_BotFather
+TELEGRAM_BOT_USERNAME=your_bot_username_without_at
+TELEGRAM_WEBHOOK_SECRET=letters_numbers_underscores_or_hyphens_only
+SITE_ACCESS_CHECK_URL=http://localhost:3000/api/internal/telegram/access

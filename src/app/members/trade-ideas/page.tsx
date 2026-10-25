@@ -5,8 +5,9 @@ import { AccessNotice } from "@/components/AccessNotice";
 import { Footer } from "@/components/Footer";
 import { Nav } from "@/components/Nav";
 import { Reveal } from "@/components/Reveal";
+import { TelegramConnectButton } from "@/components/TelegramConnectButton";
 import { Glow, SectionLabel } from "@/components/ui";
-import { isAuthConfigured } from "@/lib/env";
+import { isAuthConfigured, isTelegramGatewayConfigured } from "@/lib/env";
 import { requireMember } from "@/lib/member-access";
 
 export const instant = false;
@@ -57,7 +58,7 @@ export default async function TradeIdeasPage({
                 Get ready for the trade ideas chat
               </h1>
               <p className="mt-5 max-w-xl text-[16px] leading-relaxed text-silver/55">
-                Download Telegram now. We’re finishing the secure connection between the chat and active Level Up Pro memberships.
+                Connect your Telegram account to your active Level Up Pro membership. The bot checks your access before approving your private join request and removes access when your membership expires.
               </p>
             </div>
           </Reveal>
@@ -102,14 +103,12 @@ export default async function TradeIdeasPage({
                   </span>
                 </div>
                 <h2 className="mt-7 text-[24px] font-semibold tracking-[-0.03em] text-silver">
-                  Secure member access is coming soon
+                  Connect your member account
                 </h2>
                 <p className="mt-3 flex-1 text-[15px] leading-relaxed text-silver/55">
-                  We’re finishing the connection between your Level Up Pro membership and the Telegram group. We’ll add the join link here once active subscriptions can be verified and expired memberships can be removed automatically.
+                  Sign in to the Telegram bot with the secure link below. It checks your Level Up Pro membership, then sends a personal join request link. The bot checks again before letting you into the chat.
                 </p>
-                <span className="mt-7 inline-flex h-12 w-fit items-center rounded-pill border border-silver/15 px-6 text-sm font-medium text-silver/50">
-                  Access setup in progress
-                </span>
+                <TelegramConnectButton enabled={isTelegramGatewayConfigured()} />
               </section>
             </Reveal>
           </div>

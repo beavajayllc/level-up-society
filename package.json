@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "telegram:db:create": "wrangler d1 create level-up-society-telegram --config cloudflare/telegram-gateway/wrangler.jsonc",
+    "telegram:db:migrate": "wrangler d1 migrations apply level-up-society-telegram --remote --config cloudflare/telegram-gateway/wrangler.jsonc",
+    "telegram:deploy": "wrangler deploy --config cloudflare/telegram-gateway/wrangler.jsonc"
   },
   "dependencies": {
     "@whop/sdk": "^2.6.0",
@@ -29,6 +32,10 @@
     "eslint": "^9",
     "eslint-config-next": "16.4.2",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "wrangler": "^4.152.0"
+  },
+  "overrides": {
+    "undici": "^7.30.1"
   }
 }

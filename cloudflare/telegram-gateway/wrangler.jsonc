@@ -1,0 +1,23 @@
+{
+  "$schema": "https://developers.cloudflare.com/wrangler/config-schema.json",
+  "name": "level-up-society-telegram-gateway",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-24",
+  "workers_dev": true,
+  "observability": { "enabled": true },
+  "vars": {
+    "SITE_ACCESS_CHECK_URL": "https://level-up-society-nu.vercel.app/api/internal/telegram/access",
+    "TELEGRAM_BOT_USERNAME": "LevelUpSocietyTradeIdeasBot"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "level-up-society-telegram",
+      "database_id": "d09560b3-5dc0-46a5-8eed-ff66335e93de",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "triggers": {
+    "crons": ["0 * * * *"]
+  }
+}
