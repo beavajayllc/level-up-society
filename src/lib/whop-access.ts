@@ -258,13 +258,26 @@ function isLevelUpProMembership(
 }
 
 function hasRecurringAccess(membership: Whop.Membership): boolean {
+  if (membership.status === "trialing") return true;
+
   return (
     membership.renewal_price !== null &&
     (membership.status === "active" ||
-      membership.status === "trialing" ||
       membership.status === "past_due" ||
       membership.status === "canceling")
   );
+}
+
+function formatRenewalPrice(membership: Whop.Membership): string | null {
+  const price = membership.renewal_price;
+  if (!price) return null;
+
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: price.currency.toUpperCase(),
+    minimumFractionDigits: price.display_decimals,
+    maximumFractionDigits: price.display_decimals,
+  }).format(Number(price.amount));
 }
 
 async function listLevelUpProRecurringMemberships(
@@ -305,14 +318,10 @@ export async function getSubscriptionCancellationOptions(
     return memberships
       .map((membership) => ({
         membershipId: membership.id,
-        price: new Intl.NumberFormat("en-US", {
-          style: "currency",
-          currency: membership.renewal_price!.currency.toUpperCase(),
-          minimumFractionDigits: membership.renewal_price!.display_decimals,
-          maximumFractionDigits: membership.renewal_price!.display_decimals,
-        }).format(Number(membership.renewal_price!.amount)),
+        price: formatRenewalPrice(membership),
         renewalPeriodEnd: membership.current_period_end,
         cancelAtPeriodEnd: membership.cancel_at_period_end,
+        isTrialing: membership.status === "trialing",
       }))
       .sort((left, right) => {
         if (!left.renewalPeriodEnd) return 1;

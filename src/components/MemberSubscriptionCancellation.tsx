@@ -66,10 +66,16 @@ function SubscriptionCancellationForm({
   return (
     <div className="rounded-tile border border-silver/10 bg-ink/60 p-5">
       <p className="text-sm font-medium text-silver/75">
-        Cancel your Level Up Pro subscription ({subscription.price})?
+        {subscription.isTrialing
+          ? "Cancel your Level Up Pro free trial?"
+          : `Cancel your Level Up Pro subscription${subscription.price ? ` (${subscription.price})` : ""}?`}
       </p>
       <p className="mt-1.5 text-[13px] leading-relaxed text-silver/45">
-        {endsAt
+        {subscription.isTrialing
+          ? endsAt
+            ? `Your access will continue through ${endsAt}. Canceling now prevents your trial from converting to a paid membership.`
+            : "Canceling now prevents your trial from converting to a paid membership."
+          : endsAt
           ? `Your access will continue through ${endsAt}. We won’t charge you for another billing period.`
           : "Your access will continue through the current billing period. We won’t charge you for another billing period."}
       </p>
