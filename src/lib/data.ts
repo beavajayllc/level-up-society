@@ -4,6 +4,7 @@ import {
   Dumbbell,
   Landmark,
   Mic,
+  ChartNoAxesCombined,
   TrendingUp,
   Users,
   type LucideIcon,
@@ -244,5 +245,14 @@ export const memberResources: MemberResource[] = [
     body: "The room itself. Trade ideas, get honest feedback, and meet people who get the journey.",
     icon: Users,
     tag: "24/7",
+  },
+  {
+    id: "affiliate-back-office",
+    title: "Affiliate back office",
+    body: "Track your Level Up Pro referrals, recurring revenue, commissions, and customer retention.",
+    icon: ChartNoAxesCombined,
+    tag: "Member perk",
+    href: "/members/affiliate",
+    cta: "View performance",
   },
 ];

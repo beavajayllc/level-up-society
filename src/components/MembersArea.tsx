@@ -2,7 +2,7 @@
 
 import { motion } from "motion/react";
 import Link from "next/link";
-import { ArrowUpRight, LogOut, ShieldCheck } from "lucide-react";
+import { ArrowUpRight, ShieldCheck } from "lucide-react";
 import { memberResources } from "@/lib/data";
 import { Reveal, Stagger, StaggerItem } from "./Reveal";
 import { Glow, SectionLabel } from "./ui";
@@ -103,28 +103,6 @@ export function MembersArea({
             );
           })}
 
-          <StaggerItem className="sm:col-span-1">
-            <div className="flex h-full flex-col justify-between rounded-card border border-silver/8 bg-silver/[0.02] p-7">
-              <div>
-                <h3 className="text-[20px] font-semibold tracking-[-0.025em] text-silver">
-                  Ready to step away?
-                </h3>
-                <p className="mt-2.5 text-[15px] leading-relaxed text-silver/50">
-                  Signing out ends your session on this device. Your membership
-                  stays exactly as it is.
-                </p>
-              </div>
-              <form action="/api/auth/logout" method="POST" className="mt-7">
-                <button
-                  type="submit"
-                  className="inline-flex h-11 items-center gap-2 rounded-pill border border-silver/18 px-5 text-sm font-medium text-silver transition-colors duration-300 hover:border-chrome/60 hover:text-chrome"
-                >
-                  <LogOut size={15} />
-                  Sign out
-                </button>
-              </form>
-            </div>
-          </StaggerItem>
         </Stagger>
       </div>
     </main>
