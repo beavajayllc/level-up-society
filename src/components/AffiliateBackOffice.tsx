@@ -8,6 +8,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import Link from "next/link";
+import { AffiliateEnrollmentForm } from "@/components/AffiliateEnrollmentForm";
 import { AffiliateReferralLink } from "@/components/AffiliateReferralLink";
 import { Reveal } from "@/components/Reveal";
 import { Glow, SectionLabel } from "@/components/ui";
@@ -220,14 +221,7 @@ export function AffiliateBackOffice({
             </p>
           </>
         ) : result.status === "not-enrolled" ? (
-          <section className="mt-10 rounded-card border border-silver/10 bg-silver/[0.035] p-7 sm:p-9">
-            <h2 className="text-[22px] font-semibold tracking-[-0.03em] text-silver">
-              Your Whop affiliate profile isn’t active yet
-            </h2>
-            <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-silver/50">
-              Once Whop has enrolled your account in the Level Up Pro affiliate program, your referral link, totals, and earnings will show here.
-            </p>
-          </section>
+          <AffiliateEnrollmentForm />
         ) : (
           <section className="mt-10 rounded-card border border-silver/10 bg-silver/[0.035] p-7 sm:p-9">
             <h2 className="text-[22px] font-semibold tracking-[-0.03em] text-silver">

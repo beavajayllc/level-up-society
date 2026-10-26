@@ -36,6 +36,15 @@ function getClient(): WhopClient {
   return cachedClient;
 }
 
+/** Enroll a verified Level Up Society member as an affiliate on our Whop account. */
+export async function createMemberAffiliate(userId: string): Promise<void> {
+  const env = getEnv();
+  await getClient().affiliates.create({
+    account_id: env.WHOP_ACCOUNT_ID,
+    user_identifier: userId,
+  });
+}
+
 function productIds(): string[] {
   return [
     ...new Set(
