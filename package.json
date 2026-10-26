@@ -15,6 +15,8 @@
     "telegram:deploy": "wrangler deploy --config cloudflare/telegram-gateway/wrangler.jsonc"
   },
   "dependencies": {
+    "@whop/elements": "^1.9.0",
+    "@whop/elements-react": "^1.9.0",
     "@whop/sdk": "^2.6.0",
     "hls.js": "^1.7.3",
     "iron-session": "^9.0.1",

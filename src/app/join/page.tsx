@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Script from "next/script";
+import { WhopPlanCheckout } from "@/components/WhopPlanCheckout";
+import { PUBLIC_SITE_URL, whopCheckoutPlanId } from "@/lib/checkout";
 import { getEnv } from "@/lib/env";
-import { whopCheckoutPlanId } from "@/lib/checkout";
 
 export const instant = false;
 
@@ -40,7 +40,8 @@ export default async function JoinPage({
     );
   }
 
-  const returnUrl = new URL("/members", getEnv().NEXT_PUBLIC_APP_URL).toString();
+  const env = getEnv();
+  const returnUrl = new URL("/members", PUBLIC_SITE_URL).toString();
 
   return (
     <main className="min-h-screen bg-ink px-5 py-10 text-silver sm:px-8 sm:py-14">
@@ -67,19 +68,14 @@ export default async function JoinPage({
           aria-label="Level Up Pro checkout"
           className="mx-auto mt-10 max-w-3xl overflow-hidden rounded-card-lg border border-silver/10 bg-silver/[0.035] p-2 sm:mt-12 sm:p-4"
         >
-          <div
-            className="whop-checkout-embed min-h-[38rem] w-full"
-            data-whop-checkout-plan-id={planId}
-            data-whop-checkout-return-url={returnUrl}
-            data-whop-color-scheme="dark"
-            data-whop-affiliate={affiliateCode ?? undefined}
+          <WhopPlanCheckout
+            planId={planId}
+            affiliateCode={affiliateCode}
+            returnUrl={returnUrl}
+            sandbox={env.WHOP_SANDBOX}
           />
         </section>
       </div>
-      <Script
-        src="https://js.whop.com/static/checkout/loader.js"
-        strategy="afterInteractive"
-      />
     </main>
   );
 }
