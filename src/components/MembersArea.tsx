@@ -4,9 +4,11 @@ import { motion } from "motion/react";
 import Link from "next/link";
 import { ArrowUpRight, ShieldCheck } from "lucide-react";
 import { memberResources } from "@/lib/data";
+import { MemberSubscriptionCancellation } from "./MemberSubscriptionCancellation";
 import { Reveal, Stagger, StaggerItem } from "./Reveal";
 import { Glow, SectionLabel } from "./ui";
 import type { WhopUserInfo } from "@/lib/whop-oauth";
+import type { SubscriptionCancellationOption } from "@/lib/subscription-cancellation";
 
 function displayName(user: WhopUserInfo): string {
   const raw = user.name ?? user.preferred_username ?? user.email ?? "member";
@@ -15,8 +17,10 @@ function displayName(user: WhopUserInfo): string {
 
 export function MembersArea({
   user,
+  subscriptions,
 }: {
   user: WhopUserInfo;
+  subscriptions: SubscriptionCancellationOption[] | null;
 }) {
   const name = displayName(user);
 
@@ -104,6 +108,8 @@ export function MembersArea({
           })}
 
         </Stagger>
+
+        <MemberSubscriptionCancellation subscriptions={subscriptions} />
       </div>
     </main>
   );

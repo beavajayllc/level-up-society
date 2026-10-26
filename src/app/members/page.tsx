@@ -5,6 +5,7 @@ import { AccessNotice } from "@/components/AccessNotice";
 import { MembersArea } from "@/components/MembersArea";
 import { isAuthConfigured } from "@/lib/env";
 import { requireMember } from "@/lib/member-access";
+import { getSubscriptionCancellationOptions } from "@/lib/whop-access";
 
 /**
  * The members area reads the WHOP session cookie on every request, so it can
@@ -37,11 +38,12 @@ export default async function MembersPage({
   }
 
   const { user } = await requireMember();
+  const subscriptions = await getSubscriptionCancellationOptions(user.sub);
 
   return (
     <>
       <Nav />
-      <MembersArea user={user} />
+      <MembersArea user={user} subscriptions={subscriptions} />
       <Footer />
     </>
   );

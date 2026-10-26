@@ -3,6 +3,7 @@ import "server-only";
 import { WhopClient, type Whop } from "@whop/sdk";
 import { getEnv, whopSdkBaseUrl, type Env } from "@/lib/env";
 import { checkRevenueCatAccess } from "@/lib/revenuecat-access";
+import type { SubscriptionCancellationOption } from "@/lib/subscription-cancellation";
 
 /**
  * Membership access checks.
@@ -239,6 +240,139 @@ export async function listUserMemberships(userId: string) {
   });
 
   return page.data;
+}
+
+function isLevelUpProMembership(
+  membership: Whop.Membership,
+  env: Env,
+  productTitle: string | null,
+): boolean {
+  const configuredProductIds = new Set(
+    accessResourceIds(env).filter((id) => id.startsWith("prod_")),
+  );
+
+  return (
+    configuredProductIds.has(membership.product_id) ||
+    (productTitle !== null && membership.product.title === productTitle)
+  );
+}
+
+function hasRecurringAccess(membership: Whop.Membership): boolean {
+  return (
+    membership.renewal_price !== null &&
+    (membership.status === "active" ||
+      membership.status === "trialing" ||
+      membership.status === "past_due" ||
+      membership.status === "canceling")
+  );
+}
+
+async function listLevelUpProRecurringMemberships(
+  userId: string,
+): Promise<Whop.Membership[]> {
+  const env = getEnv();
+  const productTitle = await canonicalProductTitle(env);
+  const page = await getClient().memberships.list({
+    account_id: env.WHOP_ACCOUNT_ID,
+    user_id: userId,
+    first: 100,
+  });
+  const memberships: Whop.Membership[] = [];
+
+  for await (const membership of page) {
+    if (
+      isLevelUpProMembership(membership, env, productTitle) &&
+      hasRecurringAccess(membership)
+    ) {
+      memberships.push(membership);
+    }
+  }
+
+  return memberships;
+}
+
+/**
+ * Returns only the signed-in user's recurring Level Up Pro memberships that
+ * can be canceled from the members area. A null result means Whop could not be
+ * reached; an empty array means the account has no recurring membership to
+ * cancel.
+ */
+export async function getSubscriptionCancellationOptions(
+  userId: string,
+): Promise<SubscriptionCancellationOption[] | null> {
+  try {
+    const memberships = await listLevelUpProRecurringMemberships(userId);
+    return memberships
+      .map((membership) => ({
+        membershipId: membership.id,
+        price: new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: membership.renewal_price!.currency.toUpperCase(),
+          minimumFractionDigits: membership.renewal_price!.display_decimals,
+          maximumFractionDigits: membership.renewal_price!.display_decimals,
+        }).format(Number(membership.renewal_price!.amount)),
+        renewalPeriodEnd: membership.current_period_end,
+        cancelAtPeriodEnd: membership.cancel_at_period_end,
+      }))
+      .sort((left, right) => {
+        if (!left.renewalPeriodEnd) return 1;
+        if (!right.renewalPeriodEnd) return -1;
+        return (
+          new Date(left.renewalPeriodEnd).getTime() -
+          new Date(right.renewalPeriodEnd).getTime()
+        );
+      });
+  } catch (error) {
+    console.error("[whop] subscription cancellation options lookup failed", {
+      name: error instanceof Error ? error.name : "UnknownError",
+      status:
+        typeof error === "object" && error !== null && "statusCode" in error
+          ? error.statusCode
+          : undefined,
+    });
+    return null;
+  }
+}
+
+export type CancelSubscriptionResult =
+  | { status: "canceled"; renewalPeriodEnd: string | null }
+  | { status: "already-scheduled"; renewalPeriodEnd: string | null }
+  | { status: "not-found" };
+
+/**
+ * Schedules cancellation only after looking up the membership under the
+ * authenticated user's Whop ID and confirming it belongs to Level Up Pro.
+ */
+export async function cancelLevelUpProSubscription(
+  userId: string,
+  membershipId: string,
+): Promise<CancelSubscriptionResult> {
+  const membership = (await listLevelUpProRecurringMemberships(userId)).find(
+    (item) => item.id === membershipId,
+  );
+
+  if (!membership) return { status: "not-found" };
+
+  if (membership.cancel_at_period_end || membership.status === "canceling") {
+    return {
+      status: "already-scheduled",
+      renewalPeriodEnd: membership.current_period_end,
+    };
+  }
+
+  const canceled = await getClient().memberships.cancel({
+    id: membership.id,
+    cancel_at_period_end: true,
+  });
+
+  if (!canceled.cancel_at_period_end) {
+    throw new Error("Whop did not schedule the membership cancellation.");
+  }
+
+  return {
+    status: "canceled",
+    renewalPeriodEnd: canceled.current_period_end ?? membership.current_period_end,
+  };
 }
 
 /**
