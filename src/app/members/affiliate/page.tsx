@@ -3,9 +3,10 @@ import { AccessNotice } from "@/components/AccessNotice";
 import { AffiliateBackOffice } from "@/components/AffiliateBackOffice";
 import { Footer } from "@/components/Footer";
 import { Nav } from "@/components/Nav";
-import { getEnv, isAuthConfigured } from "@/lib/env";
+import { isAuthConfigured } from "@/lib/env";
 import { requireMember } from "@/lib/member-access";
 import { getAffiliateBackOfficeStats } from "@/lib/whop-affiliates";
+import { PUBLIC_SITE_URL } from "@/lib/checkout";
 
 export const instant = false;
 
@@ -37,7 +38,7 @@ export default async function AffiliateBackOfficePage({
   );
   let referralLink: string | null = null;
   if (result.status === "ready" && user.preferred_username) {
-    const referralUrl = new URL("/join", getEnv().NEXT_PUBLIC_APP_URL);
+    const referralUrl = new URL("/join", PUBLIC_SITE_URL);
     referralUrl.searchParams.set("a", user.preferred_username);
     referralLink = referralUrl.toString();
   }

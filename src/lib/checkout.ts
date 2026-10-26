@@ -12,6 +12,9 @@
 export const WHOP_CHECKOUT_URL =
   process.env.NEXT_PUBLIC_WHOP_CHECKOUT_URL ?? "";
 
+/** Public domain members should share in their affiliate links. */
+export const PUBLIC_SITE_URL = "https://www.level-up-society.com";
+
 /**
  * The checkout URL when it is configured, otherwise an on-page anchor so the
  * site still works before WHOP is wired up.
