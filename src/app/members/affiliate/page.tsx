@@ -3,7 +3,7 @@ import { AccessNotice } from "@/components/AccessNotice";
 import { AffiliateBackOffice } from "@/components/AffiliateBackOffice";
 import { Footer } from "@/components/Footer";
 import { Nav } from "@/components/Nav";
-import { isAuthConfigured } from "@/lib/env";
+import { getEnv, isAuthConfigured } from "@/lib/env";
 import { requireMember } from "@/lib/member-access";
 import { getAffiliateBackOfficeStats } from "@/lib/whop-affiliates";
 
@@ -35,11 +35,20 @@ export default async function AffiliateBackOfficePage({
     user.sub,
     user.preferred_username,
   );
+  let referralLink: string | null = null;
+  if (result.status === "ready" && user.preferred_username) {
+    const referralUrl = new URL("/join", getEnv().NEXT_PUBLIC_APP_URL);
+    referralUrl.searchParams.set("a", user.preferred_username);
+    referralLink = referralUrl.toString();
+  }
 
   return (
     <>
       <Nav />
-      <AffiliateBackOffice result={result} />
+      <AffiliateBackOffice
+        result={result}
+        referralLink={referralLink}
+      />
       <Footer />
     </>
   );

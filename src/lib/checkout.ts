@@ -20,5 +20,17 @@ export function checkoutHref(fallback = "#memberships"): string {
   return WHOP_CHECKOUT_URL || fallback;
 }
 
+/** Extract the plan ID from the configured hosted checkout URL for the embed. */
+export function whopCheckoutPlanId(): string | null {
+  if (!WHOP_CHECKOUT_URL) return null;
+
+  try {
+    const pathname = new URL(WHOP_CHECKOUT_URL).pathname;
+    return pathname.match(/^\/checkout\/(plan_[A-Za-z0-9_-]+)\/?$/)?.[1] ?? null;
+  } catch {
+    return null;
+  }
+}
+
 /** True when the site can hand a buyer off to WHOP checkout. */
 export const isCheckoutConfigured = WHOP_CHECKOUT_URL.length > 0;
