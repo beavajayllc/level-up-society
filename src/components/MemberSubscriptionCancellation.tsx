@@ -103,52 +103,54 @@ export function MemberSubscriptionCancellation({
 }) {
   const [open, setOpen] = useState(false);
 
-  if (subscriptions !== null && subscriptions.length === 0) return null;
-
   return (
     <section className="mt-10 border-t border-silver/8 pt-6">
-      {subscriptions === null ? (
-        <p className="text-[13px] text-silver/40">
-          Subscription options are temporarily unavailable. Please refresh or
-          contact support for help.
-        </p>
-      ) : (
-        <>
-          <p className="text-[13px] text-silver/40">
-            To cancel your subscription,{" "}
-            <button
-              type="button"
-              aria-expanded={open}
-              onClick={() => setOpen((value) => !value)}
-              className="underline decoration-silver/25 underline-offset-4 transition hover:text-silver/75 hover:decoration-silver/60"
-            >
-              click here
-            </button>
-            .
-          </p>
-          {open ? (
-            <div
-              role="region"
-              aria-label="Subscription cancellation"
-              className="mt-5 grid gap-3"
-            >
-              {subscriptions.map((subscription) => (
-                <SubscriptionCancellationForm
-                  key={subscription.membershipId}
-                  subscription={subscription}
-                />
-              ))}
-              <button
-                type="button"
-                onClick={() => setOpen(false)}
-                className="justify-self-start px-1 py-1 text-[12px] text-silver/35 transition hover:text-silver/65"
-              >
-                Keep my membership
-              </button>
-            </div>
-          ) : null}
-        </>
-      )}
+      <p className="text-[13px] text-silver/40">
+        To cancel your subscription,{" "}
+        <button
+          type="button"
+          aria-expanded={open}
+          onClick={() => setOpen((value) => !value)}
+          className="underline decoration-silver/25 underline-offset-4 transition hover:text-silver/75 hover:decoration-silver/60"
+        >
+          click here
+        </button>
+        .
+      </p>
+      {open ? (
+        <div
+          role="region"
+          aria-label="Subscription cancellation"
+          className="mt-5 grid gap-3"
+        >
+          {subscriptions === null ? (
+            <p className="rounded-tile border border-silver/10 bg-ink/60 p-5 text-[13px] leading-relaxed text-silver/55">
+              Whop cancellation details are temporarily unavailable. Please
+              refresh or contact support for help.
+            </p>
+          ) : subscriptions.length === 0 ? (
+            <p className="rounded-tile border border-silver/10 bg-ink/60 p-5 text-[13px] leading-relaxed text-silver/55">
+              We couldn’t find a recurring Level Up Pro subscription on this
+              Whop account. If you’re currently being billed, contact support
+              and we’ll help check it.
+            </p>
+          ) : (
+            subscriptions.map((subscription) => (
+              <SubscriptionCancellationForm
+                key={subscription.membershipId}
+                subscription={subscription}
+              />
+            ))
+          )}
+          <button
+            type="button"
+            onClick={() => setOpen(false)}
+            className="justify-self-start px-1 py-1 text-[12px] text-silver/35 transition hover:text-silver/65"
+          >
+            Keep my membership
+          </button>
+        </div>
+      ) : null}
     </section>
   );
 }
