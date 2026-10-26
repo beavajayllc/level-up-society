@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getSession } from "@/lib/session";
+import { getRequestSession } from "@/lib/session";
 import { checkMembershipCached } from "@/lib/whop-access";
 import {
   createCloudflareManifestUrl,
@@ -9,8 +9,11 @@ import {
 /**
  * Issues a short-lived Cloudflare Stream player URL only to active members.
  */
-export async function GET(): Promise<NextResponse> {
-  const session = await getSession();
+export async function GET(request: Request): Promise<NextResponse> {
+  const session = await getRequestSession(request);
+  if (session.unavailable) {
+    return NextResponse.json({ error: "auth_unavailable" }, { status: 503 });
+  }
   const user = session.user;
 
   if (!user) {

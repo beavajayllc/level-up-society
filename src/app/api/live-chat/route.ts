@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getSession } from "@/lib/session";
+import { getRequestSession } from "@/lib/session";
 import { checkMembershipCached } from "@/lib/whop-access";
 import { getChatMessages, postChatMessage } from "@/lib/whop-chat";
 import { refreshTokens } from "@/lib/whop-oauth";
@@ -17,8 +17,11 @@ interface LiveChatMember {
   accessToken: string | null;
 }
 
-async function memberOrNull(): Promise<LiveChatMember | null> {
-  const session = await getSession();
+type MemberResult = LiveChatMember | { unavailable: true } | null;
+
+async function memberOrNull(request: Request): Promise<MemberResult> {
+  const session = await getRequestSession(request);
+  if (session.unavailable) return { unavailable: true };
   const user = session.user;
   if (!user) return null;
 
@@ -43,8 +46,11 @@ async function memberOrNull(): Promise<LiveChatMember | null> {
   return { user, accessToken: session.tokens.access_token };
 }
 
-export async function GET(): Promise<NextResponse> {
-  const member = await memberOrNull();
+export async function GET(request: Request): Promise<NextResponse> {
+  const member = await memberOrNull(request);
+  if (member && "unavailable" in member) {
+    return NextResponse.json({ error: "auth_unavailable" }, { status: 503 });
+  }
   if (!member) {
     return NextResponse.json(
       {
@@ -78,7 +84,10 @@ export async function GET(): Promise<NextResponse> {
 }
 
 export async function POST(request: Request): Promise<NextResponse> {
-  const member = await memberOrNull();
+  const member = await memberOrNull(request);
+  if (member && "unavailable" in member) {
+    return NextResponse.json({ error: "auth_unavailable" }, { status: 503 });
+  }
   if (!member) {
     return NextResponse.json({ error: "not_authorized" }, { status: 401 });
   }

@@ -7,6 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "mobile:start": "npm --prefix apps/mobile start",
+    "mobile:ios": "npm --prefix apps/mobile run ios",
+    "mobile:android": "npm --prefix apps/mobile run android",
     "telegram:db:create": "wrangler d1 create level-up-society-telegram --config cloudflare/telegram-gateway/wrangler.jsonc",
     "telegram:db:migrate": "wrangler d1 migrations apply level-up-society-telegram --remote --config cloudflare/telegram-gateway/wrangler.jsonc",
     "telegram:deploy": "wrangler deploy --config cloudflare/telegram-gateway/wrangler.jsonc"

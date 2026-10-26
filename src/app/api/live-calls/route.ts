@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getSession } from "@/lib/session";
+import { getRequestSession } from "@/lib/session";
 import { checkMembershipCached } from "@/lib/whop-access";
 import { getLiveCalls } from "@/lib/whop-livestream";
 
@@ -10,8 +10,11 @@ import { getLiveCalls } from "@/lib/whop-livestream";
  * Member only: without a WHOP session and an active Level Up Pro membership
  * this returns a bare, empty state rather than any call details.
  */
-export async function GET(): Promise<NextResponse> {
-  const session = await getSession();
+export async function GET(request: Request): Promise<NextResponse> {
+  const session = await getRequestSession(request);
+  if (session.unavailable) {
+    return NextResponse.json({ connected: false }, { status: 503 });
+  }
   const user = session.user;
 
   if (!user) {

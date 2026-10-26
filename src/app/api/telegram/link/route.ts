@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getEnv } from "@/lib/env";
-import { getSession } from "@/lib/session";
+import { getRequestSession } from "@/lib/session";
 import { checkMembership } from "@/lib/whop-access";
 
 export async function POST(request: Request) {
@@ -11,7 +11,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Request origin was not accepted." }, { status: 403 });
   }
 
-  const session = await getSession();
+  const session = await getRequestSession(request);
+  if (session.unavailable) {
+    return NextResponse.json({ error: "Sign-in service is unavailable. Please try again." }, { status: 503 });
+  }
   if (!session.user) {
     return NextResponse.json({ error: "Sign in to your member account first." }, { status: 401 });
   }

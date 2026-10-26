@@ -17,6 +17,7 @@ interface D1PreparedStatement {
 
 interface D1Database {
   prepare(sql: string): D1PreparedStatement;
+  batch(statements: D1PreparedStatement[]): Promise<D1Result[]>;
 }
 
 interface ExecutionContext {
@@ -808,7 +809,11 @@ async function handleBotChatMemberUpdate(
   env: Env,
   update: TelegramChatMemberUpdate,
 ): Promise<void> {
-  if (update.chat.type !== "group" && update.chat.type !== "supergroup") return;
+  if (
+    update.chat.type !== "group" &&
+    update.chat.type !== "supergroup" &&
+    update.chat.type !== "channel"
+  ) return;
 
   const botMembership = update.new_chat_member;
   if (
@@ -816,13 +821,13 @@ async function handleBotChatMemberUpdate(
     botMembership.can_invite_users !== true ||
     botMembership.can_restrict_members !== true
   ) {
-    console.warn("[telegram setup] bot needs invite and member restriction permissions in the target group");
+    console.warn("[telegram setup] bot needs invite and member restriction permissions in the target chat");
     return;
   }
 
   const chatId = String(update.chat.id);
   if (env.TELEGRAM_CHAT_ID && env.TELEGRAM_CHAT_ID !== chatId) {
-    console.warn("[telegram setup] bot was added to a group that does not match the configured target");
+    console.warn("[telegram setup] bot was added to a chat that does not match the configured target");
     return;
   }
 
@@ -830,7 +835,7 @@ async function handleBotChatMemberUpdate(
     "SELECT setting_value FROM telegram_settings WHERE setting_key = 'target_chat_id'",
   ).first<{ setting_value: string }>();
   if (existing && existing.setting_value !== chatId) {
-    console.warn("[telegram setup] another Telegram group is already connected; the target was left unchanged");
+    console.warn("[telegram setup] another Telegram chat is already connected; the target was left unchanged");
     return;
   }
 
@@ -864,6 +869,137 @@ async function syncMemberRoute(env: Env, request: Request): Promise<Response> {
   if (state === "unknown") throw new GatewayError("membership_unavailable", 503);
   await syncAccount(env, whopUserId, state === "active" || state === "trialing");
   return json({ synced: true });
+}
+
+function hasGatewayAuthorization(request: Request, env: Env): boolean {
+  return constantTimeEqual(
+    request.headers.get("authorization") ?? "",
+    `Bearer ${env.LUS_GATEWAY_SECRET}`,
+  );
+}
+
+function validDigest(value: unknown): value is string {
+  return typeof value === "string" && /^[A-Za-z0-9_-]{43}$/.test(value);
+}
+
+function validSessionPayload(value: unknown): value is string {
+  return typeof value === "string" && value.length > 0 && value.length <= 20_000;
+}
+
+async function mobileAuthRoute(
+  env: Env,
+  request: Request,
+  operation: "codes" | "exchange" | "resolve" | "update" | "revoke",
+): Promise<Response> {
+  if (!hasGatewayAuthorization(request, env)) {
+    return json({ error: "unauthorized" }, 401);
+  }
+
+  const body: unknown = await request.json().catch(() => null);
+  if (!isRecord(body)) return json({ error: "invalid_body" }, 400);
+  const now = Math.floor(Date.now() / 1000);
+
+  if (operation === "codes") {
+    const { codeHash, sessionPayload, createdAt, expiresAt } = body;
+    if (
+      !validDigest(codeHash) ||
+      !validSessionPayload(sessionPayload) ||
+      typeof createdAt !== "number" ||
+      !Number.isInteger(createdAt) ||
+      typeof expiresAt !== "number" ||
+      !Number.isInteger(expiresAt) ||
+      createdAt > now + 30 ||
+      expiresAt <= now ||
+      expiresAt > now + 5 * 60
+    ) {
+      return json({ error: "invalid_code" }, 400);
+    }
+
+    const result = await env.DB.prepare(
+      `INSERT INTO mobile_auth_codes (code_hash, session_payload, created_at, expires_at)
+       VALUES (?, ?, ?, ?)`,
+    )
+      .bind(codeHash, sessionPayload, createdAt, expiresAt)
+      .run();
+    if (!result.success) throw new GatewayError("mobile_auth_code_store_failed", 503);
+    return json({ ok: true });
+  }
+
+  if (operation === "exchange") {
+    const { codeHash, sessionHash, expiresAt } = body;
+    if (
+      !validDigest(codeHash) ||
+      !validDigest(sessionHash) ||
+      typeof expiresAt !== "number" ||
+      !Number.isInteger(expiresAt) ||
+      expiresAt <= now ||
+      expiresAt > now + 30 * 24 * 60 * 60
+    ) {
+      return json({ error: "invalid_code" }, 400);
+    }
+
+    const [inserted] = await env.DB.batch([
+      env.DB.prepare(
+        `INSERT INTO mobile_auth_sessions (session_hash, session_payload, created_at, expires_at)
+         SELECT ?, session_payload, ?, ? FROM mobile_auth_codes
+          WHERE code_hash = ? AND expires_at > ?`,
+      ).bind(sessionHash, now, expiresAt, codeHash, now),
+      env.DB.prepare("DELETE FROM mobile_auth_codes WHERE code_hash = ?").bind(codeHash),
+    ]);
+    if (!inserted?.success) throw new GatewayError("mobile_auth_session_store_failed", 503);
+    if ((inserted.meta?.changes ?? 0) !== 1) {
+      return json({ error: "invalid_code" }, 401);
+    }
+
+    const session = await env.DB.prepare(
+      `SELECT session_payload FROM mobile_auth_sessions
+        WHERE session_hash = ? AND revoked_at IS NULL AND expires_at > ?`,
+    )
+      .bind(sessionHash, now)
+      .first<{ session_payload: string }>();
+    if (!session) throw new GatewayError("mobile_auth_session_missing", 503);
+    return json({ ok: true, sessionPayload: session.session_payload });
+  }
+
+  if (operation === "resolve") {
+    const { sessionHash } = body;
+    if (!validDigest(sessionHash)) return json({ error: "invalid_session" }, 400);
+    const session = await env.DB.prepare(
+      `SELECT session_payload FROM mobile_auth_sessions
+        WHERE session_hash = ? AND revoked_at IS NULL AND expires_at > ?`,
+    )
+      .bind(sessionHash, now)
+      .first<{ session_payload: string }>();
+    return json(
+      session
+        ? { active: true, sessionPayload: session.session_payload }
+        : { active: false },
+    );
+  }
+
+  if (operation === "update") {
+    const { sessionHash, sessionPayload } = body;
+    if (!validDigest(sessionHash) || !validSessionPayload(sessionPayload)) {
+      return json({ error: "invalid_session" }, 400);
+    }
+    const result = await env.DB.prepare(
+      `UPDATE mobile_auth_sessions SET session_payload = ?
+        WHERE session_hash = ? AND revoked_at IS NULL AND expires_at > ?`,
+    )
+      .bind(sessionPayload, sessionHash, now)
+      .run();
+    return json({ active: (result.meta?.changes ?? 0) === 1 });
+  }
+
+  const { sessionHash } = body;
+  if (!validDigest(sessionHash)) return json({ error: "invalid_session" }, 400);
+  const result = await env.DB.prepare(
+    `UPDATE mobile_auth_sessions SET revoked_at = ?
+      WHERE session_hash = ? AND revoked_at IS NULL`,
+  )
+    .bind(now, sessionHash)
+    .run();
+  return json({ revoked: (result.meta?.changes ?? 0) === 1 });
 }
 
 async function syncAccount(
@@ -968,6 +1104,12 @@ async function handleTelegramWebhook(env: Env, request: Request): Promise<Respon
 
 async function reconcile(env: Env): Promise<void> {
   const now = Math.floor(Date.now() / 1000);
+  await env.DB.prepare("DELETE FROM mobile_auth_codes WHERE expires_at < ?")
+    .bind(now - 86_400)
+    .run();
+  await env.DB.prepare("DELETE FROM mobile_auth_sessions WHERE expires_at < ? OR revoked_at < ?")
+    .bind(now - 86_400, now - 30 * 24 * 60 * 60)
+    .run();
   await env.DB.prepare(
     "DELETE FROM telegram_link_claims WHERE expires_at < ?",
   )
@@ -1018,6 +1160,15 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
 
     if (url.pathname === "/v1/members/sync" && request.method === "POST") {
       return await syncMemberRoute(env, request);
+    }
+
+    const mobileAuthMatch = url.pathname.match(/^\/v1\/mobile-auth\/(codes|exchange|resolve|update|revoke)$/);
+    if (mobileAuthMatch && request.method === "POST") {
+      return await mobileAuthRoute(
+        env,
+        request,
+        mobileAuthMatch[1] as "codes" | "exchange" | "resolve" | "update" | "revoke",
+      );
     }
 
     if (url.pathname === "/health" && request.method === "GET") {

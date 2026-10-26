@@ -3,6 +3,7 @@ import { EnvNotConfiguredError } from "@/lib/env";
 import { clearPkceCookie, readPkceCookie } from "@/lib/pkce-cookie";
 import { getSession } from "@/lib/session";
 import { checkMembership } from "@/lib/whop-access";
+import { createMobileLoginCode } from "@/lib/mobile-auth";
 import {
   exchangeCodeForTokens,
   fetchUserInfo,
@@ -13,11 +14,27 @@ function redirectTo(request: NextRequest, path: string): NextResponse {
   return NextResponse.redirect(new URL(path, request.url));
 }
 
+function redirectToMobile(error?: string, code?: string): NextResponse {
+  const target = new URL("levelupsociety://auth/complete");
+  if (error) target.searchParams.set("error", error);
+  if (code) target.searchParams.set("code", code);
+  return NextResponse.redirect(target);
+}
+
 export async function GET(request: NextRequest): Promise<NextResponse> {
   const url = new URL(request.url);
   const code = url.searchParams.get("code");
   const returnedState = url.searchParams.get("state");
   const error = url.searchParams.get("error");
+  const pkce = await readPkceCookie();
+  const mobile = pkce?.mobile === true;
+
+  const fail = async (webError: string, mobileError = webError) => {
+    await clearPkceCookie();
+    return mobile
+      ? redirectToMobile(mobileError)
+      : redirectTo(request, `/members?error=${encodeURIComponent(webError)}`);
+  };
 
   if (error) {
     console.error(
@@ -25,16 +42,15 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       error,
       url.searchParams.get("error_description"),
     );
-    return redirectTo(request, "/members?error=oauth_denied");
+    return fail("oauth_denied");
   }
 
   if (!code || !returnedState) {
-    return redirectTo(request, "/members?error=missing_params");
+    return fail("missing_params");
   }
 
-  const pkce = await readPkceCookie();
   if (!pkce || pkce.state !== returnedState) {
-    return redirectTo(request, "/members?error=state_mismatch");
+    return fail("state_mismatch");
   }
 
   try {
@@ -50,36 +66,51 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     const user = await fetchUserInfo(tokens.access_token);
     const membership = await checkMembership(user.sub);
 
-    await clearPkceCookie();
-
-    // No active membership means no session at all. An inactive member is
-    // turned away here and can never reach the members area.
-    if (membership !== "active" && membership !== "trialing") {
+    // Web sign-in still requires an active Level Up Pro subscription. Mobile
+    // sign-in also admits authenticated WHOP accounts without a subscription
+    // so they can purchase one through Apple's or Google's in-app flow.
+    if (
+      membership !== "active" &&
+      membership !== "trialing" &&
+      (!mobile || membership === "unknown")
+    ) {
       console.error(
         `[auth] login blocked for user ${user.sub}: membership=${membership}`,
       );
-      return redirectTo(
-        request,
-        membership === "unknown"
-          ? "/members?error=check_failed"
-          : "/members?error=no_membership",
+      return fail(
+        membership === "unknown" ? "check_failed" : "no_membership",
+        membership === "unknown" ? "check_failed" : "no_membership",
       );
+    }
+
+    const sessionData = {
+      user,
+      tokens,
+      membership,
+      obtainedAt: Date.now(),
+    };
+
+    if (mobile) {
+      const mobileCode = await createMobileLoginCode(sessionData);
+      await clearPkceCookie();
+      return redirectToMobile(undefined, mobileCode);
     }
 
     const session = await getSession();
     session.user = user;
     session.tokens = tokens;
     session.membership = membership;
-    session.obtainedAt = Date.now();
+    session.obtainedAt = sessionData.obtainedAt;
     await session.save();
+    await clearPkceCookie();
 
     return redirectTo(request, pkce.next ?? "/members");
   } catch (caught) {
     if (caught instanceof EnvNotConfiguredError) {
       console.error("[auth] WHOP is not configured:", caught.missing);
-      return redirectTo(request, "/members?error=not_configured");
+      return fail("not_configured");
     }
     console.error("[auth] callback failed:", caught);
-    return redirectTo(request, "/members?error=oauth_failed");
+    return fail("oauth_failed");
   }
 }

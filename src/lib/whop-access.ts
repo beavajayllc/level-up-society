@@ -2,6 +2,7 @@ import "server-only";
 
 import { WhopClient, type Whop } from "@whop/sdk";
 import { getEnv, whopSdkBaseUrl, type Env } from "@/lib/env";
+import { checkRevenueCatAccess } from "@/lib/revenuecat-access";
 
 /**
  * Membership access checks.
@@ -138,7 +139,7 @@ async function hasOfferFamilyAccess(
   const title = await canonicalProductTitle(env);
   if (!title) return false;
 
-  let memberships: Whop.Membership[] = [];
+  const memberships: Whop.Membership[] = [];
 
   try {
     const page = await getClient().memberships.list({
@@ -168,7 +169,7 @@ async function hasOfferFamilyAccess(
  * resource. Then, for members of an earlier version of the offer, the paid
  * membership itself.
  */
-export async function checkMembership(
+async function checkWhopMembership(
   userId: string,
 ): Promise<MembershipState> {
   const env = getEnv();
@@ -208,6 +209,23 @@ export async function checkMembership(
 }
 
 /**
+ * Level Up Pro is one access tier across WHOP web checkout and native store
+ * subscriptions. WHOP remains authoritative for web purchases; RevenueCat
+ * can grant the same tier for verified App Store / Google Play purchases.
+ */
+export async function checkMembership(
+  userId: string,
+): Promise<MembershipState> {
+  const whopState = await checkWhopMembership(userId);
+  if (whopState === "active" || whopState === "trialing") return whopState;
+
+  const storeState = await checkRevenueCatAccess(userId);
+  if (storeState === "active") return "active";
+  if (whopState === "unknown" || storeState === "unknown") return "unknown";
+  return whopState;
+}
+
+/**
  * Detailed membership listing for a user. Used by the members area to show
  * what a member actually has access to.
  */
@@ -238,6 +256,15 @@ export async function checkMembershipCached(
     return cached.state;
   }
 
+  const state = await checkMembership(userId);
+  accessCache.set(userId, { state, expires: Date.now() + CACHE_TTL_MS });
+  return state;
+}
+
+/** Refreshes a member's state and replaces any previous cached result. */
+export async function refreshMembershipCached(
+  userId: string,
+): Promise<MembershipState> {
   const state = await checkMembership(userId);
   accessCache.set(userId, { state, expires: Date.now() + CACHE_TTL_MS });
   return state;

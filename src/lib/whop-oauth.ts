@@ -35,6 +35,8 @@ export interface PkceState {
   nonce: string;
   /** Relative path to return to after a successful login. */
   next?: string;
+  /** Return the verified web OAuth session to the native app using a one-time code. */
+  mobile?: boolean;
 }
 
 /**

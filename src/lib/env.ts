@@ -45,6 +45,12 @@ const envSchema = z.object({
   TELEGRAM_GATEWAY_URL: z.url().optional(),
   /** Shared server-only secret for the app-to-Worker calls. */
   TELEGRAM_GATEWAY_SECRET: z.string().min(32).optional(),
+  /** RevenueCat v1 secret API key used only for server-side entitlement checks. */
+  REVENUECAT_SECRET_API_KEY: z.string().min(1).optional(),
+  /** Shared secret used to authenticate RevenueCat subscription webhooks. */
+  REVENUECAT_WEBHOOK_SECRET: z.string().min(32).optional(),
+  /** Shared entitlement identifier attached to the Apple and Google products. */
+  REVENUECAT_ENTITLEMENT_ID: z.string().min(1).default("level_up_pro"),
   /** Explicit production switch enabled only after the bot token is installed. */
   TELEGRAM_GATEWAY_READY: z
     .string()
@@ -93,6 +99,9 @@ function readRawEnv(): Record<string, string | undefined> {
     CLOUDFLARE_STREAM_API_TOKEN: process.env.CLOUDFLARE_STREAM_API_TOKEN,
     TELEGRAM_GATEWAY_URL: process.env.TELEGRAM_GATEWAY_URL,
     TELEGRAM_GATEWAY_SECRET: process.env.TELEGRAM_GATEWAY_SECRET,
+    REVENUECAT_SECRET_API_KEY: process.env.REVENUECAT_SECRET_API_KEY,
+    REVENUECAT_WEBHOOK_SECRET: process.env.REVENUECAT_WEBHOOK_SECRET,
+    REVENUECAT_ENTITLEMENT_ID: process.env.REVENUECAT_ENTITLEMENT_ID,
     TELEGRAM_GATEWAY_READY: process.env.TELEGRAM_GATEWAY_READY,
     WHOP_SANDBOX: process.env.WHOP_SANDBOX,
     SESSION_SECRET: process.env.SESSION_SECRET,

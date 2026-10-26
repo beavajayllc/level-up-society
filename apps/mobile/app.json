@@ -1,0 +1,44 @@
+{
+  "expo": {
+    "name": "Level Up Society",
+    "slug": "level-up-society",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/lus-mark.png",
+    "scheme": "levelupsociety",
+    "userInterfaceStyle": "dark",
+    "ios": {
+      "bundleIdentifier": "com.levelupsociety.mobile",
+      "icon": "./assets/images/lus-mark.png",
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.levelupsociety.mobile",
+      "adaptiveIcon": {
+        "backgroundColor": "#08090B",
+        "foregroundImage": "./assets/images/lus-mark.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "output": "server",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#08090B",
+          "image": "./assets/images/lus-mark.png",
+          "imageWidth": 180
+        }
+      ],
+      "expo-secure-store",
+      "expo-video"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}

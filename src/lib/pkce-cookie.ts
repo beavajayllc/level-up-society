@@ -9,6 +9,7 @@ const pkceSchema = z.object({
   state: z.string(),
   nonce: z.string(),
   next: z.string().optional(),
+  mobile: z.boolean().optional(),
 });
 
 export async function setPkceCookie(pkce: PkceState): Promise<void> {
