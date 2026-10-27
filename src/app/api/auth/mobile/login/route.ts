@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { unstable_rethrow } from "next/navigation";
 import { EnvNotConfiguredError, getAppUrl } from "@/lib/env";
 import { getCanonicalMobileLoginRedirect } from "@/lib/auth-origin";
 import { setPkceCookie } from "@/lib/pkce-cookie";
@@ -23,6 +24,7 @@ export async function GET(request: Request): Promise<NextResponse> {
   try {
     canonicalRedirect = getCanonicalMobileLoginRedirect(request.url, getAppUrl());
   } catch (error) {
+    unstable_rethrow(error);
     if (error instanceof EnvNotConfiguredError) {
       console.error("[auth] app origin is not configured:", error.missing);
       return callbackError("not_configured");
@@ -50,6 +52,7 @@ export async function GET(request: Request): Promise<NextResponse> {
       headers: { "Cache-Control": "private, no-store" },
     });
   } catch (error) {
+    unstable_rethrow(error);
     if (error instanceof EnvNotConfiguredError) {
       console.error("[auth] WHOP is not configured:", error.missing);
       return callbackError("not_configured");
