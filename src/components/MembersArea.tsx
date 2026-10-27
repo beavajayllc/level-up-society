@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, ShieldCheck } from "lucide-react";
 import { memberResources } from "@/lib/data";
@@ -34,37 +35,54 @@ export function MembersArea({
       <Glow className="-left-[10%] bottom-[-10%] h-[460px] w-[460px]" opacity={0.06} />
 
       <div className="container-x relative py-20 lg:py-28">
-        <Reveal>
-          <SectionLabel index="07" title="Members" tone="light" />
-          <h1 className="mt-6 max-w-3xl text-[clamp(2.25rem,5vw,3.75rem)] font-semibold leading-[1.02] tracking-[-0.04em] text-silver">
-            Welcome inside,{" "}
-            <span className="display-serif text-chrome-gradient">{name}</span>
-          </h1>
-          <p className="mt-6 max-w-lg text-[17px] leading-relaxed text-silver/55">
-            Your membership is active. Everything below is yours — go build.
-          </p>
-        </Reveal>
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start lg:gap-12">
+          <div>
+            <Reveal>
+              <SectionLabel index="07" title="Members" tone="light" />
+              <h1 className="mt-6 max-w-3xl text-[clamp(2.25rem,5vw,3.75rem)] font-semibold leading-[1.02] tracking-[-0.04em] text-silver">
+                Welcome inside,{" "}
+                <span className="display-serif text-chrome-gradient">{name}</span>
+              </h1>
+              <p className="mt-6 max-w-lg text-[17px] leading-relaxed text-silver/55">
+                Your membership is active. Everything below is yours — go build.
+              </p>
+            </Reveal>
 
-        <Reveal delay={0.1}>
-          <div className="mt-10 flex flex-wrap items-center gap-3">
-            <span className="inline-flex items-center gap-2.5 rounded-pill border border-chrome/25 bg-chrome/10 px-4 py-2 text-[13px] text-chrome">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-chrome opacity-60" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-chrome" />
-              </span>
-              Membership active
-            </span>
-            <span className="inline-flex items-center gap-2 rounded-pill border border-silver/12 bg-silver/4 px-4 py-2 text-[13px] text-silver/55">
-              <ShieldCheck size={14} className="text-chrome/80" />
-              Level Up Pro · $97/mo
-            </span>
-            {lusEmail ? (
-              <span className="rounded-pill border border-silver/10 px-4 py-2 text-[13px] text-silver/45">
-                {lusEmail}
-              </span>
-            ) : null}
+            <Reveal delay={0.1}>
+              <div className="mt-10 flex flex-wrap items-center gap-3">
+                <span className="inline-flex items-center gap-2.5 rounded-pill border border-chrome/25 bg-chrome/10 px-4 py-2 text-[13px] text-chrome">
+                  <span className="relative flex h-2 w-2">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-chrome opacity-60" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-chrome" />
+                  </span>
+                  Membership active
+                </span>
+                <span className="inline-flex items-center gap-2 rounded-pill border border-silver/12 bg-silver/4 px-4 py-2 text-[13px] text-silver/55">
+                  <ShieldCheck size={14} className="text-chrome/80" />
+                  Level Up Pro · $97/mo
+                </span>
+                {lusEmail ? (
+                  <span className="rounded-pill border border-silver/10 px-4 py-2 text-[13px] text-silver/45">
+                    {lusEmail}
+                  </span>
+                ) : null}
+              </div>
+            </Reveal>
           </div>
-        </Reveal>
+          <Reveal delay={0.15}>
+            <div className="mx-auto w-full max-w-[340px] overflow-hidden rounded-card border border-silver/10 bg-ink-2">
+              <Image
+                src="/brand/monthly-level-up-call.png"
+                alt="Monthly Level Up Call, with a special guest, the first week of every month."
+                width={1254}
+                height={1254}
+                loading="eager"
+                sizes="(min-width: 1024px) 340px, (min-width: 640px) 340px, 85vw"
+                className="h-auto w-full"
+              />
+            </div>
+          </Reveal>
+        </div>
 
         <Stagger className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {memberResources.map((resource) => {
