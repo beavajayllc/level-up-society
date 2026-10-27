@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Footer } from "@/components/Footer";
-import { Nav } from "@/components/Nav";
+import { PublicPageNav } from "@/components/PublicPageNav";
 
 export const metadata: Metadata = {
   title: "Privacy Policy — Level Up Society",
@@ -48,7 +48,7 @@ const sections = [
 export default function PrivacyPolicyPage() {
   return (
     <>
-      <Nav />
+      <PublicPageNav />
       <main className="container-x flex-1 py-20 sm:py-28">
         <div className="mx-auto max-w-4xl">
           <p className="text-[11px] font-semibold tracking-[0.22em] uppercase text-silver/45">

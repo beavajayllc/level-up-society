@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Footer } from "@/components/Footer";
-import { Nav } from "@/components/Nav";
+import { PublicPageNav } from "@/components/PublicPageNav";
 
 export const metadata: Metadata = {
   title: "Request Account Deletion — Level Up Society",
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function DeleteAccountPage() {
   return (
     <>
-      <Nav />
+      <PublicPageNav />
       <main className="container-x flex-1 py-20 sm:py-28">
         <section className="mx-auto max-w-3xl rounded-[2rem] border border-silver/10 bg-ink-2 p-7 sm:p-12">
           <p className="text-[11px] font-semibold tracking-[0.22em] uppercase text-silver/45">
