@@ -1,8 +1,9 @@
 import { Redirect } from "expo-router";
+import * as Linking from "expo-linking";
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 import { Image } from "expo-image";
 import lusMark from "@/assets/images/lus-mark.png";
-import { Body, Eyebrow, PrimaryButton, Screen, StatusNote, palette } from "@/components/ui";
+import { Body, Eyebrow, PrimaryButton, QuietButton, Screen, StatusNote, palette } from "@/components/ui";
 import { useSession } from "@/lib/session-context";
 
 export default function SignInScreen() {
@@ -37,6 +38,14 @@ export default function SignInScreen() {
 
         {error ? <StatusNote tone="error">{error}</StatusNote> : null}
         <Text style={styles.footer}>Sign in with the same WHOP account you use for Level Up Pro.</Text>
+        <View style={styles.legalLinks}>
+          <QuietButton onPress={() => void Linking.openURL("https://www.level-up-society.com/privacy-policy")}>
+            Privacy policy
+          </QuietButton>
+          <QuietButton onPress={() => void Linking.openURL("https://www.level-up-society.com/delete-account")}>
+            Request account deletion
+          </QuietButton>
+        </View>
       </View>
     </Screen>
   );
@@ -50,5 +59,6 @@ const styles = StyleSheet.create({
   title: { color: palette.text, fontSize: 40, lineHeight: 45, letterSpacing: -1.5, fontWeight: "700" },
   description: { marginTop: -6, marginBottom: 4, fontSize: 16, lineHeight: 25 },
   footer: { color: palette.dim, fontSize: 12, lineHeight: 18, marginTop: -3 },
+  legalLinks: { width: "100%", gap: 10, marginTop: 2 },
   loader: { alignSelf: "center", marginTop: 18 },
 });

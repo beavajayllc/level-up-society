@@ -94,11 +94,11 @@ export function PrimaryButton({
     <Pressable
       {...props}
       disabled={disabled}
-      style={({ pressed }) => [
+      style={(state) => [
         styles.primaryButton,
         disabled && styles.buttonDisabled,
-        pressed && !disabled && styles.buttonPressed,
-        typeof style === "function" ? style({ pressed }) : style,
+        state.pressed && !disabled && styles.buttonPressed,
+        typeof style === "function" ? style(state) : style,
       ]}
     >
       {typeof children === "string" ? <Text style={styles.primaryButtonText}>{children}</Text> : children}

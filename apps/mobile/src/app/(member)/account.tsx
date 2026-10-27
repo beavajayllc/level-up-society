@@ -1,8 +1,12 @@
 import { Ionicons } from "@expo/vector-icons";
+import * as Linking from "expo-linking";
 import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Body, BrandHeader, Eyebrow, PageScroll, PrimaryButton, Surface, palette } from "@/components/ui";
+import { Body, BrandHeader, Eyebrow, PageScroll, PrimaryButton, QuietButton, Surface, palette } from "@/components/ui";
 import { useSession } from "@/lib/session-context";
+
+const PRIVACY_URL = "https://www.level-up-society.com/privacy-policy";
+const DELETE_ACCOUNT_URL = "https://www.level-up-society.com/delete-account";
 
 export default function AccountScreen() {
   const { user, signOut } = useSession();
@@ -38,6 +42,17 @@ export default function AccountScreen() {
             </View>
           </PrimaryButton>
         </Surface>
+
+        <Surface style={styles.privacyCard}>
+          <Text style={styles.cardTitle}>Privacy & account data</Text>
+          <Body>Read how we handle your information or request account deletion.</Body>
+          <QuietButton onPress={() => void Linking.openURL(PRIVACY_URL)}>
+            Privacy policy
+          </QuietButton>
+          <QuietButton onPress={() => void Linking.openURL(DELETE_ACCOUNT_URL)}>
+            Request account deletion
+          </QuietButton>
+        </Surface>
       </PageScroll>
     </SafeAreaView>
   );
@@ -57,6 +72,7 @@ const styles = StyleSheet.create({
   signOutCard: { gap: 15 },
   cardTitle: { color: palette.text, fontSize: 18, fontWeight: "600" },
   signOutButton: { marginTop: 4 },
+  privacyCard: { gap: 14 },
   buttonContent: { flexDirection: "row", alignItems: "center", gap: 8 },
   buttonText: { color: palette.ink, fontSize: 14, fontWeight: "700" },
 });

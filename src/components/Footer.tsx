@@ -11,7 +11,7 @@ const columns = [
   },
   {
     title: "Legal",
-    links: ["Privacy Policy", "Terms of Service", "Refund Policy"],
+    links: ["Privacy Policy", "Delete account", "Terms of Service", "Refund Policy"],
   },
 ];
 
@@ -38,7 +38,13 @@ export function Footer() {
                   {col.links.map((link) => (
                     <li key={link}>
                       <a
-                        href="#top"
+                        href={
+                          link === "Privacy Policy"
+                            ? "/privacy-policy"
+                            : link === "Delete account"
+                              ? "/delete-account"
+                              : "#top"
+                        }
                         className="text-[14px] text-silver/55 transition-colors duration-300 hover:text-chrome"
                       >
                         {link}
