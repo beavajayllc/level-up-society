@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
 import {
@@ -387,22 +388,18 @@ export function LiveCallsRoom({
                     )}
                   </div>
                 ) : (
-                  <div
-                    className="flex h-full w-full flex-col items-center justify-center gap-4 bg-silver/[0.03] px-8 text-center"
-                    style={
-                      state.recordings[0]?.thumbnail_url
-                        ? {
-                            backgroundImage: `linear-gradient(180deg, rgba(8,9,11,0.55), rgba(8,9,11,0.92)), url(${state.recordings[0].thumbnail_url})`,
-                            backgroundSize: "cover",
-                            backgroundPosition: "center",
-                          }
-                        : undefined
-                    }
-                  >
-                    <span className="inline-flex h-16 w-16 items-center justify-center rounded-tile border border-silver/10 bg-ink/80 text-chrome">
+                  <div className="relative flex h-full w-full flex-col items-center justify-center gap-4 bg-silver/[0.03] px-8 text-center">
+                    <Image
+                      src="/brand/lus-mark-hero.webp"
+                      alt=""
+                      fill
+                      sizes="(min-width: 1024px) 55vw, 90vw"
+                      className="pointer-events-none object-contain p-6 opacity-[0.12] sm:p-10"
+                    />
+                    <span className="relative inline-flex h-16 w-16 items-center justify-center rounded-tile border border-silver/10 bg-ink/80 text-chrome">
                       <Video size={24} strokeWidth={1.6} />
                     </span>
-                    <p className="max-w-sm text-[15px] leading-relaxed text-silver/55">
+                    <p className="relative max-w-sm text-[15px] leading-relaxed text-silver/55">
                       Nothing is on air right now. The live video will appear
                       here automatically when the host goes live.
                     </p>
