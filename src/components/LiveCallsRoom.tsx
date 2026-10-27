@@ -571,7 +571,7 @@ function ChatPanel({
             </p>
             {chat.requiresReauthorization ? (
               <a
-                href="/api/auth/login?next=%2Fmembers%2Flive-calls"
+                href="/login?next=%2Fmembers%2Flive-calls"
                 className="text-[13px] font-medium text-chrome underline underline-offset-4"
               >
                 Reconnect Whop

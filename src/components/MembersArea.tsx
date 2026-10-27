@@ -17,12 +17,16 @@ function displayName(user: WhopUserInfo): string {
 
 export function MembersArea({
   user,
+  lusUsername,
+  lusEmail,
   subscriptions,
 }: {
   user: WhopUserInfo;
+  lusUsername: string;
+  lusEmail: string;
   subscriptions: SubscriptionCancellationOption[] | null;
 }) {
-  const name = displayName(user);
+  const name = lusUsername || displayName(user);
 
   return (
     <main className="relative flex-1 overflow-hidden bg-ink">
@@ -54,9 +58,9 @@ export function MembersArea({
               <ShieldCheck size={14} className="text-chrome/80" />
               Level Up Pro · $97/mo
             </span>
-            {user.email ? (
+            {lusEmail ? (
               <span className="rounded-pill border border-silver/10 px-4 py-2 text-[13px] text-silver/45">
-                {user.email}
+                {lusEmail}
               </span>
             ) : null}
           </div>

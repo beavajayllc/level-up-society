@@ -3,7 +3,7 @@ import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { AccessNotice } from "@/components/AccessNotice";
 import { MembersArea } from "@/components/MembersArea";
-import { isAuthConfigured } from "@/lib/env";
+import { isAuthConfigured, isLusAuthConfigured } from "@/lib/env";
 import { requireMember } from "@/lib/member-access";
 import { getSubscriptionCancellationOptions } from "@/lib/whop-access";
 
@@ -33,17 +33,17 @@ export default async function MembersPage({
   }
 
   // Never throw a 500 at a signed-out visitor when WHOP is not wired up yet.
-  if (!isAuthConfigured()) {
+  if (!isAuthConfigured() || !isLusAuthConfigured()) {
     return <AccessNotice reason="not_configured" />;
   }
 
-  const { user } = await requireMember();
+  const { user, lusUser } = await requireMember();
   const subscriptions = await getSubscriptionCancellationOptions(user.sub);
 
   return (
     <>
       <Nav />
-      <MembersArea user={user} subscriptions={subscriptions} />
+      <MembersArea user={user} lusUsername={lusUser.username} lusEmail={lusUser.email} subscriptions={subscriptions} />
       <Footer />
     </>
   );

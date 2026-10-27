@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getEnv } from "@/lib/env";
 import { getRequestSession } from "@/lib/session";
-import { checkMembership } from "@/lib/whop-access";
+import { checkSessionMembership } from "@/lib/whop-access";
 
 export async function POST(request: Request) {
   const env = getEnv();
@@ -19,7 +19,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Sign in to your member account first." }, { status: 401 });
   }
 
-  const membership = await checkMembership(session.user.sub);
+  const membership = await checkSessionMembership(session.user.sub, session.mobile === true);
   if (membership === "unknown") {
     return NextResponse.json({ error: "We couldn't verify your membership. Please try again." }, { status: 503 });
   }

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getRequestSession } from "@/lib/session";
-import { checkMembershipCached } from "@/lib/whop-access";
+import { checkSessionMembership } from "@/lib/whop-access";
 import { getChatMessages, postChatMessage } from "@/lib/whop-chat";
 import { refreshTokens } from "@/lib/whop-oauth";
 import type { WhopUserInfo } from "@/lib/whop-oauth";
@@ -25,7 +25,8 @@ async function memberOrNull(request: Request): Promise<MemberResult> {
   const user = session.user;
   if (!user) return null;
 
-  const membership = await checkMembershipCached(user.sub);
+  const membership = await checkSessionMembership(user.sub, session.mobile === true);
+  if (membership === "unknown") return { unavailable: true };
   if (membership !== "active" && membership !== "trialing") return null;
 
   if (!session.tokens) return { user, accessToken: null };
@@ -49,7 +50,7 @@ async function memberOrNull(request: Request): Promise<MemberResult> {
 export async function GET(request: Request): Promise<NextResponse> {
   const member = await memberOrNull(request);
   if (member && "unavailable" in member) {
-    return NextResponse.json({ error: "auth_unavailable" }, { status: 503 });
+    return NextResponse.json({ error: "auth_unavailable" }, { status: 503, headers: { "Cache-Control": "private, no-store" } });
   }
   if (!member) {
     return NextResponse.json(
@@ -60,7 +61,7 @@ export async function GET(request: Request): Promise<NextResponse> {
         requiresReauthorization: false,
         unavailable: true,
       },
-      { status: 401, headers: { "Cache-Control": "no-store" } },
+      { status: 401, headers: { "Cache-Control": "private, no-store" } },
     );
   }
 
@@ -73,7 +74,7 @@ export async function GET(request: Request): Promise<NextResponse> {
         requiresReauthorization: true,
         unavailable: false,
       },
-      { status: 401, headers: { "Cache-Control": "no-store" } },
+      { status: 401, headers: { "Cache-Control": "private, no-store" } },
     );
   }
 

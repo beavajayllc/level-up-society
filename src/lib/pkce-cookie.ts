@@ -1,20 +1,13 @@
 import { cookies } from "next/headers";
-import { z } from "zod";
-import type { PkceState } from "@/lib/whop-oauth";
+import { getEnv } from "@/lib/env";
+import { openPkceState, sealPkceState } from "@/lib/pkce-state";
+import type { PkceStatePayload } from "@/lib/pkce-state";
 
 const PKCE_COOKIE = "whop_pkce";
 
-const pkceSchema = z.object({
-  codeVerifier: z.string(),
-  state: z.string(),
-  nonce: z.string(),
-  next: z.string().optional(),
-  mobile: z.boolean().optional(),
-});
-
-export async function setPkceCookie(pkce: PkceState): Promise<void> {
+export async function setPkceCookie(pkce: PkceStatePayload): Promise<void> {
   const store = await cookies();
-  store.set(PKCE_COOKIE, JSON.stringify(pkce), {
+  store.set(PKCE_COOKIE, sealPkceState(pkce, getEnv().SESSION_SECRET), {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
@@ -23,13 +16,13 @@ export async function setPkceCookie(pkce: PkceState): Promise<void> {
   });
 }
 
-export async function readPkceCookie(): Promise<PkceState | null> {
+export async function readPkceCookie(): Promise<PkceStatePayload | null> {
   const store = await cookies();
   const value = store.get(PKCE_COOKIE)?.value;
   if (!value) return null;
 
   try {
-    return pkceSchema.parse(JSON.parse(value));
+    return openPkceState(value, getEnv().SESSION_SECRET);
   } catch {
     return null;
   }

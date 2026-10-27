@@ -5,7 +5,8 @@ import { getEnv, whopApiBaseUrl } from "@/lib/env";
  * WHOP OAuth 2.1 + PKCE helpers.
  *
  * Every step runs server-side, so WHOP tokens never reach the browser.
- * Flow: /api/auth/login -> WHOP authorize -> /api/auth/callback.
+ * Website account linking and native-app sign-in both use hosted Whop OAuth.
+ * Mobile keeps its existing Whop OAuth callback flow.
  */
 
 const tokenResponseSchema = z.object({
@@ -37,6 +38,11 @@ export interface PkceState {
   next?: string;
   /** Return the verified web OAuth session to the native app using a one-time code. */
   mobile?: boolean;
+  /** Associate this verified Whop identity with an already signed-in LUS account. */
+  link?: boolean;
+  lusUserId?: string;
+  /** Server-sealed issue time used to reject stale OAuth correlation cookies. */
+  issuedAt?: number;
 }
 
 /**
@@ -45,9 +51,22 @@ export interface PkceState {
  */
 export function sanitizeNextPath(value: string | null): string | undefined {
   if (!value) return undefined;
-  if (!value.startsWith("/")) return undefined;
-  if (value.startsWith("//")) return undefined;
-  return value;
+  if (
+    !value.startsWith("/") ||
+    value.startsWith("//") ||
+    value.includes("\\") ||
+    /[\u0000-\u001f\u007f]/.test(value)
+  ) {
+    return undefined;
+  }
+  try {
+    const parsed = new URL(value, "https://level-up-society.invalid");
+    return parsed.origin === "https://level-up-society.invalid"
+      ? `${parsed.pathname}${parsed.search}${parsed.hash}`
+      : undefined;
+  } catch {
+    return undefined;
+  }
 }
 
 function base64url(bytes: Uint8Array): string {
@@ -113,10 +132,7 @@ export async function exchangeCodeForTokens(
   });
 
   if (!response.ok) {
-    const error: unknown = await response.json().catch(() => ({}));
-    throw new Error(
-      `Token exchange failed (${response.status}): ${JSON.stringify(error)}`,
-    );
+    throw new Error(`Whop token exchange failed (${response.status}).`);
   }
 
   return tokenResponseSchema.parse(await response.json());
@@ -138,10 +154,7 @@ export async function refreshTokens(
   });
 
   if (!response.ok) {
-    const error: unknown = await response.json().catch(() => ({}));
-    throw new Error(
-      `Token refresh failed (${response.status}): ${JSON.stringify(error)}`,
-    );
+    throw new Error(`Whop token refresh failed (${response.status}).`);
   }
 
   return tokenResponseSchema.parse(await response.json());

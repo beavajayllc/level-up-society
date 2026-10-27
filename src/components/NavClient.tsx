@@ -76,7 +76,7 @@ export function NavClient({ isSignedIn }: { isSignedIn: boolean }) {
                 </form>
               ) : (
                 <a
-                  href="/api/auth/login?next=%2Fmembers"
+                  href="/login?next=%2Fmembers"
                   className="hidden rounded-pill px-4 py-2 text-sm text-silver/70 transition-colors duration-300 hover:text-silver sm:inline-flex"
                 >
                   Member sign in
@@ -155,7 +155,7 @@ export function NavClient({ isSignedIn }: { isSignedIn: boolean }) {
                 </motion.form>
               ) : (
                 <motion.a
-                  href="/api/auth/login?next=%2Fmembers"
+                  href="/login?next=%2Fmembers"
                   onClick={() => setOpen(false)}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}

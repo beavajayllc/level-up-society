@@ -15,6 +15,8 @@
     "telegram:deploy": "wrangler deploy --config cloudflare/telegram-gateway/wrangler.jsonc"
   },
   "dependencies": {
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.118.0",
     "@whop/elements": "^1.9.0",
     "@whop/elements-react": "^1.9.0",
     "@whop/sdk": "^2.6.0",

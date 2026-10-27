@@ -83,17 +83,17 @@ async function canonicalProductTitle(env: Env): Promise<string | null> {
     return null;
   }
 
-  let title: string | null = null;
-
   try {
     const product = await getClient().products.retrieve({ id: productId });
-    title = product.title ?? null;
+    const title = product.title ?? null;
+    if (title) {
+      canonicalTitleCache = { title, expires: Date.now() + TITLE_CACHE_MS };
+    }
+    return title;
   } catch (error) {
-    console.error("[whop] canonical product lookup failed:", error);
+    console.error("[whop] canonical product lookup failed:", error instanceof Error ? error.name : "unknown error");
+    return null;
   }
-
-  canonicalTitleCache = { title, expires: Date.now() + TITLE_CACHE_MS };
-  return title;
 }
 
 /**
@@ -136,9 +136,10 @@ function membershipGrantsAccess(membership: Whop.Membership): boolean {
 async function hasOfferFamilyAccess(
   userId: string,
   env: Env,
-): Promise<boolean> {
+): Promise<boolean | null> {
+  if (!canonicalProductId(env)) return false;
   const title = await canonicalProductTitle(env);
-  if (!title) return false;
+  if (!title) return null;
 
   const memberships: Whop.Membership[] = [];
 
@@ -152,8 +153,8 @@ async function hasOfferFamilyAccess(
       memberships.push(membership);
     }
   } catch (error) {
-    console.error("[whop] membership list failed:", error);
-    return false;
+    console.error("[whop] membership list failed:", error instanceof Error ? error.name : "unknown error");
+    return null;
   }
 
   return memberships.some(
@@ -170,7 +171,7 @@ async function hasOfferFamilyAccess(
  * resource. Then, for members of an earlier version of the offer, the paid
  * membership itself.
  */
-async function checkWhopMembership(
+export async function checkWhopMembership(
   userId: string,
 ): Promise<MembershipState> {
   const env = getEnv();
@@ -197,12 +198,18 @@ async function checkWhopMembership(
     }
   }
 
-  if (await hasOfferFamilyAccess(userId, env)) {
+  const offerFamilyAccess = await hasOfferFamilyAccess(userId, env);
+  if (offerFamilyAccess === true) {
     return "active";
   }
 
   if (accessError) {
-    console.error("[whop] membership check failed:", accessError);
+    console.error("[whop] membership access checks failed:", accessError instanceof Error ? accessError.name : "unknown error");
+  }
+  if (offerFamilyAccess === null) {
+    console.error("[whop] offer-family membership check was unavailable");
+  }
+  if (accessError || offerFamilyAccess === null) {
     return "unknown";
   }
 
@@ -217,13 +224,35 @@ async function checkWhopMembership(
 export async function checkMembership(
   userId: string,
 ): Promise<MembershipState> {
-  const whopState = await checkWhopMembership(userId);
+  let whopState: MembershipState;
+  try {
+    whopState = await checkWhopMembership(userId);
+  } catch (error) {
+    console.error("[whop] membership verification unavailable:", error instanceof Error ? error.message : "unknown error");
+    return "unknown";
+  }
   if (whopState === "active" || whopState === "trialing") return whopState;
 
-  const storeState = await checkRevenueCatAccess(userId);
+  let storeState: Awaited<ReturnType<typeof checkRevenueCatAccess>>;
+  try {
+    storeState = await checkRevenueCatAccess(userId);
+  } catch (error) {
+    console.error("[membership] secondary entitlement verification unavailable:", error instanceof Error ? error.message : "unknown error");
+    return "unknown";
+  }
   if (storeState === "active") return "active";
   if (whopState === "unknown" || storeState === "unknown") return "unknown";
   return whopState;
+}
+
+/** Keep browser access tied to Whop; native sessions retain their current provider check. */
+export function checkSessionMembership(
+  userId: string,
+  isMobileSession: boolean,
+): Promise<MembershipState> {
+  return isMobileSession
+    ? checkMembership(userId)
+    : checkWhopMembership(userId);
 }
 
 /**
@@ -382,33 +411,4 @@ export async function cancelLevelUpProSubscription(
     status: "canceled",
     renewalPeriodEnd: canceled.current_period_end ?? membership.current_period_end,
   };
-}
-
-/**
- * A short in-memory cache so a burst of requests from one member does not
- * hammer the WHOP API. Cancelled memberships are reflected within 60s.
- */
-const CACHE_TTL_MS = 60_000;
-const accessCache = new Map<string, { state: MembershipState; expires: number }>();
-
-export async function checkMembershipCached(
-  userId: string,
-): Promise<MembershipState> {
-  const cached = accessCache.get(userId);
-  if (cached && cached.expires > Date.now()) {
-    return cached.state;
-  }
-
-  const state = await checkMembership(userId);
-  accessCache.set(userId, { state, expires: Date.now() + CACHE_TTL_MS });
-  return state;
-}
-
-/** Refreshes a member's state and replaces any previous cached result. */
-export async function refreshMembershipCached(
-  userId: string,
-): Promise<MembershipState> {
-  const state = await checkMembership(userId);
-  accessCache.set(userId, { state, expires: Date.now() + CACHE_TTL_MS });
-  return state;
 }

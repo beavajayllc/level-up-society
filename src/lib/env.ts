@@ -62,6 +62,17 @@ const envSchema = z.object({
     .transform((value) => value === "true"),
   SESSION_SECRET: z.string().min(32),
   NEXT_PUBLIC_APP_URL: z.url(),
+  /** Supabase Auth project settings for independent Level Up Society accounts. */
+  NEXT_PUBLIC_SUPABASE_URL: z.url().optional(),
+  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: z.string().min(1).optional(),
+  /** Server-only Supabase secret key. Never expose this to browser code. */
+  SUPABASE_SECRET_KEY: z.string().min(1).optional(),
+});
+
+const lusAuthEnvSchema = z.object({
+  NEXT_PUBLIC_SUPABASE_URL: z.url(),
+  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: z.string().min(1),
+  SUPABASE_SECRET_KEY: z.string().min(1),
 });
 
 export type Env = z.infer<typeof envSchema>;
@@ -106,6 +117,10 @@ function readRawEnv(): Record<string, string | undefined> {
     WHOP_SANDBOX: process.env.WHOP_SANDBOX,
     SESSION_SECRET: process.env.SESSION_SECRET,
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
+    NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
+    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:
+      process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
+    SUPABASE_SECRET_KEY: process.env.SUPABASE_SECRET_KEY,
   };
 }
 
@@ -129,6 +144,39 @@ export function getEnv(): Env {
 /** True when WHOP auth is fully wired up. Used to render friendly setup states. */
 export function isAuthConfigured(): boolean {
   return envSchema.safeParse(readRawEnv()).success;
+}
+
+/** True only when the independent LUS account provider is fully connected. */
+export function isLusAuthConfigured(): boolean {
+  return lusAuthEnvSchema.safeParse(readRawEnv()).success;
+}
+
+/** The canonical origin used for trusted auth callback URLs. */
+export function getAppUrl(): string {
+  const parsed = z.url().safeParse(process.env.NEXT_PUBLIC_APP_URL);
+  if (!parsed.success) {
+    throw new EnvNotConfiguredError(["NEXT_PUBLIC_APP_URL"]);
+  }
+  return parsed.data;
+}
+
+export function getLusAuthEnv(): {
+  url: string;
+  publishableKey: string;
+  secretKey: string;
+} {
+  const parsed = lusAuthEnvSchema.safeParse(readRawEnv());
+  if (!parsed.success) {
+    throw new EnvNotConfiguredError(
+      parsed.error.issues.map((issue) => issue.path.join(".")),
+    );
+  }
+
+  return {
+    url: parsed.data.NEXT_PUBLIC_SUPABASE_URL,
+    publishableKey: parsed.data.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
+    secretKey: parsed.data.SUPABASE_SECRET_KEY,
+  };
 }
 
 /** True once the Telegram gateway has been deployed and privately linked. */

@@ -1,9 +1,14 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { EnvNotConfiguredError } from "@/lib/env";
 import { clearPkceCookie, readPkceCookie } from "@/lib/pkce-cookie";
-import { getSession } from "@/lib/session";
 import { checkMembership } from "@/lib/whop-access";
 import { createMobileLoginCode } from "@/lib/mobile-auth";
+import {
+  getLinkedWhopAccount,
+  getCurrentLusUser,
+  saveLinkedWhopAccount,
+  WhopAccountLinkError,
+} from "@/lib/lus-account";
 import {
   exchangeCodeForTokens,
   fetchUserInfo,
@@ -11,14 +16,18 @@ import {
 } from "@/lib/whop-oauth";
 
 function redirectTo(request: NextRequest, path: string): NextResponse {
-  return NextResponse.redirect(new URL(path, request.url));
+  return NextResponse.redirect(new URL(path, request.url), {
+    headers: { "Cache-Control": "private, no-store" },
+  });
 }
 
 function redirectToMobile(error?: string, code?: string): NextResponse {
   const target = new URL("levelupsociety://auth/complete");
   if (error) target.searchParams.set("error", error);
   if (code) target.searchParams.set("code", code);
-  return NextResponse.redirect(target);
+  return NextResponse.redirect(target, {
+    headers: { "Cache-Control": "private, no-store" },
+  });
 }
 
 export async function GET(request: NextRequest): Promise<NextResponse> {
@@ -28,29 +37,32 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
   const error = url.searchParams.get("error");
   const pkce = await readPkceCookie();
   const mobile = pkce?.mobile === true;
+  const linking = pkce?.link === true;
 
   const fail = async (webError: string, mobileError = webError) => {
     await clearPkceCookie();
-    return mobile
-      ? redirectToMobile(mobileError)
-      : redirectTo(request, `/members?error=${encodeURIComponent(webError)}`);
+    if (mobile) return redirectToMobile(mobileError);
+    if (linking) {
+      return redirectTo(request, `/connect-whop?error=${encodeURIComponent(webError)}&next=${encodeURIComponent(pkce?.next ?? "/members")}`);
+    }
+    return redirectTo(request, `/login?error=${encodeURIComponent(webError)}`);
   };
 
+  if (!pkce || !returnedState || pkce.state !== returnedState) {
+    return fail("state_mismatch");
+  }
+
   if (error) {
-    console.error(
-      "[auth] WHOP returned an error:",
-      error,
-      url.searchParams.get("error_description"),
-    );
+    console.error("[auth] WHOP returned an OAuth error:", error);
     return fail("oauth_denied");
   }
 
-  if (!code || !returnedState) {
+  if (!code) {
     return fail("missing_params");
   }
 
-  if (!pkce || pkce.state !== returnedState) {
-    return fail("state_mismatch");
+  if (!mobile && !linking) {
+    return fail("lus_login_required");
   }
 
   try {
@@ -64,6 +76,48 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     }
 
     const user = await fetchUserInfo(tokens.access_token);
+
+    if (linking) {
+      let lusUser;
+      try {
+        lusUser = await getCurrentLusUser();
+      } catch (error) {
+        console.error("[auth] LUS verification during Whop linking failed:", error instanceof Error ? error.name : "unknown error");
+        return fail("auth_unavailable");
+      }
+      if (!lusUser || !pkce?.lusUserId || lusUser.id !== pkce.lusUserId) {
+        return fail("account_changed");
+      }
+
+      let linkedAccount;
+      try {
+        linkedAccount = await getLinkedWhopAccount(lusUser.id);
+      } catch (error) {
+        console.error("[auth] existing Whop link check failed:", error instanceof Error ? error.name : "unknown error");
+        return fail("auth_unavailable");
+      }
+      if (linkedAccount) {
+        if (linkedAccount.user.sub !== user.sub) {
+          throw new WhopAccountLinkError(
+            "This Level Up Society account is already connected to a different Whop account.",
+            "already_linked",
+          );
+        }
+        await clearPkceCookie();
+        return redirectTo(request, pkce.next ?? "/members");
+      }
+
+      try {
+        await saveLinkedWhopAccount(lusUser.id, user, tokens, Date.now());
+      } catch (error) {
+        if (error instanceof WhopAccountLinkError) throw error;
+        console.error("[auth] Whop link could not be saved:", error instanceof Error ? error.name : "unknown error");
+        return fail("auth_unavailable");
+      }
+      await clearPkceCookie();
+      return redirectTo(request, pkce.next ?? "/members");
+    }
+
     const membership = await checkMembership(user.sub);
 
     // Web sign-in still requires an active Level Up Pro subscription. Mobile
@@ -96,21 +150,17 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       return redirectToMobile(undefined, mobileCode);
     }
 
-    const session = await getSession();
-    session.user = user;
-    session.tokens = tokens;
-    session.membership = membership;
-    session.obtainedAt = sessionData.obtainedAt;
-    await session.save();
-    await clearPkceCookie();
-
-    return redirectTo(request, pkce.next ?? "/members");
+    return fail("lus_login_required");
   } catch (caught) {
+    if (caught instanceof WhopAccountLinkError) {
+      console.error("[auth] Whop account link conflict");
+      return fail(caught.reason === "already_linked" ? "already_linked" : "link_conflict");
+    }
     if (caught instanceof EnvNotConfiguredError) {
       console.error("[auth] WHOP is not configured:", caught.missing);
       return fail("not_configured");
     }
-    console.error("[auth] callback failed:", caught);
+    console.error("[auth] callback failed:", caught instanceof Error ? caught.name : "unknown error");
     return fail("oauth_failed");
   }
 }

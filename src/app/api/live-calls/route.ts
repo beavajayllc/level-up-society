@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getRequestSession } from "@/lib/session";
-import { checkMembershipCached } from "@/lib/whop-access";
+import { checkSessionMembership } from "@/lib/whop-access";
 import { getLiveCalls } from "@/lib/whop-livestream";
 
 /**
@@ -13,17 +13,26 @@ import { getLiveCalls } from "@/lib/whop-livestream";
 export async function GET(request: Request): Promise<NextResponse> {
   const session = await getRequestSession(request);
   if (session.unavailable) {
-    return NextResponse.json({ connected: false }, { status: 503 });
+    return NextResponse.json({ connected: false }, { status: 503, headers: { "Cache-Control": "private, no-store" } });
   }
   const user = session.user;
 
   if (!user) {
-    return NextResponse.json({ connected: false }, { status: 401 });
+    return NextResponse.json({ connected: false }, { status: 401, headers: { "Cache-Control": "private, no-store" } });
   }
 
-  const membership = await checkMembershipCached(user.sub);
+  const membership = await checkSessionMembership(user.sub, session.mobile === true);
+  if (membership === "unknown") {
+    return NextResponse.json(
+      { connected: false, error: "membership_check_failed" },
+      { status: 503, headers: { "Cache-Control": "private, no-store" } },
+    );
+  }
   if (membership !== "active" && membership !== "trialing") {
-    return NextResponse.json({ connected: false }, { status: 403 });
+    return NextResponse.json(
+      { connected: false },
+      { status: 403, headers: { "Cache-Control": "private, no-store" } },
+    );
   }
 
   const state = await getLiveCalls();

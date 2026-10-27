@@ -8,11 +8,11 @@ import { Glow } from "./ui";
 const copy: Record<string, { title: string; body: string }> = {
   no_membership: {
     title: "Your membership isn't active",
-    body: "This account is signed in to WHOP, but there isn't an active Level Up Society membership on it. If you just subscribed, give it a minute and try again — otherwise reactivate from the checkout link.",
+    body: "We couldn't find an active Level Up Pro membership linked to your LUS account. If you just subscribed, give Whop a moment to update, then try again.",
   },
   not_configured: {
-    title: "Member sign-in is still being set up",
-    body: "The WHOP connection for this site hasn't been switched on yet. It will be live shortly — check back soon.",
+    title: "Member access is being connected",
+    body: "Level Up Society account sign-in and the Whop membership connection need to be configured before the members area can open.",
   },
   oauth_denied: {
     title: "Sign-in was cancelled",
@@ -25,6 +25,10 @@ const copy: Record<string, { title: string; body: string }> = {
   check_failed: {
     title: "We couldn't verify your membership",
     body: "WHOP didn't answer our access check in time. Give it another try in a moment.",
+  },
+  auth_check_failed: {
+    title: "We couldn't verify your account",
+    body: "Your sign-in service didn't respond. Please try again in a moment.",
   },
   state_mismatch: {
     title: "That sign-in link expired",
@@ -60,8 +64,8 @@ export function AccessNotice({ reason }: { reason: string }) {
             {content.body}
           </p>
           <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-            <PillButton href="/api/auth/login" variant="chrome">
-              Sign in with WHOP
+            <PillButton href="/login" variant="chrome">
+              Sign in to LUS
             </PillButton>
             <Link
               href={checkoutHref("/#memberships")}

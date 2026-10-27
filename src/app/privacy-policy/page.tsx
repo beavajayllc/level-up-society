@@ -11,7 +11,7 @@ const sections = [
   {
     title: "Information we handle",
     paragraphs: [
-      "When you sign in with WHOP, we may receive your name, username, email address, profile image, and WHOP account identifier. We use these details to sign you in, connect your membership, and provide member features. We store linked WHOP credentials in encrypted form so member features such as chat can work securely.",
+      "Website members create a Level Up Society account with a username, email address, and password. To connect a Level Up Pro membership, the member completes Whop's hosted OAuth sign-in; we receive the Whop profile details and account identifier needed to verify the link and provide member features. Linked Whop credentials are stored in encrypted form so features such as chat can work securely. The mobile app continues to use Whop OAuth for its existing sign-in flow.",
       "We receive membership and subscription details needed to check access, such as whether your Level Up Pro membership is active and its relevant status or expiration. WHOP processes web purchases. Apple and Google process purchases made in their stores, and RevenueCat helps us synchronize app subscription entitlements. We do not receive your full payment card number through the app.",
       "If you use member chat or contact support, we handle the messages and details you choose to send. Live chat messages may be visible to other members and the host. If you join the optional Telegram trade ideas group or book through Calendly, those services receive information under their own privacy practices.",
       "Our hosting, authentication, and streaming providers may process technical information needed to operate and secure the service, such as network address, device or browser details, request logs, and session identifiers. The app does not request access to your contacts or precise location.",
@@ -27,7 +27,7 @@ const sections = [
   {
     title: "Service providers",
     paragraphs: [
-      "Our providers include WHOP for sign-in, web membership, checkout, livestream information, and member chat; Apple and Google for store billing; RevenueCat for subscription entitlement management; Vercel for website hosting; Cloudflare for livestream delivery; Telegram for the optional trade ideas group; and Calendly for appointment booking. Each provider handles information under its own terms and privacy policy.",
+      "Our providers include Supabase for Level Up Society website authentication and account storage; WHOP for web checkout, membership records, hosted OAuth account linking, livestream information, and member chat; Apple and Google for store billing; RevenueCat for mobile subscription entitlement management; Vercel for website hosting; Cloudflare for livestream delivery; Telegram for the optional trade ideas group; and Calendly for appointment booking. Each provider handles information under its own terms and privacy policy.",
     ],
   },
   {

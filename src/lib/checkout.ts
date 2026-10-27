@@ -3,8 +3,8 @@
  *
  * WHOP is the merchant of record: the buyer checks out on WHOP's hosted page
  * and WHOP creates the Level Up Pro membership. Our site never touches card
- * details. The redirect after checkout lands the buyer back on /members,
- * where they sign in with WHOP OAuth.
+ * details. Website join links always pass through /join so visitors create
+ * or sign into their LUS account before Whop checkout.
  *
  * `NEXT_PUBLIC_` because the header, hero and pricing card are client
  * components. Next inlines the value at build time.
@@ -16,11 +16,11 @@ export const WHOP_CHECKOUT_URL =
 export const PUBLIC_SITE_URL = "https://www.level-up-society.com";
 
 /**
- * The checkout URL when it is configured, otherwise an on-page anchor so the
- * site still works before WHOP is wired up.
+ * Route configured website checkout through account creation/sign-in first.
+ * Without a configured plan, preserve the supplied on-page fallback.
  */
 export function checkoutHref(fallback = "#memberships"): string {
-  return WHOP_CHECKOUT_URL || fallback;
+  return WHOP_CHECKOUT_URL ? "/join" : fallback;
 }
 
 /** Extract the plan ID from the configured hosted checkout URL for the embed. */

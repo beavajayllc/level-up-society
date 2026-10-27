@@ -2,7 +2,7 @@ import { timingSafeEqual } from "node:crypto";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getEnv } from "@/lib/env";
-import { checkMembership } from "@/lib/whop-access";
+import { checkWhopMembership } from "@/lib/whop-access";
 
 const requestSchema = z.object({
   whopUserIds: z
@@ -37,7 +37,7 @@ export async function POST(request: Request) {
   for (let index = 0; index < parsed.data.whopUserIds.length; index += 5) {
     const batch = parsed.data.whopUserIds.slice(index, index + 5);
     const states = await Promise.all(
-      batch.map(async (userId) => [userId, await checkMembership(userId)] as const),
+      batch.map(async (userId) => [userId, await checkWhopMembership(userId)] as const),
     );
     for (const [userId, state] of states) memberships[userId] = state;
   }

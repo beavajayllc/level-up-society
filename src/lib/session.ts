@@ -7,9 +7,15 @@ import {
 } from "iron-session";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { getEnv } from "@/lib/env";
+import { getEnv, isLusAuthConfigured } from "@/lib/env";
+import { withSaveHandler } from "@/lib/session-state";
 import type { MembershipState } from "@/lib/whop-access";
 import type { WhopTokens, WhopUserInfo } from "@/lib/whop-oauth";
+import {
+  getCurrentLusUser,
+  getLinkedWhopAccount,
+  saveRefreshedWhopCredentials,
+} from "@/lib/lus-account";
 import {
   loadMobileSession,
   readBearerToken,
@@ -28,6 +34,8 @@ export interface SessionData {
 export interface RequestSession extends SessionData {
   /** A backing auth service is unavailable; protected routes must fail closed. */
   unavailable?: boolean;
+  /** Native bearer sessions preserve the mobile membership verification path. */
+  mobile?: boolean;
   save(): Promise<void>;
 }
 
@@ -55,45 +63,73 @@ export async function getRequestSession(request: Request): Promise<RequestSessio
   const authorization = request.headers.get("authorization") ?? "";
   if (authorization.startsWith("Bearer ")) {
     const token = readBearerToken(request);
-    if (!token) return { save: async () => undefined };
+    if (!token) return { mobile: true, save: async () => undefined };
 
     try {
       const mobile = await loadMobileSession(token);
-      if (!mobile) return { save: async () => undefined };
+      if (!mobile) return { mobile: true, save: async () => undefined };
 
-      const session: SessionData = {
-        user: mobile.user,
-        tokens: mobile.tokens,
-        membership: mobile.membership,
-        obtainedAt: mobile.obtainedAt,
-      };
-      return {
-        ...session,
-        save: () => saveMobileSession(token, session),
-      };
+      return withSaveHandler(
+        {
+          user: mobile.user,
+          tokens: mobile.tokens,
+          membership: mobile.membership,
+          obtainedAt: mobile.obtainedAt,
+          mobile: true,
+        },
+        (session) => saveMobileSession(token, session),
+      );
     } catch (error) {
-      console.error("[auth] mobile session lookup failed:", error);
-      return { unavailable: true, save: async () => undefined };
+      console.error("[auth] mobile session lookup failed:", error instanceof Error ? error.name : "unknown error");
+      return { mobile: true, unavailable: true, save: async () => undefined };
     }
   }
 
-  const session = await getSession();
-  return {
-    user: session.user,
-    tokens: session.tokens,
-    membership: session.membership,
-    obtainedAt: session.obtainedAt,
-    save: () => session.save(),
-  };
+  if (!isLusAuthConfigured()) {
+    return { unavailable: true, save: async () => undefined };
+  }
+
+  try {
+    const lusUser = await getCurrentLusUser();
+    if (!lusUser) return { save: async () => undefined };
+
+    const linked = await getLinkedWhopAccount(lusUser.id);
+    if (!linked) return { save: async () => undefined };
+
+    return withSaveHandler(
+      {
+        user: linked.user,
+        tokens: linked.tokens,
+        obtainedAt: linked.obtainedAt,
+        mobile: false,
+      },
+      async (session) => {
+        if (session.user && session.tokens) {
+          await saveRefreshedWhopCredentials(
+            lusUser.id,
+            session.user.sub,
+            session.user,
+            session.tokens,
+            session.obtainedAt ?? Date.now(),
+          );
+        }
+      },
+    );
+  } catch (error) {
+    console.error("[auth] LUS session lookup failed:", error instanceof Error ? error.message : "unknown error");
+    return { mobile: false, unavailable: true, save: async () => undefined };
+  }
 }
 
 export async function getCurrentUser(): Promise<WhopUserInfo | null> {
-  const session = await getSession();
-  return session.user ?? null;
+  const lusUser = await getCurrentLusUser();
+  if (!lusUser) return null;
+  const linked = await getLinkedWhopAccount(lusUser.id);
+  return linked?.user ?? null;
 }
 
 export async function requireUser(): Promise<WhopUserInfo> {
   const user = await getCurrentUser();
-  if (!user) redirect("/api/auth/login");
+  if (!user) redirect("/login");
   return user;
 }

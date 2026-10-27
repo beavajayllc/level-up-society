@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { checkMembershipCached } from "@/lib/whop-access";
+import { checkMembership } from "@/lib/whop-access";
 import {
   exchangeMobileLoginCode,
   MobileAuthError,
@@ -18,7 +18,7 @@ export async function POST(request: Request): Promise<NextResponse> {
 
   try {
     const result = await exchangeMobileLoginCode(parsed.data.code);
-    const membership = await checkMembershipCached(result.session.user.sub);
+    const membership = await checkMembership(result.session.user.sub);
     if (membership === "unknown") {
       await revokeMobileSession(result.sessionToken).catch(() => undefined);
       return NextResponse.json(
@@ -36,7 +36,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       { headers: { "Cache-Control": "no-store" } },
     );
   } catch (error) {
-    console.error("[auth] mobile code exchange failed:", error);
+    console.error("[auth] mobile code exchange failed:", error instanceof Error ? error.name : "unknown error");
     return NextResponse.json(
       { error: error instanceof MobileAuthError && error.status === 401 ? "invalid_code" : "auth_unavailable" },
       { status: error instanceof MobileAuthError ? error.status : 503 },

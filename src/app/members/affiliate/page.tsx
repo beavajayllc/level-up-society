@@ -3,7 +3,7 @@ import { AccessNotice } from "@/components/AccessNotice";
 import { AffiliateBackOffice } from "@/components/AffiliateBackOffice";
 import { Footer } from "@/components/Footer";
 import { Nav } from "@/components/Nav";
-import { isAuthConfigured } from "@/lib/env";
+import { isAuthConfigured, isLusAuthConfigured } from "@/lib/env";
 import { requireMember } from "@/lib/member-access";
 import { getAffiliateBackOfficeStats } from "@/lib/whop-affiliates";
 import { PUBLIC_SITE_URL } from "@/lib/checkout";
@@ -27,7 +27,7 @@ export default async function AffiliateBackOfficePage({
     return <AccessNotice reason={error} />;
   }
 
-  if (!isAuthConfigured()) {
+  if (!isAuthConfigured() || !isLusAuthConfigured()) {
     return <AccessNotice reason="not_configured" />;
   }
 

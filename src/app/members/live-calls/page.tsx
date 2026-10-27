@@ -3,7 +3,7 @@ import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { AccessNotice } from "@/components/AccessNotice";
 import { LiveCallsRoom } from "@/components/LiveCallsRoom";
-import { isAuthConfigured } from "@/lib/env";
+import { isAuthConfigured, isLusAuthConfigured } from "@/lib/env";
 import { requireMember } from "@/lib/member-access";
 import { getLiveCalls } from "@/lib/whop-livestream";
 import type { WhopUserInfo } from "@/lib/whop-oauth";
@@ -41,17 +41,17 @@ export default async function LiveCallsPage({
   }
 
   // Never throw a 500 at a signed-out visitor when WHOP is not wired up yet.
-  if (!isAuthConfigured()) {
+  if (!isAuthConfigured() || !isLusAuthConfigured()) {
     return <AccessNotice reason="not_configured" />;
   }
 
-  const { user } = await requireMember("/members/live-calls");
+  const { lusUser } = await requireMember("/members/live-calls");
   const liveCalls = await getLiveCalls();
 
   return (
     <>
       <Nav />
-      <LiveCallsRoom initial={liveCalls} memberName={displayName(user)} />
+      <LiveCallsRoom initial={liveCalls} memberName={lusUser.username || "member"} />
       <Footer />
     </>
   );

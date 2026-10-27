@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { readBearerToken } from "@/lib/mobile-auth";
 import { getRequestSession } from "@/lib/session";
-import { refreshMembershipCached } from "@/lib/whop-access";
+import { checkMembership } from "@/lib/whop-access";
 
 export async function POST(request: Request): Promise<NextResponse> {
   if (!readBearerToken(request)) {
@@ -16,7 +16,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     return NextResponse.json({ error: "not_authorized" }, { status: 401 });
   }
 
-  const membership = await refreshMembershipCached(session.user.sub);
+  const membership = await checkMembership(session.user.sub);
   if (membership === "unknown") {
     return NextResponse.json(
       { error: "membership_check_failed" },
