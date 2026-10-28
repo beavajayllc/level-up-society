@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { CalendarDays, ChevronLeft, ChevronRight } from "lucide-react";
 
-// Only dates confirmed by the team belong here; future weeks are not assumed.
+// One-off dates are listed here; recurring calls are added in callsForDate.
 const calls: Record<string, { title: string; time: string; href?: string }[]> = {
   "2026-10-25": [
     { title: "Community Call", time: "4:00 PM EST" },
@@ -28,11 +28,21 @@ function startOfWeek(date: string) {
   return addDays(date, -new Date(`${date}T00:00:00Z`).getUTCDay());
 }
 
+function callsForDate(date: string) {
+  const scheduledCalls = [...(calls[date] ?? [])];
+  const firstFitnessCall = Date.parse("2026-10-29T00:00:00Z");
+  const elapsedDays = (Date.parse(`${date}T00:00:00Z`) - firstFitnessCall) / 86_400_000;
+  if (elapsedDays >= 0 && elapsedDays % 14 === 0) {
+    scheduledCalls.push({ title: "PJ LaBeach | Fitness", time: "8:00 PM EST" });
+  }
+  return scheduledCalls;
+}
+
 export function WeeklyCallsCalendar({ today }: { today: string }) {
   const [weekStart, setWeekStart] = useState(() => startOfWeek(today));
   const [selectedDate, setSelectedDate] = useState(today);
   const days = dayNames.map((name, index) => ({ name, date: addDays(weekStart, index) }));
-  const selectedCalls = calls[selectedDate] ?? [];
+  const selectedCalls = callsForDate(selectedDate);
 
   function moveWeek(offset: number) {
     const next = addDays(weekStart, offset * 7);
@@ -58,11 +68,11 @@ export function WeeklyCallsCalendar({ today }: { today: string }) {
       <div className="mt-3 grid grid-cols-7 gap-1" aria-label="Select a day">
         {days.map(({ name, date }) => (
           <button key={date} type="button" onClick={() => setSelectedDate(date)} aria-pressed={selectedDate === date}
-            aria-label={`${fullDateFormat.format(new Date(`${date}T00:00:00Z`))}${calls[date]?.length ? ", call scheduled" : ""}`}
+            aria-label={`${fullDateFormat.format(new Date(`${date}T00:00:00Z`))}${callsForDate(date).length ? ", call scheduled" : ""}`}
             className={`flex min-h-[54px] flex-col items-center justify-center gap-0.5 rounded-xl border px-0.5 py-1.5 transition ${selectedDate === date ? "border-chrome/45 bg-chrome/10 text-silver" : "border-transparent text-silver/55 hover:border-silver/15 hover:bg-silver/5"}`}>
             <span className="text-[10px] uppercase tracking-wide sm:text-xs">{name}</span>
             <span className="text-sm font-semibold">{Number(date.slice(-2))}</span>
-            <span className={`h-1 w-1 rounded-full ${calls[date]?.length ? "bg-chrome" : "bg-transparent"}`} aria-hidden="true" />
+            <span className={`h-1 w-1 rounded-full ${callsForDate(date).length ? "bg-chrome" : "bg-transparent"}`} aria-hidden="true" />
           </button>
         ))}
       </div>
