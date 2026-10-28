@@ -15,7 +15,7 @@ export const mindsetFormats = [
 ] as const;
 
 export type MindsetFormat = (typeof mindsetFormats)[number]["slug"];
-type Resource = { title: string; creator: string; source: string; description: string; href: string; cover?: string };
+export type Resource = { title: string; creator: string; source: string; description: string; href: string; cover?: string; coverCredit?: string; action?: string };
 
 export const mindsetResources: Record<MindsetFormat, Resource[]> = {
   audiobooks: [

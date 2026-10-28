@@ -17,13 +17,12 @@ export default async function MasteryPage({ params }: { params: Promise<{ topic:
   if (!mastery) notFound();
   await requireMember(`/members/resources/${mastery.slug}`);
   return (
-    <ResourceLibraryShell backHref="/members/resources" backLabel="Back to Resource Library" label="Resource Library" title={mastery.title} description={mastery.slug === "mindset" ? "Choose how you want to learn and explore free resources for your growth." : mastery.description}>
-      {mastery.slug === "mindset" ? (
+    <ResourceLibraryShell backHref="/members/resources" backLabel="Back to Resource Library" label="Resource Library" title={mastery.title} description={`${mastery.description} Choose how you want to learn.`}>
         <div className="mt-10 grid gap-4 md:grid-cols-3">
           {mindsetFormats.map(({ slug, title, description }) => {
             const Icon = formatIcons[slug];
             return (
-              <Link key={slug} href={`/members/resources/mindset/${slug}`} className="group flex min-h-56 flex-col rounded-card border border-silver/10 bg-silver/[0.035] p-7 transition-colors hover:border-chrome/30 hover:bg-silver/[0.06] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-chrome">
+              <Link key={slug} href={`/members/resources/${mastery.slug}/${slug}`} className="group flex min-h-56 flex-col rounded-card border border-silver/10 bg-silver/[0.035] p-7 transition-colors hover:border-chrome/30 hover:bg-silver/[0.06] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-chrome">
                 <span className="flex h-12 w-12 items-center justify-center rounded-tile border border-silver/10 bg-ink text-chrome"><Icon size={20} /></span>
                 <h2 className="mt-6 text-xl font-semibold text-silver">{title}</h2>
                 <p className="mt-2 flex-1 text-sm leading-relaxed text-silver/55">{description}</p>
@@ -32,9 +31,6 @@ export default async function MasteryPage({ params }: { params: Promise<{ topic:
             );
           })}
         </div>
-      ) : (
-        <div className="mt-10 rounded-card border border-silver/10 bg-silver/[0.035] p-8 text-silver/60">Resources for {mastery.title} are coming soon.</div>
-      )}
     </ResourceLibraryShell>
   );
 }
