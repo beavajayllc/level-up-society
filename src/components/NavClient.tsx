@@ -7,7 +7,7 @@ import { navLinks } from "@/lib/data";
 import { checkoutHref } from "@/lib/checkout";
 import { LogoMark, PillButton } from "./ui";
 
-export function NavClient({ isSignedIn }: { isSignedIn: boolean }) {
+export function NavClient({ isSignedIn, memberArea = false }: { isSignedIn: boolean; memberArea?: boolean }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const { scrollYProgress } = useScroll();
@@ -47,7 +47,7 @@ export function NavClient({ isSignedIn }: { isSignedIn: boolean }) {
           }`}
         >
           <nav className="container-x flex h-[74px] items-center justify-between gap-6">
-            <a href="#top" className="shrink-0" aria-label="Level Up Society home">
+            <a href={memberArea ? "/members" : "#top"} className="shrink-0" aria-label={memberArea ? "Members home" : "Level Up Society home"}>
               <LogoMark priority />
             </a>
 
@@ -111,7 +111,11 @@ export function NavClient({ isSignedIn }: { isSignedIn: boolean }) {
             className="fixed inset-0 z-[60] bg-ink/97 md:hidden"
           >
             <div className="container-x flex h-[74px] items-center justify-between">
-              <LogoMark />
+              {memberArea ? (
+                <a href="/members" aria-label="Members home" onClick={() => setOpen(false)}>
+                  <LogoMark />
+                </a>
+              ) : <LogoMark />}
               <button
                 onClick={() => setOpen(false)}
                 aria-label="Close menu"

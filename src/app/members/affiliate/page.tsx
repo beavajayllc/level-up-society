@@ -45,7 +45,7 @@ export default async function AffiliateBackOfficePage({
 
   return (
     <>
-      <Nav />
+      <Nav memberArea />
       <AffiliateBackOffice
         result={result}
         referralLink={referralLink}

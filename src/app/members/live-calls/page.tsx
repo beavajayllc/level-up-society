@@ -50,7 +50,7 @@ export default async function LiveCallsPage({
 
   return (
     <>
-      <Nav />
+      <Nav memberArea />
       <LiveCallsRoom initial={liveCalls} memberName={lusUser.username || "member"} />
       <Footer />
     </>

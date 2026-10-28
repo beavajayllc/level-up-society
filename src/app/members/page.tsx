@@ -42,7 +42,7 @@ export default async function MembersPage({
 
   return (
     <>
-      <Nav />
+      <Nav memberArea />
       <MembersArea user={user} lusUsername={lusUser.username} lusEmail={lusUser.email} subscriptions={subscriptions} />
       <Footer />
     </>

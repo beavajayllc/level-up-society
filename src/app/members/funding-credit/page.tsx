@@ -37,7 +37,7 @@ export default async function FundingCreditPage({
 
   return (
     <>
-      <Nav />
+      <Nav memberArea />
       <main className="relative flex-1 overflow-hidden bg-ink">
         <Glow className="right-[-10%] top-[-8%] h-[520px] w-[520px]" opacity={0.08} />
         <Glow className="-left-[12%] bottom-[-16%] h-[460px] w-[460px]" opacity={0.05} />
