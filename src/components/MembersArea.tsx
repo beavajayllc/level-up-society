@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ArrowUpRight, ShieldCheck } from "lucide-react";
 import { memberResources } from "@/lib/data";
 import { MemberSubscriptionCancellation } from "./MemberSubscriptionCancellation";
+import { WeeklyCallsCalendar } from "./WeeklyCallsCalendar";
 import { Reveal, Stagger, StaggerItem } from "./Reveal";
 import { Glow, SectionLabel } from "./ui";
 import type { WhopUserInfo } from "@/lib/whop-oauth";
@@ -21,11 +22,13 @@ export function MembersArea({
   lusUsername,
   lusEmail,
   subscriptions,
+  today,
 }: {
   user: WhopUserInfo;
   lusUsername: string;
   lusEmail: string;
   subscriptions: SubscriptionCancellationOption[] | null;
+  today: string;
 }) {
   const name = lusUsername || displayName(user);
 
@@ -68,6 +71,7 @@ export function MembersArea({
                 ) : null}
               </div>
             </Reveal>
+            <WeeklyCallsCalendar today={today} />
           </div>
           <Reveal delay={0.15}>
             <div className="mx-auto w-full max-w-[340px] overflow-hidden rounded-card border border-silver/10 bg-ink-2">

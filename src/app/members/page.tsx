@@ -39,11 +39,12 @@ export default async function MembersPage({
 
   const { user, lusUser } = await requireMember();
   const subscriptions = await getSubscriptionCancellationOptions(user.sub);
+  const today = new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
 
   return (
     <>
       <Nav memberArea />
-      <MembersArea user={user} lusUsername={lusUser.username} lusEmail={lusUser.email} subscriptions={subscriptions} />
+      <MembersArea user={user} lusUsername={lusUser.username} lusEmail={lusUser.email} subscriptions={subscriptions} today={today} />
       <Footer />
     </>
   );
