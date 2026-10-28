@@ -7,14 +7,6 @@ import { pillars } from "@/lib/data";
 import { Reveal, Stagger, StaggerItem } from "./Reveal";
 import { SectionLabel } from "./ui";
 
-const spans = [
-  "lg:col-span-3",
-  "lg:col-span-3",
-  "lg:col-span-2",
-  "lg:col-span-2",
-  "lg:col-span-2",
-];
-
 export function Pillars() {
   return (
     <section id="platform" className="relative bg-silver py-24 text-ink lg:py-32">
@@ -30,19 +22,19 @@ export function Pillars() {
           <Reveal delay={0.12} className="lg:pb-3 lg:pl-8">
             <p className="max-w-md text-[17px] leading-relaxed text-ink/60">
               One membership, no piecemeal purchases. Education, real-world
-              skills, funding and credit support, and a room full of people who
-              get it — all in one place.
+              skills, funding and credit support, fitness, and a room full of
+              people who get it — all in one place.
             </p>
           </Reveal>
         </div>
 
-        <Stagger className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
-          {pillars.map((pillar, i) => {
+        <Stagger className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {pillars.map((pillar) => {
             const Icon = pillar.icon;
             return (
               <StaggerItem
                 key={pillar.id}
-                className={`sm:col-span-1 ${spans[i]}`}
+                className="sm:col-span-1"
               >
                 <motion.article
                   whileHover={{ y: -6 }}

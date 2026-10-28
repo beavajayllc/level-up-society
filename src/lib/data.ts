@@ -2,6 +2,7 @@ import {
   BookOpen,
   Compass,
   Dumbbell,
+  HeartPulse,
   Landmark,
   Mic,
   ChartNoAxesCombined,
@@ -22,6 +23,7 @@ export const heroChips = [
   "Skills training",
   "Funding & credit",
   "Personal growth",
+  "Fitness",
   "Community",
 ];
 
@@ -80,6 +82,15 @@ export const pillars: Pillar[] = [
     icon: Users,
     accent: "from-chrome/25",
     image: "/pillars/community.webp",
+  },
+  {
+    id: "fitness",
+    index: "06",
+    title: "Fitness",
+    body: "Make space for movement and healthy habits as you build your business and work toward a stronger, more balanced life.",
+    icon: HeartPulse,
+    accent: "from-chrome/20",
+    image: "/pillars/fitness.webp",
   },
 ];
 
