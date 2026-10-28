@@ -5,10 +5,13 @@ import Link from "next/link";
 import { CalendarDays, ChevronLeft, ChevronRight } from "lucide-react";
 
 // Only dates confirmed by the team belong here; future weeks are not assumed.
-const calls: Record<string, { title: string; time: string }[]> = {
-  "2026-10-25": [{ title: "Delphine - Forex", time: "11:00 PM EST" }],
-  "2026-10-26": [{ title: "Delphine - Forex", time: "11:00 PM EST" }],
-  "2026-10-28": [{ title: "Delphine - Forex", time: "11:00 PM EST" }],
+const calls: Record<string, { title: string; time: string; href?: string }[]> = {
+  "2026-10-25": [
+    { title: "Community Call", time: "4:00 PM EST" },
+    { title: "Delphine - Forex", time: "11:00 PM EST", href: "/members/live-calls" },
+  ],
+  "2026-10-26": [{ title: "Delphine - Forex", time: "11:00 PM EST", href: "/members/live-calls" }],
+  "2026-10-28": [{ title: "Delphine - Forex", time: "11:00 PM EST", href: "/members/live-calls" }],
 };
 
 const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -69,7 +72,7 @@ export function WeeklyCallsCalendar({ today }: { today: string }) {
         {selectedCalls.length ? selectedCalls.map((call) => (
           <div key={`${call.title}-${call.time}`} className="mt-1 flex flex-wrap items-center justify-between gap-2">
             <p className="text-sm font-semibold text-silver">{call.title} <span className="font-normal text-silver/60">· {call.time}</span></p>
-            <Link href="/members/live-calls" className="text-xs font-medium text-chrome hover:underline">Go to live calls →</Link>
+            {call.href ? <Link href={call.href} className="text-xs font-medium text-chrome hover:underline">Go to live calls →</Link> : null}
           </div>
         )) : <p className="mt-2 text-sm text-silver/50">No calls listed for this day.</p>}
       </div>
