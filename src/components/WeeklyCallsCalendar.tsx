@@ -38,7 +38,7 @@ export function WeeklyCallsCalendar({ today }: { today: string }) {
   }
 
   return (
-    <section aria-label="Weekly calls calendar" className="mt-6 max-w-[560px] rounded-card border border-silver/10 bg-silver/[0.035] p-4 sm:p-5">
+    <section aria-label="Weekly calls calendar" className="mt-6 max-w-[640px] rounded-card border border-silver/10 bg-silver/[0.035] p-4 sm:p-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2 text-sm font-semibold text-silver">
           <CalendarDays size={16} className="text-chrome" /> Weekly calls
