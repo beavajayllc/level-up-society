@@ -15,7 +15,7 @@ export const mindsetFormats = [
 ] as const;
 
 export type MindsetFormat = (typeof mindsetFormats)[number]["slug"];
-type Resource = { title: string; creator: string; source: string; description: string; href: string };
+type Resource = { title: string; creator: string; source: string; description: string; href: string; cover?: string };
 
 export const mindsetResources: Record<MindsetFormat, Resource[]> = {
   audiobooks: [
@@ -24,9 +24,9 @@ export const mindsetResources: Record<MindsetFormat, Resource[]> = {
     { title: "The Art of Money Getting", creator: "P. T. Barnum · Read by Jill Preston", source: "LibriVox", description: "A historical take on business habits, persistence and money.", href: "https://librivox.org/the-art-of-money-getting-by-p-t-barnum/" },
   ],
   books: [
-    { title: "As a Man Thinketh", creator: "James Allen", source: "Project Gutenberg", description: "A short classic about the connection between thought and character.", href: "https://www.gutenberg.org/ebooks/4507" },
-    { title: "Meditations", creator: "Marcus Aurelius", source: "Project Gutenberg", description: "Stoic reflections on perspective, discipline and meeting challenges.", href: "https://www.gutenberg.org/ebooks/2680" },
-    { title: "How to Live on 24 Hours a Day", creator: "Arnold Bennett", source: "Project Gutenberg", description: "A classic on using your time intentionally and making room to grow.", href: "https://www.gutenberg.org/ebooks/2274" },
+    { title: "As a Man Thinketh", creator: "James Allen", source: "Project Gutenberg", description: "A short classic about the connection between thought and character.", href: "https://www.gutenberg.org/ebooks/4507", cover: "/resources/book-covers/as-a-man-thinketh.jpg" },
+    { title: "Meditations", creator: "Marcus Aurelius", source: "Project Gutenberg", description: "Stoic reflections on perspective, discipline and meeting challenges.", href: "https://www.gutenberg.org/ebooks/2680", cover: "/resources/book-covers/meditations.jpg" },
+    { title: "How to Live on 24 Hours a Day", creator: "Arnold Bennett", source: "Project Gutenberg", description: "A classic on using your time intentionally and making room to grow.", href: "https://www.gutenberg.org/ebooks/2274", cover: "/resources/book-covers/how-to-live-on-24-hours.jpg" },
   ],
   videos: [
     { title: "The power of believing that you can improve", creator: "Carol Dweck", source: "TED · YouTube", description: "An introduction to the growth mindset and the power of learning through challenges.", href: "https://www.youtube.com/watch?v=_X0mgOOSpLU" },
