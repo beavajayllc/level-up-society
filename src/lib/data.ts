@@ -198,6 +198,7 @@ export type MemberResource = {
   body: string;
   icon: LucideIcon;
   tag: string;
+  availability?: string;
   /** Optional deep link into the members area or one of its pages. */
   href?: string;
   /** Optional label for the card's call to action. */
@@ -238,6 +239,7 @@ export const memberResources: MemberResource[] = [
     body: "Get pointed to the capital and credit options that actually make sense for where you are.",
     icon: Landmark,
     tag: "By request",
+    availability: "US only",
     href: "/members/funding-credit",
     cta: "Find your next step",
   },

@@ -105,6 +105,11 @@ export function MembersArea({
 
                   <h3 className="mt-6 text-[20px] font-semibold tracking-[-0.025em] text-silver">
                     {resource.title}
+                    {resource.availability ? (
+                      <span className="ml-2 inline-flex items-center gap-1 whitespace-nowrap align-middle text-[11px] font-medium tracking-normal text-silver/60">
+                        <span aria-hidden="true">🇺🇸</span> {resource.availability}
+                      </span>
+                    ) : null}
                   </h3>
                   <p className="mt-2.5 flex-1 text-[15px] leading-relaxed text-silver/50">
                     {resource.body}
@@ -120,7 +125,7 @@ export function MembersArea({
                   {resource.href ? (
                     <Link
                       href={resource.href}
-                      aria-label={resource.cta ?? `Open ${resource.title}`}
+                      aria-label={`${resource.cta ?? `Open ${resource.title}`}${resource.availability ? `, ${resource.availability}` : ""}`}
                       className="absolute inset-0 rounded-card"
                     />
                   ) : null}
