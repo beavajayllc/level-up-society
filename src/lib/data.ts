@@ -225,10 +225,12 @@ export const memberResources: MemberResource[] = [
   },
   {
     id: "library",
-    title: "Business education library",
-    body: "Structured courses on building, marketing and selling a business that holds up.",
+    title: "Resource Library",
+    body: "Explore resources for credit, trading, sales, marketing and mindset.",
     icon: BookOpen,
     tag: "On demand",
+    href: "/members/resources",
+    cta: "Explore the library",
   },
   {
     id: "funding-desk",
