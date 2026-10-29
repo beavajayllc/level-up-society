@@ -319,11 +319,9 @@ export function LiveCallsRoom({
           <div className="mt-6 flex flex-wrap items-center gap-6 sm:gap-8">
             {educator?.portrait ? (
               <figure className="shrink-0">
-                <div className="relative h-28 w-28 overflow-hidden rounded-2xl border border-chrome/20 shadow-sm sm:h-36 sm:w-36">
+                <div className="relative h-28 w-28 overflow-hidden rounded-2xl border border-chrome/20 bg-[#b9a7c9] shadow-sm sm:h-36 sm:w-36">
+                  <Image src="/brand/lus-lockup.png" alt="" aria-hidden="true" width={620} height={320} className="brand-logo absolute left-0 top-[12%] h-auto w-full opacity-25" />
                   <Image src={educator.portrait} alt={`${educator.portraitAiCreated ? "AI-created portrait" : "Portrait"} of ${educator.name}`} fill sizes="(min-width: 640px) 144px, 112px" style={{ objectPosition: educator.portraitPosition }} className="object-cover" />
-                  <span aria-hidden="true" className="absolute bottom-1.5 right-1.5 rounded-md bg-white/75 px-1.5 py-1">
-                    <Image src="/brand/lus-lockup.png" alt="" width={620} height={320} className="brand-logo h-auto w-7 sm:w-8" />
-                  </span>
                 </div>
                 {educator.portraitAiCreated || educator.portraitAiEdited ? <figcaption className="mt-1.5 text-center text-[10px] text-silver/60">{educator.portraitAiCreated ? "AI-created portrait" : "AI-edited portrait"}</figcaption> : null}
               </figure>
