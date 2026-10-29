@@ -53,10 +53,10 @@ export function MembersArea({
 
             <Reveal delay={0.1}>
               <div className="mt-10 flex flex-wrap items-center gap-3">
-                <span className="inline-flex items-center gap-2.5 rounded-pill border border-rose-accent/25 bg-rose-accent/5 px-4 py-2 text-[13px] text-rose-accent">
+                <span className="inline-flex items-center gap-2.5 rounded-pill border border-crest-blue/25 bg-crest-blue/5 px-4 py-2 text-[13px] text-crest-blue">
                   <span className="relative flex h-2 w-2">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-rose-accent opacity-60" />
-                    <span className="relative inline-flex h-2 w-2 rounded-full bg-rose-accent" />
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-crest-blue opacity-60" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-crest-blue" />
                   </span>
                   Membership active
                 </span>

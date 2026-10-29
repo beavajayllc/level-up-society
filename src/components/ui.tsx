@@ -17,7 +17,7 @@ const sizes: Record<Size, string> = {
 
 const variants: Record<Variant, string> = {
   chrome:
-    "bg-[#19394f] text-white hover:brightness-[1.12] shadow-[0_14px_36px_-16px_rgba(19,43,61,0.35)]",
+    "bg-[#10477f] text-white hover:brightness-[1.12] shadow-[0_14px_36px_-16px_rgba(16,49,90,0.35)]",
   ghost: "bg-silver/8 text-silver hover:bg-silver/14 backdrop-blur",
   outline:
     "border border-silver/18 text-silver hover:border-chrome/60 hover:text-chrome hover:bg-chrome/5",
@@ -105,8 +105,8 @@ export function CrestMark() {
   return (
     <span aria-hidden="true" className="relative inline-flex h-[62px] w-[56px] shrink-0 items-end justify-center">
       <Crown size={19} strokeWidth={1.7} className="absolute left-1/2 top-0 -translate-x-1/2 text-crest-gold" />
-      <span className="relative flex h-[46px] w-[46px] items-center justify-center overflow-hidden rounded-full border-2 border-crest-gold bg-[#132b3d] ring-2 ring-white">
-        <span className="absolute inset-x-[-8px] top-1/2 h-[7px] -rotate-[24deg] bg-rose-accent/70" />
+      <span className="relative flex h-[46px] w-[46px] items-center justify-center overflow-hidden rounded-full border-2 border-crest-gold bg-[#10315a] ring-2 ring-white">
+        <span className="absolute inset-x-[-8px] top-1/2 h-[7px] -rotate-[24deg] bg-crest-blue/70" />
         <Image src="/brand/lus-mark.png" alt="" width={560} height={250} sizes="34px" className="relative h-auto w-[34px]" />
       </span>
     </span>
@@ -132,7 +132,7 @@ export function LogoMark({
       sizes="120px"
       priority={priority}
       style={{ height, width: "auto" }}
-      className={`rounded-lg bg-[#132b3d] px-2 py-1 ${className}`}
+      className={`rounded-lg bg-[#10315a] px-2 py-1 ${className}`}
     />
   );
 }
@@ -153,7 +153,7 @@ export function LogoLockup({
       height={320}
       sizes="200px"
       style={{ width, height: "auto" }}
-      className={`rounded-2xl bg-[#132b3d] p-3 ${className}`}
+      className={`rounded-2xl bg-[#10315a] p-3 ${className}`}
     />
   );
 }
@@ -169,7 +169,7 @@ export function LogoLockup({
  */
 export function Glow({
   className = "",
-  rgb = "162, 59, 92",
+  rgb = "22, 83, 156",
   opacity = 0.12,
   fade = 74,
 }: {

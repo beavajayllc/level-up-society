@@ -54,7 +54,7 @@ export function WeeklyCallsCalendar({ today }: { today: string }) {
     <section id="weekly-calls" aria-label="Weekly calls calendar" className="mt-6 max-w-[640px] scroll-mt-24 rounded-card border border-silver/10 bg-silver/[0.035] p-4 sm:p-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2 text-sm font-semibold text-silver">
-          <CalendarDays size={16} className="text-rose-accent" /> Weekly calls
+          <CalendarDays size={16} className="text-crest-blue" /> Weekly calls
         </div>
         <div className="flex items-center gap-2">
           <button type="button" onClick={() => moveWeek(-1)} aria-label="Previous week" className="rounded-full border border-silver/10 p-1.5 text-silver/70 transition hover:border-chrome/50 hover:text-silver"><ChevronLeft size={16} /></button>
@@ -72,7 +72,7 @@ export function WeeklyCallsCalendar({ today }: { today: string }) {
             className={`flex min-h-[54px] flex-col items-center justify-center gap-0.5 rounded-xl border px-0.5 py-1.5 transition ${selectedDate === date ? "border-chrome/45 bg-chrome/10 text-silver" : "border-transparent text-silver/70 hover:border-silver/15 hover:bg-silver/5"}`}>
             <span className="text-[10px] uppercase tracking-wide sm:text-xs">{name}</span>
             <span className="text-sm font-semibold">{Number(date.slice(-2))}</span>
-            <span className={`h-1 w-1 rounded-full ${callsForDate(date).length ? "bg-rose-accent" : "bg-transparent"}`} aria-hidden="true" />
+            <span className={`h-1 w-1 rounded-full ${callsForDate(date).length ? "bg-crest-blue" : "bg-transparent"}`} aria-hidden="true" />
           </button>
         ))}
       </div>

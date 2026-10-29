@@ -1,17 +1,17 @@
 @import "tailwindcss";
 
 @theme {
-  /* Jersey-inspired whites, deep navy and a restrained raspberry accent. */
+  /* Crest-inspired white, royal blue and gold. */
   --color-ink: #f9fafb;
   --color-ink-2: #f0f3f5;
   --color-ink-3: #e5eaed;
-  --color-silver: #132b3d;
-  --color-silver-2: #263f50;
-  --color-chrome: #19394f;
-  --color-chrome-deep: #a23b5c;
-  --color-chrome-soft: #31546a;
-  --color-rose-accent: #a23b5c;
-  --color-crest-gold: #a98242;
+  --color-silver: #10315a;
+  --color-silver-2: #294c77;
+  --color-chrome: #10477f;
+  --color-chrome-deep: #16539c;
+  --color-chrome-soft: #38638e;
+  --color-crest-blue: #16539c;
+  --color-crest-gold: #b28731;
   --color-muted: #5b6b76;
 
   /* Rounded, never sharp */
@@ -114,10 +114,10 @@ html.lenis, html.lenis body { height: auto; }
 
 /* Sections designed around dark text on a pale surface use the same palette. */
 .light-section {
-  --color-ink: #132b3d;
+  --color-ink: #10315a;
   --color-silver: #f5f7f9;
   --color-silver-2: #edf1f3;
-  --color-chrome: #8b3151;
+  --color-chrome: #16539c;
 }
 
 /* Fine film grain */
@@ -139,9 +139,9 @@ html.lenis, html.lenis body { height: auto; }
 @utility text-chrome-gradient {
   background-image: linear-gradient(
     155deg,
-    #132b3d 0%,
-    #31546a 55%,
-    #132b3d 100%
+    #10315a 0%,
+    #38638e 55%,
+    #10315a 100%
   );
   -webkit-background-clip: text;
   background-clip: text;

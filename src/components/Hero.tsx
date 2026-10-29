@@ -87,7 +87,7 @@ export function Hero() {
             className="flex items-center gap-4"
           >
             <CrestMark />
-            <span className="inline-flex items-center gap-2 rounded-pill border border-rose-accent/25 bg-rose-accent/5 px-4 py-2 text-[12px] font-medium tracking-[0.14em] uppercase text-rose-accent">
+            <span className="inline-flex items-center gap-2 rounded-pill border border-crest-blue/25 bg-crest-blue/5 px-4 py-2 text-[12px] font-medium tracking-[0.14em] uppercase text-crest-blue">
               <Sparkles size={13} />
               Now Enrolling
             </span>
@@ -150,8 +150,8 @@ export function Hero() {
                 variants={line}
                 className="inline-flex items-center gap-2 text-[13.5px] text-silver/70"
               >
-                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-rose-accent/10">
-                  <Check size={11} className="text-rose-accent" strokeWidth={3} />
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-crest-blue/10">
+                  <Check size={11} className="text-crest-blue" strokeWidth={3} />
                 </span>
                 {chip}
               </motion.li>
@@ -176,7 +176,7 @@ export function Hero() {
             />
 
             {/* Main card */}
-            <div className="rounded-card-lg border border-crest-gold/25 bg-gradient-to-b from-ink-2 to-ink p-6 shadow-[0_40px_100px_-30px_rgba(19,43,61,0.22)] sm:p-8">
+            <div className="rounded-card-lg border border-crest-gold/25 bg-gradient-to-b from-ink-2 to-ink p-6 shadow-[0_40px_100px_-30px_rgba(16,49,90,0.22)] sm:p-8">
               <div className="flex items-center justify-between">
                 <SectionLabel index="LIVE" title="Inside the society" tone="light" />
                 <span className="flex items-center gap-2 rounded-pill bg-emerald-400/10 px-3 py-1.5 text-[11px] font-medium text-emerald-800">
@@ -244,7 +244,7 @@ export function Hero() {
       {/* Marquee strip */}
       <motion.div
         style={reduce ? undefined : { y: orbY }}
-        className="relative border-y border-rose-accent/15 bg-rose-accent/[0.035] py-4"
+        className="relative border-y border-crest-blue/15 bg-crest-blue/[0.035] py-4"
       >
         <div className="flex overflow-hidden">
           <div className="flex shrink-0 animate-marquee items-center gap-10 pr-10">
