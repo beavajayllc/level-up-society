@@ -349,7 +349,7 @@ export function LiveCallsRoom({
           )}
           {!isLive ? (
             <span className="inline-flex items-center gap-2.5 rounded-pill border border-silver/12 bg-silver/4 px-4 py-2 text-[13px] text-silver/70">
-              {scheduledToday ? "No call is live right now" : "Not scheduled today"}
+              {scheduledToday ? "No call is live right now" : educator?.id === "delphine" ? "Outside scheduled live hours" : "Not scheduled today"}
             </span>
           ) : null}
         </div>
@@ -413,7 +413,9 @@ export function LiveCallsRoom({
                     <p className="relative max-w-sm text-[15px] leading-relaxed text-silver/70">
                       {scheduledToday
                         ? "Nothing is on air right now. The live video will appear here automatically when the host goes live."
-                        : `${educator?.name}'s live video will appear here on scheduled days when the host goes live.`}
+                        : educator?.id === "delphine"
+                          ? "Delphine's live video appears here from 11 PM to 1 AM Eastern on scheduled nights when the host goes live."
+                          : `${educator?.name}'s live video will appear here on scheduled days when the host goes live.`}
                     </p>
                   </div>
                 )}

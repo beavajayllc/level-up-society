@@ -68,6 +68,11 @@ export function educatorIsScheduledNow(educatorId: EducatorId, now: Date): boole
   const part = (type: Intl.DateTimeFormatPartTypes) => parts.find((item) => item.type === type)?.value;
   const date = `${part("year")}-${part("month")}-${part("day")}`;
   const scheduled = (day: string) => callsForDate(day).some((call) => call.educatorId === educatorId);
-  // Delphine's 11 PM calls can continue into the following morning.
-  return scheduled(date) || (educatorId === "delphine" && Number(part("hour")) < 2 && scheduled(addDays(date, -1)));
+  // Delphine's 11 PM calls can continue until 1 AM the next morning, even
+  // when she also has a call scheduled later that day.
+  const hour = Number(part("hour"));
+  if (educatorId === "delphine") {
+    return (hour >= 23 && scheduled(date)) || (hour < 1 && scheduled(addDays(date, -1)));
+  }
+  return scheduled(date);
 }
