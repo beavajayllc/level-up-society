@@ -13,7 +13,7 @@ export type Educator = {
 
 export const educators: Educator[] = [
   { id: "pj", name: "PJ LaBeach", subject: "Fitness", initials: "PJ", description: "PJ LaBeach is a powerbuilding coach and powerlifter who helps people build strength and muscle. His coaching focuses on consistent training and working toward new personal bests.", schedule: "Every other Thursday · 8:00 PM Eastern", portrait: "/educators/pj-labeach.png", instagram: { url: "https://www.instagram.com/iampjlabeach/", handle: "iampjlabeach" } },
-  { id: "delphine", name: "Delphine Njuguna", subject: "Forex", initials: "DN", description: "Join Delphine for live sessions exploring forex and the markets with the Level Up community.", schedule: "Sunday, Monday & Wednesday · 11:00 PM Eastern" },
+  { id: "delphine", name: "Delphine Njuguna", subject: "Forex", initials: "DN", description: "Join Delphine for live sessions exploring forex and the markets with the Level Up community.", schedule: "Sunday, Monday & Wednesday · 11:00 PM Eastern", portrait: "/educators/delphine-njuguna.png" },
   { id: "beava", name: "Beava Jay", subject: "Credit / Sales", initials: "BJ", description: "Join Beava for conversations on credit and sales, sharing tools to help you grow your business.", schedule: "Every Tuesday · 8:00 PM Eastern" },
 ];
 
