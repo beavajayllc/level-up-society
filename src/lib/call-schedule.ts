@@ -18,10 +18,7 @@ export type ScheduledCall = {
 const oneOffCalls: Record<string, ScheduledCall[]> = {
   "2026-10-25": [
     { title: "Community Call", time: "4:00 PM EST", hour: 16 },
-    { title: "Delphine - Forex", time: "11:00 PM EST", hour: 23, educatorId: "delphine", href: "/members/live-calls" },
   ],
-  "2026-10-26": [{ title: "Delphine - Forex", time: "11:00 PM EST", hour: 23, educatorId: "delphine", href: "/members/live-calls" }],
-  "2026-10-28": [{ title: "Delphine - Forex", time: "11:00 PM EST", hour: 23, educatorId: "delphine", href: "/members/live-calls" }],
 };
 
 export function addDays(date: string, days: number): string {
@@ -36,14 +33,19 @@ export function startOfWeek(date: string): string {
 
 export function callsForDate(date: string): ScheduledCall[] {
   const scheduledCalls = [...(oneOffCalls[date] ?? [])];
+  const timestamp = Date.parse(`${date}T00:00:00Z`);
+  const weekday = new Date(timestamp).getUTCDay();
+  if (timestamp >= Date.parse("2026-10-25T00:00:00Z") && [0, 1, 3].includes(weekday)) {
+    scheduledCalls.push({ title: "Delphine - Forex", time: "11:00 PM EST", hour: 23, educatorId: "delphine", href: "/members/live-calls" });
+  }
   const firstFitnessCall = Date.parse("2026-10-29T00:00:00Z");
-  const elapsedDays = (Date.parse(`${date}T00:00:00Z`) - firstFitnessCall) / 86_400_000;
+  const elapsedDays = (timestamp - firstFitnessCall) / 86_400_000;
   if (elapsedDays >= 0 && elapsedDays % 14 === 0) {
     scheduledCalls.push({ title: "PJ LaBeach | Fitness", time: "8:00 PM EST", hour: 20, educatorId: "pj" });
   }
-  const firstCreditSalesCall = Date.parse("2026-11-03T00:00:00Z");
-  const creditSalesDays = (Date.parse(`${date}T00:00:00Z`) - firstCreditSalesCall) / 86_400_000;
-  if (creditSalesDays >= 0 && creditSalesDays % 14 === 0) {
+  const firstCreditSalesCall = Date.parse("2026-10-27T00:00:00Z");
+  const creditSalesDays = (timestamp - firstCreditSalesCall) / 86_400_000;
+  if (creditSalesDays >= 0 && creditSalesDays % 7 === 0) {
     scheduledCalls.push({ title: "Beava Jay | Credit / Sales", time: "8:00 PM EST", hour: 20, educatorId: "beava", href: "/members/live-calls" });
   }
   return scheduledCalls;
