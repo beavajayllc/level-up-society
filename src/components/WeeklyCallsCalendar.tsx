@@ -3,40 +3,11 @@
 import { useState } from "react";
 import Link from "next/link";
 import { CalendarDays, ChevronLeft, ChevronRight } from "lucide-react";
-
-// One-off dates are listed here; recurring calls are added in callsForDate.
-const calls: Record<string, { title: string; time: string; href?: string }[]> = {
-  "2026-10-25": [
-    { title: "Community Call", time: "4:00 PM EST" },
-    { title: "Delphine - Forex", time: "11:00 PM EST", href: "/members/live-calls" },
-  ],
-  "2026-10-26": [{ title: "Delphine - Forex", time: "11:00 PM EST", href: "/members/live-calls" }],
-  "2026-10-28": [{ title: "Delphine - Forex", time: "11:00 PM EST", href: "/members/live-calls" }],
-};
+import { addDays, callsForDate, startOfWeek } from "@/lib/call-schedule";
 
 const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const dateFormat = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", timeZone: "UTC" });
 const fullDateFormat = new Intl.DateTimeFormat("en-US", { weekday: "long", month: "long", day: "numeric", timeZone: "UTC" });
-
-function addDays(date: string, days: number) {
-  const value = new Date(`${date}T00:00:00Z`);
-  value.setUTCDate(value.getUTCDate() + days);
-  return value.toISOString().slice(0, 10);
-}
-
-function startOfWeek(date: string) {
-  return addDays(date, -new Date(`${date}T00:00:00Z`).getUTCDay());
-}
-
-function callsForDate(date: string) {
-  const scheduledCalls = [...(calls[date] ?? [])];
-  const firstFitnessCall = Date.parse("2026-10-29T00:00:00Z");
-  const elapsedDays = (Date.parse(`${date}T00:00:00Z`) - firstFitnessCall) / 86_400_000;
-  if (elapsedDays >= 0 && elapsedDays % 14 === 0) {
-    scheduledCalls.push({ title: "PJ LaBeach | Fitness", time: "8:00 PM EST" });
-  }
-  return scheduledCalls;
-}
 
 export function WeeklyCallsCalendar({ today }: { today: string }) {
   const [weekStart, setWeekStart] = useState(() => startOfWeek(today));

@@ -47,11 +47,12 @@ export default async function LiveCallsPage({
 
   const { lusUser } = await requireMember("/members/live-calls");
   const liveCalls = await getLiveCalls();
+  const today = new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
 
   return (
     <>
       <Nav memberArea />
-      <LiveCallsRoom initial={liveCalls} memberName={lusUser.username || "member"} />
+      <LiveCallsRoom initial={liveCalls} memberName={lusUser.username || "member"} today={today} />
       <Footer />
     </>
   );
