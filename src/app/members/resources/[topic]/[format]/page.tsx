@@ -28,7 +28,7 @@ export default async function MasteryFormatPage({ params }: { params: Promise<{ 
             <h2 className="mt-4 text-xl font-semibold tracking-[-0.025em] text-silver">{resource.title}</h2>
             <p className="mt-2 text-sm text-chrome/70">{resource.creator}</p>
             <p className="mt-4 flex-1 text-sm leading-relaxed text-silver/70">{resource.description}</p>
-            <a href={resource.href} target="_blank" rel="noopener noreferrer" className={`mt-6 inline-flex w-fit items-center gap-1.5 text-sm font-medium text-chrome transition-colors hover:text-crest-blue focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-chrome ${resource.cover ? "mr-14" : ""}`}>
+            <a href={resource.href} target="_blank" rel="noopener noreferrer" className={`mt-6 inline-flex w-fit items-center gap-1.5 text-sm font-medium text-chrome transition-colors hover:text-crest-gold-text focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-chrome ${resource.cover ? "mr-14" : ""}`}>
               {resource.action ?? action} <ArrowUpRight size={15} /> <span className="sr-only">(opens in a new tab)</span>
             </a>
             {resource.cover ? (

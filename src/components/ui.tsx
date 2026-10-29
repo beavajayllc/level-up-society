@@ -16,7 +16,7 @@ const sizes: Record<Size, string> = {
 
 const variants: Record<Variant, string> = {
   chrome:
-    "border border-crest-gold/70 bg-[#10477f] text-white hover:brightness-[1.12] shadow-[0_14px_36px_-16px_rgba(16,49,90,0.35)]",
+    "border border-crest-blue/70 bg-[#89600c] text-white hover:brightness-[1.12] shadow-[0_14px_36px_-16px_rgba(112,80,19,0.35)]",
   ghost: "bg-silver/8 text-silver hover:bg-silver/14 backdrop-blur",
   outline:
     "border border-silver/18 text-silver hover:border-chrome/60 hover:text-chrome hover:bg-chrome/5",
@@ -91,8 +91,8 @@ export function SectionLabel({
         tone === "dark" ? "text-ink/70" : "text-chrome/85"
       }`}
     >
-      <span className="h-[2px] w-8 bg-crest-gold" />
-      <span className="text-crest-gold-text">{index}</span>
+      <span className="h-[2px] w-8 bg-crest-blue" />
+      <span className="text-crest-blue">{index}</span>
       <span className="opacity-45">/</span>
       <span>{title}</span>
     </div>
@@ -118,7 +118,7 @@ export function LogoMark({
       sizes="120px"
       priority={priority}
       style={{ height, width: "auto" }}
-      className={`rounded-lg bg-[#10315a] px-2 py-1 ${className}`}
+      className={`rounded-lg bg-[#705013] px-2 py-1 ${className}`}
     />
   );
 }
@@ -139,7 +139,7 @@ export function LogoLockup({
       height={320}
       sizes="200px"
       style={{ width, height: "auto" }}
-      className={`rounded-2xl bg-[#10315a] p-3 ${className}`}
+      className={`rounded-2xl bg-[#705013] p-3 ${className}`}
     />
   );
 }
@@ -155,7 +155,7 @@ export function LogoLockup({
  */
 export function Glow({
   className = "",
-  rgb = "22, 83, 156",
+  rgb = "177, 128, 31",
   opacity = 0.12,
   fade = 74,
 }: {

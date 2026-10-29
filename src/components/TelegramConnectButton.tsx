@@ -59,7 +59,7 @@ export function TelegramConnectButton({ enabled }: { enabled: boolean }) {
           href={telegramUrl}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex min-h-12 items-center gap-2 rounded-pill bg-[#10477f] px-6 text-sm font-medium text-white transition hover:brightness-[1.06]"
+          className="inline-flex min-h-12 items-center gap-2 rounded-pill bg-[#89600c] px-6 text-sm font-medium text-white transition hover:brightness-[1.06]"
         >
           Open Telegram
           <ArrowUpRight size={15} />
@@ -69,7 +69,7 @@ export function TelegramConnectButton({ enabled }: { enabled: boolean }) {
           type="button"
           onClick={createLink}
           disabled={busy}
-          className="inline-flex min-h-12 items-center gap-2 rounded-pill bg-[#10477f] px-6 text-sm font-medium text-white transition hover:brightness-[1.06] disabled:cursor-wait disabled:opacity-65"
+          className="inline-flex min-h-12 items-center gap-2 rounded-pill bg-[#89600c] px-6 text-sm font-medium text-white transition hover:brightness-[1.06] disabled:cursor-wait disabled:opacity-65"
         >
           {busy ? <LoaderCircle className="animate-spin" size={16} /> : <MessageCircle size={16} />}
           {busy ? "Creating your secure link" : "Connect Telegram"}
