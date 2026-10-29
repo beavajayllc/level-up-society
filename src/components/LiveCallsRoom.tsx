@@ -316,18 +316,27 @@ export function LiveCallsRoom({
 
         <Reveal>
           <SectionLabel index="08" title={educator ? educator.subject : "Live calls"} tone="light" />
-          <div className="mt-6 flex flex-wrap items-end justify-between gap-6">
+          <div className="mt-6 flex flex-wrap items-center gap-6 sm:gap-8">
+            {educator?.portrait ? (
+              <figure className="shrink-0">
+                <Image src={educator.portrait} alt={`AI-created portrait of ${educator.name}`} width={144} height={144} className="h-28 w-28 rounded-2xl border border-chrome/20 object-cover shadow-sm sm:h-36 sm:w-36" />
+                <figcaption className="mt-1.5 text-center text-[10px] text-silver/60">AI-created portrait</figcaption>
+              </figure>
+            ) : null}
+            <div>
             <h1 className="max-w-xl text-[clamp(1.9rem,3.6vw,2.9rem)] font-semibold leading-[1.06] tracking-[-0.035em] text-silver">
               {educator ? educator.name : <>When we go live, it lands{" "}<span className="display-serif text-chrome-gradient">right here</span></>}
             </h1>
-          </div>
           {educator ? (
-            <div className="mt-5 max-w-2xl space-y-3">
+            <div className="mt-4 max-w-2xl space-y-3">
               <p className="text-[15px] leading-relaxed text-silver/70">{educator.description}</p>
               <p className="inline-flex items-center gap-2 text-sm font-medium text-chrome"><CalendarClock size={15} /> {educator.schedule}</p>
+              {educator.instagram ? <p><a href={educator.instagram.url} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-chrome underline underline-offset-4">@{educator.instagram.handle} on Instagram</a></p> : null}
               <p className="text-xs leading-relaxed text-silver/60">The shared live feed appears here on {educator.name}&apos;s scheduled days when a call is broadcasting.</p>
             </div>
           ) : null}
+            </div>
+          </div>
         </Reveal>
 
         <div className="mt-8 flex flex-wrap items-center gap-3">

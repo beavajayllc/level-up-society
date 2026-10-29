@@ -7,10 +7,12 @@ export type Educator = {
   initials: string;
   description: string;
   schedule: string;
+  portrait?: string;
+  instagram?: { url: string; handle: string };
 };
 
 export const educators: Educator[] = [
-  { id: "pj", name: "PJ LaBeach", subject: "Fitness", initials: "PJ", description: "Join PJ for fitness education and conversations focused on taking care of your body as you grow.", schedule: "Every other Thursday · 8:00 PM Eastern" },
+  { id: "pj", name: "PJ LaBeach", subject: "Fitness", initials: "PJ", description: "PJ LaBeach is a powerbuilding coach and powerlifter who helps people build strength and muscle. His coaching focuses on consistent training and working toward new personal bests.", schedule: "Every other Thursday · 8:00 PM Eastern", portrait: "/educators/pj-labeach.png", instagram: { url: "https://www.instagram.com/iampjlabeach/", handle: "iampjlabeach" } },
   { id: "delphine", name: "Delphine Njuguna", subject: "Forex", initials: "DN", description: "Join Delphine for live sessions exploring forex and the markets with the Level Up community.", schedule: "Sunday, Monday & Wednesday · 11:00 PM Eastern" },
   { id: "beava", name: "Beava Jay", subject: "Credit / Sales", initials: "BJ", description: "Join Beava for conversations on credit and sales, sharing tools to help you grow your business.", schedule: "Every Tuesday · 8:00 PM Eastern" },
 ];
