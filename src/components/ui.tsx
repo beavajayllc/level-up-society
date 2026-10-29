@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "motion/react";
+import { Crown } from "lucide-react";
 import type { ReactNode } from "react";
 
 type Variant = "chrome" | "ghost" | "outline";
@@ -91,11 +92,24 @@ export function SectionLabel({
         tone === "dark" ? "text-ink/70" : "text-chrome/85"
       }`}
     >
-      <span className="h-px w-8 bg-current opacity-60" />
+      <span className="h-px w-8 bg-crest-gold opacity-80" />
       <span>{index}</span>
       <span className="opacity-45">/</span>
       <span>{title}</span>
     </div>
+  );
+}
+
+/** A small crest-inspired frame for the existing Level Up mark. */
+export function CrestMark() {
+  return (
+    <span aria-hidden="true" className="relative inline-flex h-[62px] w-[56px] shrink-0 items-end justify-center">
+      <Crown size={19} strokeWidth={1.7} className="absolute left-1/2 top-0 -translate-x-1/2 text-crest-gold" />
+      <span className="relative flex h-[46px] w-[46px] items-center justify-center overflow-hidden rounded-full border-2 border-crest-gold bg-[#132b3d] ring-2 ring-white">
+        <span className="absolute inset-x-[-8px] top-1/2 h-[7px] -rotate-[24deg] bg-rose-accent/70" />
+        <Image src="/brand/lus-mark.png" alt="" width={560} height={250} sizes="34px" className="relative h-auto w-[34px]" />
+      </span>
+    </span>
   );
 }
 
