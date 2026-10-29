@@ -16,7 +16,7 @@ const sizes: Record<Size, string> = {
 
 const variants: Record<Variant, string> = {
   chrome:
-    "border border-crest-blue/70 bg-[#89600c] text-white hover:brightness-[1.12] shadow-[0_14px_36px_-16px_rgba(112,80,19,0.35)]",
+    "bg-[#36596a] text-white hover:brightness-[1.12] shadow-[0_12px_30px_-16px_rgba(38,61,72,0.32)]",
   ghost: "bg-silver/8 text-silver hover:bg-silver/14 backdrop-blur",
   outline:
     "border border-silver/18 text-silver hover:border-chrome/60 hover:text-chrome hover:bg-chrome/5",
@@ -91,15 +91,15 @@ export function SectionLabel({
         tone === "dark" ? "text-ink/70" : "text-chrome/85"
       }`}
     >
-      <span className="h-[2px] w-8 bg-crest-blue" />
-      <span className="text-crest-blue">{index}</span>
+      <span className="h-[2px] w-8 bg-accent" />
+      <span className="text-accent">{index}</span>
       <span className="opacity-45">/</span>
       <span>{title}</span>
     </div>
   );
 }
 
-/** The chrome LS mark — used in the nav and as a brand accent. */
+/** The LS mark, tinted to match the site palette. */
 export function LogoMark({
   className = "",
   height = 34,
@@ -118,7 +118,7 @@ export function LogoMark({
       sizes="120px"
       priority={priority}
       style={{ height, width: "auto" }}
-      className={`rounded-lg bg-[#705013] px-2 py-1 ${className}`}
+      className={`brand-logo ${className}`}
     />
   );
 }
@@ -139,7 +139,7 @@ export function LogoLockup({
       height={320}
       sizes="200px"
       style={{ width, height: "auto" }}
-      className={`rounded-2xl bg-[#705013] p-3 ${className}`}
+      className={`brand-logo ${className}`}
     />
   );
 }
@@ -155,7 +155,7 @@ export function LogoLockup({
  */
 export function Glow({
   className = "",
-  rgb = "177, 128, 31",
+  rgb = "136, 167, 166",
   opacity = 0.12,
   fade = 74,
 }: {

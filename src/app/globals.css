@@ -1,19 +1,19 @@
 @import "tailwindcss";
 
 @theme {
-  /* Crest-inspired white, royal blue and gold. */
-  --color-ink: #f9fafb;
-  --color-ink-2: #f5f2eb;
-  --color-ink-3: #ede8dc;
-  --color-silver: #705013;
-  --color-silver-2: #876827;
-  --color-chrome: #89600c;
-  --color-chrome-deep: #a5781c;
-  --color-chrome-soft: #a77b24;
-  --color-crest-blue: #16539c;
-  --color-crest-gold: #bd881c;
-  --color-crest-gold-text: #89600c;
-  --color-muted: #756953;
+  /* Soft whites, slate and muted blue-green accents. */
+  --color-ink: #fbfbfa;
+  --color-ink-2: #f2f5f4;
+  --color-ink-3: #e8eeec;
+  --color-silver: #263d48;
+  --color-silver-2: #49646c;
+  --color-chrome: #36596a;
+  --color-chrome-deep: #789498;
+  --color-chrome-soft: #557684;
+  --color-accent: #527482;
+  --color-accent-soft: #afc7c3;
+  --color-accent-strong: #416574;
+  --color-muted: #64777c;
 
   /* Rounded, never sharp */
   --radius-pill: 999px;
@@ -115,10 +115,15 @@ html.lenis, html.lenis body { height: auto; }
 
 /* Sections designed around dark text on a pale surface use the same palette. */
 .light-section {
-  --color-ink: #705013;
-  --color-silver: #f5f7f9;
-  --color-silver-2: #edf1f3;
-  --color-chrome: #89600c;
+  --color-ink: #263d48;
+  --color-silver: #f4f7f6;
+  --color-silver-2: #edf2f0;
+  --color-chrome: #36596a;
+}
+
+/* Tint the existing transparent mark to match the site's slate palette. */
+.brand-logo {
+  filter: brightness(0) saturate(100%) invert(22%) sepia(13%) saturate(1097%) hue-rotate(151deg) brightness(93%) contrast(88%);
 }
 
 /* Fine film grain */
@@ -136,13 +141,13 @@ html.lenis, html.lenis body { height: auto; }
   letter-spacing: -0.01em;
 }
 
-/* Rich gold lettering with a soft metallic finish. */
+/* Soft slate lettering with a gentle tonal gradient. */
 @utility text-chrome-gradient {
   background-image: linear-gradient(
     155deg,
-    #705013 0%,
-    #a4781d 55%,
-    #705013 100%
+    #263d48 0%,
+    #6c8991 55%,
+    #263d48 100%
   );
   -webkit-background-clip: text;
   background-clip: text;
