@@ -607,7 +607,7 @@ function ChatPanel({
               !isLive || !chat.connected || sending || draft.trim().length === 0
             }
             aria-label="Send message"
-            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-pill bg-[#36596a] text-white transition-[filter,opacity] duration-300 hover:brightness-105 disabled:opacity-35"
+            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-pill bg-[#4c2f6f] text-white transition-[filter,opacity] duration-300 hover:brightness-105 disabled:opacity-35"
           >
             <Send size={15} />
           </button>

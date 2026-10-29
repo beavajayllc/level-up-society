@@ -97,7 +97,7 @@ export function NavClient({ isSignedIn, memberArea = false }: { isSignedIn: bool
         </div>
         <motion.div
           style={{ scaleX: progress }}
-          className="h-[2px] origin-left bg-gradient-to-r from-accent-strong via-accent-strong/65 to-transparent"
+          className="h-[2px] origin-left bg-gradient-to-r from-accent via-pink to-transparent"
         />
       </motion.header>
 

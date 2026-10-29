@@ -50,7 +50,7 @@ export function AffiliateReferralLink({ href }: { href: string }) {
           <button
             type="button"
             onClick={copyLink}
-            className="inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-pill bg-[#36596a] px-5 text-sm font-medium text-white transition hover:brightness-[1.06]"
+            className="inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-pill bg-[#4c2f6f] px-5 text-sm font-medium text-white transition hover:brightness-[1.06]"
           >
             {copyState === "copied" ? <Check size={15} /> : <Copy size={15} />}
             {copyState === "copied" ? "Copied" : "Copy link"}

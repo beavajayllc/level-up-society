@@ -16,7 +16,7 @@ const sizes: Record<Size, string> = {
 
 const variants: Record<Variant, string> = {
   chrome:
-    "bg-[#36596a] text-white hover:brightness-[1.12] shadow-[0_12px_30px_-16px_rgba(38,61,72,0.32)]",
+    "bg-[#4c2f6f] text-white hover:brightness-[1.12] shadow-[0_12px_30px_-16px_rgba(13,11,51,0.32)]",
   ghost: "bg-silver/8 text-silver hover:bg-silver/14 backdrop-blur",
   outline:
     "border border-silver/18 text-silver hover:border-chrome/60 hover:text-chrome hover:bg-chrome/5",
@@ -155,7 +155,7 @@ export function LogoLockup({
  */
 export function Glow({
   className = "",
-  rgb = "136, 167, 166",
+  rgb = "194, 102, 167",
   opacity = 0.12,
   fade = 74,
 }: {

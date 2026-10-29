@@ -84,7 +84,7 @@ export default async function TradeIdeasPage({
                   href="https://telegram.org/dl/"
                   target="_blank"
                   rel="noreferrer"
-                  className="mt-7 inline-flex h-12 w-fit items-center gap-2 rounded-pill bg-[#36596a] px-6 text-sm font-medium text-white transition hover:brightness-[1.06]"
+                  className="mt-7 inline-flex h-12 w-fit items-center gap-2 rounded-pill bg-[#4c2f6f] px-6 text-sm font-medium text-white transition hover:brightness-[1.06]"
                 >
                   Download Telegram
                   <ArrowUpRight size={15} />

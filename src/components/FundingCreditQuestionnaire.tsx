@@ -248,7 +248,7 @@ export function FundingCreditQuestionnaire({
                           [questions[step].id]: option,
                         }))
                       }
-                      className="mr-3 h-4 w-4 accent-[#36596a]"
+                      className="mr-3 h-4 w-4 accent-[#4c2f6f]"
                     />
                     {option}
                   </label>
@@ -278,7 +278,7 @@ export function FundingCreditQuestionnaire({
                 }
                 setStep((current) => current + 1);
               }}
-              className="inline-flex h-11 items-center gap-2 rounded-pill bg-[#36596a] px-6 text-sm font-medium text-white transition hover:brightness-[1.06] disabled:cursor-not-allowed disabled:opacity-40"
+              className="inline-flex h-11 items-center gap-2 rounded-pill bg-[#4c2f6f] px-6 text-sm font-medium text-white transition hover:brightness-[1.06] disabled:cursor-not-allowed disabled:opacity-40"
             >
               {step === questions.length - 1 ? "See your next step" : "Continue"}
               <ArrowRight size={15} />
@@ -311,7 +311,7 @@ export function FundingCreditQuestionnaire({
                 <button
                   type="button"
                   onClick={() => setShowCalendar(true)}
-                  className="mt-5 inline-flex h-12 items-center gap-2 rounded-pill bg-[#36596a] px-6 text-sm font-medium text-white transition hover:brightness-[1.06]"
+                  className="mt-5 inline-flex h-12 items-center gap-2 rounded-pill bg-[#4c2f6f] px-6 text-sm font-medium text-white transition hover:brightness-[1.06]"
                 >
                   <CalendarDays size={16} />
                   Schedule a call today
@@ -392,7 +392,7 @@ export function FundingCreditQuestionnaire({
             </button>
             <Link
               href="/members"
-              className="inline-flex h-11 items-center gap-2 rounded-pill bg-[#36596a] px-5 text-sm font-medium text-white transition hover:brightness-[1.06]"
+              className="inline-flex h-11 items-center gap-2 rounded-pill bg-[#4c2f6f] px-5 text-sm font-medium text-white transition hover:brightness-[1.06]"
             >
               Back to members area
               <ArrowRight size={15} />

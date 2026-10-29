@@ -53,7 +53,7 @@ export function MembersArea({
 
             <Reveal delay={0.1}>
               <div className="mt-10 flex flex-wrap items-center gap-3">
-                <span className="inline-flex items-center gap-2.5 rounded-pill border border-accent/20 bg-accent/5 px-4 py-2 text-[13px] text-accent-strong">
+                <span className="inline-flex items-center gap-2.5 rounded-pill border border-pink/30 bg-pink/10 px-4 py-2 text-[13px] text-accent-strong">
                   <span className="relative flex h-2 w-2">
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent-strong opacity-60" />
                     <span className="relative inline-flex h-2 w-2 rounded-full bg-accent-strong" />

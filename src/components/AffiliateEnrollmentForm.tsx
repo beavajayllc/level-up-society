@@ -32,7 +32,7 @@ export function AffiliateEnrollmentForm() {
         <button
           type="submit"
           disabled={pending}
-          className="inline-flex h-12 items-center justify-center gap-2 rounded-pill bg-[#36596a] px-6 text-sm font-medium text-white transition hover:brightness-[1.06] disabled:cursor-wait disabled:opacity-60"
+          className="inline-flex h-12 items-center justify-center gap-2 rounded-pill bg-[#4c2f6f] px-6 text-sm font-medium text-white transition hover:brightness-[1.06] disabled:cursor-wait disabled:opacity-60"
         >
           {pending ? "Activating…" : "Activate my affiliate access"}
           {!pending ? <ArrowRight size={15} /> : null}

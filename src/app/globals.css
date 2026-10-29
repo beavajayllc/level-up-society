@@ -1,19 +1,20 @@
 @import "tailwindcss";
 
 @theme {
-  /* Soft whites, slate and muted blue-green accents. */
-  --color-ink: #fbfbfa;
-  --color-ink-2: #f2f5f4;
-  --color-ink-3: #e8eeec;
-  --color-silver: #263d48;
-  --color-silver-2: #49646c;
-  --color-chrome: #36596a;
-  --color-chrome-deep: #789498;
-  --color-chrome-soft: #557684;
-  --color-accent: #527482;
-  --color-accent-soft: #afc7c3;
-  --color-accent-strong: #416574;
-  --color-muted: #64777c;
+  /* Peaceful Purple Sunset, balanced with soft white surfaces. */
+  --color-ink: #fdfbfe;
+  --color-ink-2: #f8f2f9;
+  --color-ink-3: #f0e4f2;
+  --color-silver: #0d0b33;
+  --color-silver-2: #4c2f6f;
+  --color-chrome: #4c2f6f;
+  --color-chrome-deep: #52489f;
+  --color-chrome-soft: #52489f;
+  --color-accent: #52489f;
+  --color-accent-soft: #e7c8e7;
+  --color-accent-strong: #4c2f6f;
+  --color-pink: #c266a7;
+  --color-muted: #6f6080;
 
   /* Rounded, never sharp */
   --radius-pill: 999px;
@@ -94,7 +95,7 @@ html.lenis, html.lenis body { height: auto; }
 ::-webkit-scrollbar { width: 10px; }
 ::-webkit-scrollbar-track { background: var(--color-ink); }
 ::-webkit-scrollbar-thumb {
-  background: #aab8c1;
+  background: #d6c6df;
   border-radius: 999px;
   border: 2px solid var(--color-ink);
 }
@@ -115,15 +116,15 @@ html.lenis, html.lenis body { height: auto; }
 
 /* Sections designed around dark text on a pale surface use the same palette. */
 .light-section {
-  --color-ink: #263d48;
-  --color-silver: #f4f7f6;
-  --color-silver-2: #edf2f0;
-  --color-chrome: #36596a;
+  --color-ink: #0d0b33;
+  --color-silver: #f8f2fa;
+  --color-silver-2: #f2e9f5;
+  --color-chrome: #4c2f6f;
 }
 
-/* Tint the existing transparent mark to match the site's slate palette. */
+/* Tint the existing transparent mark to match the purple palette. */
 .brand-logo {
-  filter: brightness(0) saturate(100%) invert(22%) sepia(13%) saturate(1097%) hue-rotate(151deg) brightness(93%) contrast(88%);
+  filter: brightness(0) saturate(100%) invert(19%) sepia(24%) saturate(1704%) hue-rotate(229deg) brightness(90%) contrast(91%);
 }
 
 /* Fine film grain */
@@ -141,13 +142,13 @@ html.lenis, html.lenis body { height: auto; }
   letter-spacing: -0.01em;
 }
 
-/* Soft slate lettering with a gentle tonal gradient. */
+/* Violet lettering with a gentle tonal gradient. */
 @utility text-chrome-gradient {
   background-image: linear-gradient(
     155deg,
-    #263d48 0%,
-    #6c8991 55%,
-    #263d48 100%
+    #4c2f6f 0%,
+    #52489f 55%,
+    #4c2f6f 100%
   );
   -webkit-background-clip: text;
   background-clip: text;
