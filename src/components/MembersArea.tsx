@@ -53,7 +53,7 @@ export function MembersArea({
 
             <Reveal delay={0.1}>
               <div className="mt-10 flex flex-wrap items-center gap-3">
-                <span className="inline-flex items-center gap-2.5 rounded-pill border border-crest-blue/25 bg-crest-blue/5 px-4 py-2 text-[13px] text-crest-blue">
+                <span className="inline-flex items-center gap-2.5 rounded-pill border border-crest-gold/60 bg-crest-gold/10 px-4 py-2 text-[13px] text-crest-blue">
                   <span className="relative flex h-2 w-2">
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-crest-blue opacity-60" />
                     <span className="relative inline-flex h-2 w-2 rounded-full bg-crest-blue" />
@@ -96,7 +96,7 @@ export function MembersArea({
                 <motion.article
                   whileHover={{ y: -5 }}
                   transition={{ type: "spring", stiffness: 300, damping: 22 }}
-                  className="group relative flex h-full flex-col overflow-hidden rounded-card border border-silver/8 bg-silver/[0.035] p-7 transition-colors duration-500 hover:border-chrome/30 hover:bg-silver/[0.06]"
+                  className="group relative flex h-full flex-col overflow-hidden rounded-card border border-crest-gold/25 bg-silver/[0.035] p-7 transition-colors duration-500 hover:border-crest-gold/70 hover:bg-silver/[0.06]"
                 >
                   <div className="flex items-start justify-between">
                     <span className="flex h-12 w-12 items-center justify-center rounded-tile border border-silver/10 bg-ink text-chrome transition-colors duration-500 group-hover:border-chrome/60">

@@ -12,7 +12,7 @@ import {
 import { ArrowUpRight, Check, Sparkles } from "lucide-react";
 import { heroChips } from "@/lib/data";
 import { checkoutHref } from "@/lib/checkout";
-import { CrestMark, Glow, PillButton, SectionLabel } from "./ui";
+import { Glow, PillButton, SectionLabel } from "./ui";
 import { Testimony } from "./Testimony";
 
 const headline: Variants = {
@@ -84,11 +84,9 @@ export function Hero() {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-            className="flex items-center gap-4"
           >
-            <CrestMark />
-            <span className="inline-flex items-center gap-2 rounded-pill border border-crest-blue/25 bg-crest-blue/5 px-4 py-2 text-[12px] font-medium tracking-[0.14em] uppercase text-crest-blue">
-              <Sparkles size={13} />
+            <span className="inline-flex items-center gap-2 rounded-pill border border-crest-gold/60 bg-crest-gold/10 px-4 py-2 text-[12px] font-medium tracking-[0.14em] uppercase text-crest-blue">
+              <Sparkles size={13} className="text-crest-gold-text" />
               Now Enrolling
             </span>
           </motion.div>
@@ -103,7 +101,7 @@ export function Hero() {
               Where
             </motion.span>
             <motion.span variants={line} className="block">
-              <span className="display-serif text-chrome-gradient">Entrepreneurs</span>
+              <span className="display-serif text-crest-gold-text">Entrepreneurs</span>
             </motion.span>
             <motion.span variants={line} className="block">
               Grow and <span className="display-serif text-silver">Live</span>
@@ -176,7 +174,7 @@ export function Hero() {
             />
 
             {/* Main card */}
-            <div className="rounded-card-lg border border-crest-gold/25 bg-gradient-to-b from-ink-2 to-ink p-6 shadow-[0_40px_100px_-30px_rgba(16,49,90,0.22)] sm:p-8">
+            <div className="rounded-card-lg border border-crest-gold/60 bg-gradient-to-b from-ink-2 to-ink p-6 shadow-[0_40px_100px_-30px_rgba(16,49,90,0.22)] sm:p-8">
               <div className="flex items-center justify-between">
                 <SectionLabel index="LIVE" title="Inside the society" tone="light" />
                 <span className="flex items-center gap-2 rounded-pill bg-emerald-400/10 px-3 py-1.5 text-[11px] font-medium text-emerald-800">
