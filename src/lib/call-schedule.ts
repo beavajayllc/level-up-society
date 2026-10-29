@@ -14,7 +14,7 @@ export type ScheduledCall = {
   href?: string;
 };
 
-// These are the confirmed one-off calls; only the fitness call repeats.
+// These are the confirmed one-off calls; recurring calls are added below.
 const oneOffCalls: Record<string, ScheduledCall[]> = {
   "2026-10-25": [
     { title: "Community Call", time: "4:00 PM EST", hour: 16 },
@@ -40,6 +40,11 @@ export function callsForDate(date: string): ScheduledCall[] {
   const elapsedDays = (Date.parse(`${date}T00:00:00Z`) - firstFitnessCall) / 86_400_000;
   if (elapsedDays >= 0 && elapsedDays % 14 === 0) {
     scheduledCalls.push({ title: "PJ LaBeach | Fitness", time: "8:00 PM EST", hour: 20, educatorId: "pj" });
+  }
+  const firstCreditSalesCall = Date.parse("2026-11-03T00:00:00Z");
+  const creditSalesDays = (Date.parse(`${date}T00:00:00Z`) - firstCreditSalesCall) / 86_400_000;
+  if (creditSalesDays >= 0 && creditSalesDays % 14 === 0) {
+    scheduledCalls.push({ title: "Beava Jay | Credit / Sales", time: "8:00 PM EST", hour: 20, educatorId: "beava", href: "/members/live-calls" });
   }
   return scheduledCalls;
 }

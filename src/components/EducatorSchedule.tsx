@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { CalendarDays, ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { addDays, callsForDate, educators, startOfWeek, type EducatorId } from "@/lib/call-schedule";
 
 const dateFormat = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", timeZone: "UTC" });
@@ -106,7 +106,6 @@ export function EducatorSchedule({ today }: { today: string }) {
             </tbody>
           </table>
         </div>
-        <p className="mt-4 flex items-start gap-2 text-xs leading-relaxed text-silver/70"><CalendarDays size={15} className="mt-0.5 shrink-0 text-accent" /> Beava Jay&apos;s Credit / Sales schedule will be announced.</p>
       </div>
     </section>
   );
