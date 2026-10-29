@@ -446,52 +446,6 @@ export function LiveCallsRoom({
           />
         </div>
 
-        {!isLive ? (
-          <section className="mt-12">
-            <h3 className="text-[13px] font-semibold tracking-[0.16em] uppercase text-silver/70">
-              Latest calls
-            </h3>
-            {state.recordings.length > 0 ? (
-              <ul className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                {state.recordings.map((recording) => (
-                  <li
-                    key={recording.id}
-                    className="overflow-hidden rounded-card border border-silver/10 bg-silver/[0.03]"
-                  >
-                    <div className="aspect-video w-full bg-ink">
-                      {recording.thumbnail_url ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={recording.thumbnail_url}
-                          alt=""
-                          className="h-full w-full object-cover opacity-80"
-                        />
-                      ) : null}
-                    </div>
-                    <div className="p-5">
-                      <p className="truncate text-[15px] font-medium text-silver">
-                        {recording.title}
-                      </p>
-                      <p className="mt-1 text-[12px] text-silver/70">
-                        {DATE_FORMAT.format(
-                          new Date(recording.ended_at ?? recording.started_at ?? ""),
-                        )}
-                        {" · "}
-                        {TIME_FORMAT.format(
-                          new Date(recording.ended_at ?? recording.started_at ?? ""),
-                        )}
-                      </p>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="mt-4 text-[15px] text-silver/70">
-                No calls recorded yet.
-              </p>
-            )}
-          </section>
-        ) : null}
       </div>
     </main>
   );
