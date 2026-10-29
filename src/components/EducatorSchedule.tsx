@@ -35,14 +35,14 @@ export function EducatorSchedule({ today }: { today: string }) {
       <div className="flex flex-wrap items-end justify-between gap-5">
         <div>
           <p className="font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-accent">Learn together</p>
-          <h1 id="educator-schedule-title" className="mt-2 text-[clamp(2rem,4vw,3rem)] font-semibold leading-tight tracking-[-0.03em] text-silver">Educator schedule</h1>
-          <p className="mt-2 max-w-xl text-sm leading-relaxed text-silver/70">Choose an educator or scheduled call to visit their page. Times are shown in Eastern Time.</p>
+          <h1 id="educator-schedule-title" className="mt-2 text-[clamp(2rem,4vw,3rem)] font-semibold leading-tight tracking-[-0.03em] text-silver">Coaches’ schedule</h1>
+          <p className="mt-2 max-w-xl text-sm leading-relaxed text-silver/70">Choose a coach or scheduled call to visit their page. Times are shown in Eastern Time.</p>
         </div>
         <label className="flex flex-col gap-1.5 text-xs font-medium text-silver/70">
-          Educator
+          Coach
           <select value={educatorId} onChange={(event) => setEducatorId(event.target.value as EducatorId | "all")}
             className="min-h-11 min-w-48 rounded-xl border border-silver/15 bg-white px-4 text-sm text-silver outline-none focus:border-accent">
-            <option value="all">All educators</option>
+            <option value="all">All coaches</option>
             {educators.map((educator) => <option key={educator.id} value={educator.id}>{educator.name} · {educator.subject}</option>)}
           </select>
         </label>
@@ -75,7 +75,7 @@ export function EducatorSchedule({ today }: { today: string }) {
         </div>
 
         <p className="mt-4 text-xs text-silver/70 sm:hidden">Swipe sideways to see the full week.</p>
-        <div className="mt-4 overflow-x-auto" role="region" aria-label="Weekly educator schedule, scroll horizontally for all days" tabIndex={0}>
+        <div className="mt-4 overflow-x-auto" role="region" aria-label="Weekly coaches’ schedule, scroll horizontally for all days" tabIndex={0}>
           <table className="w-full min-w-[900px] table-fixed border-collapse text-left">
             <thead>
               <tr className="border-b border-silver/10 text-xs font-medium text-silver/70">
@@ -106,7 +106,7 @@ export function EducatorSchedule({ today }: { today: string }) {
                     </td>
                   ))}
                 </tr>
-              )) : <tr><td colSpan={8} className="px-2 py-8 text-center text-sm text-silver/70">No educator calls are listed for this week yet.</td></tr>}
+              )) : <tr><td colSpan={8} className="px-2 py-8 text-center text-sm text-silver/70">No coach calls are listed for this week yet.</td></tr>}
             </tbody>
           </table>
         </div>

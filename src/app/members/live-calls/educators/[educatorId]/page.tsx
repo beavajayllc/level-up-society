@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: { params: Promise<{ educatorI
   const { educatorId } = await params;
   const educator = educators.find((item) => item.id === educatorId);
   return {
-    title: educator ? `${educator.name} — Level Up Society` : "Educator — Level Up Society",
+    title: educator ? `${educator.name} — Level Up Society` : "Coach — Level Up Society",
     robots: { index: false, follow: false },
   };
 }

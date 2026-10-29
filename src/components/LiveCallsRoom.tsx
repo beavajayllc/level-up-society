@@ -311,7 +311,7 @@ export function LiveCallsRoom({
           className="inline-flex items-center gap-2 text-[13px] text-silver/70 transition-colors duration-300 hover:text-chrome"
         >
           <ArrowLeft size={14} />
-          Back to the educator schedule
+          Back to the coaches’ schedule
         </Link>
 
         <Reveal>

@@ -12,7 +12,7 @@ export const instant = false;
 
 export const metadata: Metadata = {
   title: "Live call schedule — Level Up Society",
-  description: "The Level Up Society educator schedule.",
+  description: "The Level Up Society coaches’ schedule.",
   robots: { index: false, follow: false },
 };
 
