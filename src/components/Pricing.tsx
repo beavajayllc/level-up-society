@@ -29,7 +29,7 @@ function CountUp({ target }: { target: number }) {
 
 export function Pricing() {
   return (
-    <section id="memberships" className="dark-surface relative overflow-hidden bg-ink py-24 lg:py-32">
+    <section id="memberships" className="relative overflow-hidden bg-ink py-24 lg:py-32">
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
         <Glow className="left-1/2 top-1/2 h-[760px] w-[1100px] -translate-x-1/2 -translate-y-1/2" opacity={0.1} />
       </div>

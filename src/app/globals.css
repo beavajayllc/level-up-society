@@ -122,33 +122,6 @@ html.lenis, html.lenis body { height: auto; }
   --color-chrome: #4c2f6f;
 }
 
-/* Rich indigo surfaces use the same sunset palette with light text. */
-.dark-surface {
-  --color-ink: #0d0b33;
-  --color-ink-2: #21183e;
-  --color-ink-3: #322653;
-  --color-silver: #faf4fc;
-  --color-silver-2: #eee1f2;
-  --color-chrome: #e7c8e7;
-  --color-chrome-deep: #c6ade1;
-  --color-chrome-soft: #f3e0f2;
-  --color-accent: #e7c8e7;
-  --color-accent-strong: #f5e2f3;
-}
-
-.dark-surface .primary-action {
-  background-color: #e7c8e7;
-  color: #0d0b33;
-}
-
-.dark-surface .primary-action:hover {
-  filter: brightness(1.08);
-}
-
-.dark-surface .text-chrome-gradient {
-  background-image: linear-gradient(155deg, #f5e7f7, #e7c8e7 55%, #faf4fc);
-}
-
 /* Tint the existing transparent mark to match the purple palette. */
 .brand-logo {
   filter: brightness(0) saturate(100%) invert(19%) sepia(24%) saturate(1704%) hue-rotate(229deg) brightness(90%) contrast(91%);
