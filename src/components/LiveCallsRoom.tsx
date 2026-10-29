@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import type { LiveCallsState } from "@/lib/whop-livestream";
 import type { ChatMessage, ChatState } from "@/lib/whop-chat";
+import { educatorIsScheduledNow, type Educator } from "@/lib/call-schedule";
 import { CloudflareLivePlayer } from "./CloudflareLivePlayer";
 import { Reveal } from "./Reveal";
 import { Glow, SectionLabel } from "./ui";
@@ -77,9 +78,11 @@ function messageTime(value: string): string {
 export function LiveCallsRoom({
   initial,
   memberName,
+  educator,
 }: {
   initial: LiveCallsState;
   memberName: string;
+  educator?: Educator;
 }) {
   const [state, setState] = useState<LiveCallsState>(initial);
   const [manifestUrl, setManifestUrl] = useState<string | null>(null);
@@ -93,8 +96,10 @@ export function LiveCallsRoom({
   const [sendError, setSendError] = useState<string | null>(null);
   const scroller = useRef<HTMLDivElement>(null);
 
-  const isLive =
-    Boolean(state.live) || state.cloudflareStreamStatus === "live";
+  const scheduledToday = !educator || educatorIsScheduledNow(educator.id, new Date(now));
+  const isLive = scheduledToday && (educator
+    ? state.cloudflareStreamStatus === "live"
+    : Boolean(state.live) || state.cloudflareStreamStatus === "live");
   const visibleChat = isLive ? chat : EMPTY_CHAT;
   const visiblePlayerStatus: PlayerStatus =
     state.cloudflareStreamStatus === "live"
@@ -179,7 +184,7 @@ export function LiveCallsRoom({
   }, [isLive]);
 
   useEffect(() => {
-    if (state.cloudflareStreamStatus !== "live") {
+    if (!isLive || state.cloudflareStreamStatus !== "live") {
       return;
     }
 
@@ -237,7 +242,7 @@ export function LiveCallsRoom({
       cancelled = true;
       clearInterval(timer);
     };
-  }, [state.cloudflareStreamStatus]);
+  }, [isLive, state.cloudflareStreamStatus]);
 
   // Keep the newest message in view.
   useEffect(() => {
@@ -310,13 +315,19 @@ export function LiveCallsRoom({
         </Link>
 
         <Reveal>
-          <SectionLabel index="08" title="Live calls" tone="light" />
+          <SectionLabel index="08" title={educator ? educator.subject : "Live calls"} tone="light" />
           <div className="mt-6 flex flex-wrap items-end justify-between gap-6">
             <h1 className="max-w-xl text-[clamp(1.9rem,3.6vw,2.9rem)] font-semibold leading-[1.06] tracking-[-0.035em] text-silver">
-              When we go live, it lands{" "}
-              <span className="display-serif text-chrome-gradient">right here</span>
+              {educator ? educator.name : <>When we go live, it lands{" "}<span className="display-serif text-chrome-gradient">right here</span></>}
             </h1>
           </div>
+          {educator ? (
+            <div className="mt-5 max-w-2xl space-y-3">
+              <p className="text-[15px] leading-relaxed text-silver/70">{educator.description}</p>
+              <p className="inline-flex items-center gap-2 text-sm font-medium text-chrome"><CalendarClock size={15} /> {educator.schedule}</p>
+              <p className="text-xs leading-relaxed text-silver/60">The shared live feed appears here on {educator.name}&apos;s scheduled days when a call is broadcasting.</p>
+            </div>
+          ) : null}
         </Reveal>
 
         <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -331,14 +342,14 @@ export function LiveCallsRoom({
           ) : (
             <span className="inline-flex items-center gap-2.5 rounded-pill border border-silver/12 bg-silver/4 px-4 py-2 text-[13px] text-silver/70">
               <CalendarClock size={14} className="text-chrome/70" />
-              {nextCall
+              {educator ? educator.schedule : nextCall
                 ? `Next call ${DATE_FORMAT.format(new Date(nextCall.scheduled_at ?? ""))} · ${TIME_FORMAT.format(new Date(nextCall.scheduled_at ?? ""))}`
                 : "Live calls are announced here"}
             </span>
           )}
           {!isLive ? (
             <span className="inline-flex items-center gap-2.5 rounded-pill border border-silver/12 bg-silver/4 px-4 py-2 text-[13px] text-silver/70">
-              No call is live right now
+              {scheduledToday ? "No call is live right now" : "Not scheduled today"}
             </span>
           ) : null}
         </div>
@@ -400,8 +411,9 @@ export function LiveCallsRoom({
                       <Video size={24} strokeWidth={1.6} />
                     </span>
                     <p className="relative max-w-sm text-[15px] leading-relaxed text-silver/70">
-                      Nothing is on air right now. The live video will appear
-                      here automatically when the host goes live.
+                      {scheduledToday
+                        ? "Nothing is on air right now. The live video will appear here automatically when the host goes live."
+                        : `${educator?.name}'s live video will appear here on scheduled days when the host goes live.`}
                     </p>
                   </div>
                 )}
@@ -416,6 +428,7 @@ export function LiveCallsRoom({
             sending={sending}
             sendError={sendError}
             memberName={memberName}
+            reconnectPath={educator ? `/members/live-calls/educators/${educator.id}` : "/members/live-calls/watch"}
             onDraftChange={setDraft}
             onSend={send}
             scroller={scroller}
@@ -480,6 +493,7 @@ function ChatPanel({
   sending,
   sendError,
   memberName,
+  reconnectPath,
   onDraftChange,
   onSend,
   scroller,
@@ -490,6 +504,7 @@ function ChatPanel({
   sending: boolean;
   sendError: string | null;
   memberName: string;
+  reconnectPath: string;
   onDraftChange: (value: string) => void;
   onSend: () => void;
   scroller: React.RefObject<HTMLDivElement | null>;
@@ -571,7 +586,7 @@ function ChatPanel({
             </p>
             {chat.requiresReauthorization ? (
               <a
-                href="/login?next=%2Fmembers%2Flive-calls%2Fwatch"
+                href={`/login?next=${encodeURIComponent(reconnectPath)}`}
                 className="text-[13px] font-medium text-chrome underline underline-offset-4"
               >
                 Reconnect Whop

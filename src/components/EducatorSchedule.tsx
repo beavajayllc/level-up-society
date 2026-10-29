@@ -36,7 +36,7 @@ export function EducatorSchedule({ today }: { today: string }) {
         <div>
           <p className="font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-accent">Learn together</p>
           <h1 id="educator-schedule-title" className="mt-2 text-[clamp(2rem,4vw,3rem)] font-semibold leading-tight tracking-[-0.03em] text-silver">Educator schedule</h1>
-          <p className="mt-2 max-w-xl text-sm leading-relaxed text-silver/70">Choose an educator or scheduled call to open the shared live room. Times are shown in EST.</p>
+          <p className="mt-2 max-w-xl text-sm leading-relaxed text-silver/70">Choose an educator or scheduled call to visit their page. Times are shown in Eastern Time.</p>
         </div>
         <label className="flex flex-col gap-1.5 text-xs font-medium text-silver/70">
           Educator
@@ -65,7 +65,7 @@ export function EducatorSchedule({ today }: { today: string }) {
       <div className="mt-5 rounded-card border border-silver/10 bg-white p-4 sm:p-6">
         <div className="flex flex-wrap gap-3 border-b border-silver/10 pb-5">
           {educators.map((educator) => (
-            <Link key={educator.id} href="/members/live-calls/watch" aria-label={`Open shared live room, ${educator.name}`}
+            <Link key={educator.id} href={`/members/live-calls/educators/${educator.id}`} aria-label={`Visit ${educator.name}'s page`}
               className={`inline-flex items-center gap-2 rounded-pill border px-3 py-2 text-xs font-medium transition hover:brightness-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-chrome ${educatorColors[educator.id]}`}>
               <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/70 text-[10px] font-semibold">{educator.initials}</span>
               <span>{educator.name} <span className="opacity-70">· {educator.subject}</span></span>
@@ -95,8 +95,8 @@ export function EducatorSchedule({ today }: { today: string }) {
                     <td key={date} className="border-l border-silver/8 p-2 align-top">
                       {calls.filter((call) => call.date === date && call.hour === hour).map((call) => {
                         const educator = educators.find((item) => item.id === call.educatorId)!;
-                        return <Link key={`${date}-${educator.id}-${hour}`} href="/members/live-calls/watch"
-                          aria-label={`Open shared live room, ${educator.name}, ${educator.subject}, ${dayFormat.format(new Date(`${date}T00:00:00Z`))} ${dateLabel(date)}, ${call.time}`}
+                        return <Link key={`${date}-${educator.id}-${hour}`} href={`/members/live-calls/educators/${educator.id}`}
+                          aria-label={`Visit ${educator.name}'s page, ${educator.subject}, ${dayFormat.format(new Date(`${date}T00:00:00Z`))} ${dateLabel(date)}, ${call.time}`}
                           className={`block min-h-[92px] rounded-xl border p-3 transition hover:brightness-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-chrome ${educatorColors[educator.id]}`}>
                           <p className="text-xs font-semibold leading-snug">{educator.name}</p>
                           <p className="mt-1 text-xs font-medium">{educator.subject}</p>
