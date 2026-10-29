@@ -319,8 +319,8 @@ export function LiveCallsRoom({
           <div className="mt-6 flex flex-wrap items-center gap-6 sm:gap-8">
             {educator?.portrait ? (
               <figure className="shrink-0">
-                <Image src={educator.portrait} alt={`AI-created portrait of ${educator.name}`} width={144} height={144} className="h-28 w-28 rounded-2xl border border-chrome/20 object-cover shadow-sm sm:h-36 sm:w-36" />
-                <figcaption className="mt-1.5 text-center text-[10px] text-silver/60">AI-created portrait</figcaption>
+                <Image src={educator.portrait} alt={`${educator.portraitAiCreated ? "AI-created portrait" : "Portrait"} of ${educator.name}`} width={144} height={144} style={{ objectPosition: educator.portraitPosition }} className="h-28 w-28 rounded-2xl border border-chrome/20 object-cover shadow-sm sm:h-36 sm:w-36" />
+                {educator.portraitAiCreated ? <figcaption className="mt-1.5 text-center text-[10px] text-silver/60">AI-created portrait</figcaption> : null}
               </figure>
             ) : null}
             <div>
