@@ -255,6 +255,15 @@ export const memberResources: MemberResource[] = [
     cta: "Find your next step",
   },
   {
+    id: "fitness",
+    title: "Fitness",
+    body: "Make time for movement and join PJ LaBeach for fitness calls every other Thursday.",
+    icon: HeartPulse,
+    tag: "Every other week",
+    href: "/members/fitness",
+    cta: "Explore fitness",
+  },
+  {
     id: "community",
     title: "Member community",
     body: "The room itself. Trade ideas, get honest feedback, and meet people who get the journey.",
