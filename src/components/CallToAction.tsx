@@ -30,7 +30,7 @@ export function CallToAction() {
             </h2>
           </Reveal>
           <Reveal delay={0.14}>
-            <p className="mx-auto mt-5 max-w-lg text-[17px] leading-relaxed text-silver/55">
+            <p className="mx-auto mt-5 max-w-lg text-[17px] leading-relaxed text-silver/70">
               Entrepreneurship inspiration, a look inside the community, and
               updates on the launch. No spam — just the good stuff.
             </p>
@@ -54,7 +54,7 @@ export function CallToAction() {
                     setSent(false);
                   }}
                   placeholder="you@email.com"
-                  className="h-12 flex-1 rounded-pill bg-transparent px-5 text-[15px] text-silver placeholder:text-silver/30 outline-none"
+                  className="h-12 flex-1 rounded-pill bg-transparent px-5 text-[15px] text-silver placeholder:text-silver/70 outline-none"
                 />
                 <motion.button
                   type="submit"
@@ -79,14 +79,14 @@ export function CallToAction() {
                   )}
                 </motion.button>
               </div>
-              <p className="mt-4 text-[12.5px] text-silver/32">
+              <p className="mt-4 text-[12.5px] text-silver/70">
                 No credit card required. Unsubscribe anytime.
               </p>
             </form>
           </Reveal>
 
           <Reveal delay={0.28}>
-            <div className="mt-14 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-[13.5px] text-silver/40">
+            <div className="mt-14 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-[13.5px] text-silver/70">
               {[
                 "Entrepreneurship inspiration",
                 "A look inside the community",

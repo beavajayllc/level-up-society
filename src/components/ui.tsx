@@ -16,7 +16,7 @@ const sizes: Record<Size, string> = {
 
 const variants: Record<Variant, string> = {
   chrome:
-    "bg-[linear-gradient(180deg,#ffffff_0%,#e7ecf3_46%,#c2cad5_100%)] text-ink hover:brightness-[1.06] shadow-[0_14px_44px_-14px_rgba(214,226,240,0.75)]",
+    "bg-[#19394f] text-white hover:brightness-[1.12] shadow-[0_14px_36px_-16px_rgba(19,43,61,0.35)]",
   ghost: "bg-silver/8 text-silver hover:bg-silver/14 backdrop-blur",
   outline:
     "border border-silver/18 text-silver hover:border-chrome/60 hover:text-chrome hover:bg-chrome/5",
@@ -88,7 +88,7 @@ export function SectionLabel({
   return (
     <div
       className={`inline-flex items-center gap-3 text-[11px] font-semibold tracking-[0.22em] uppercase ${
-        tone === "dark" ? "text-ink/45" : "text-chrome/85"
+        tone === "dark" ? "text-ink/70" : "text-chrome/85"
       }`}
     >
       <span className="h-px w-8 bg-current opacity-60" />
@@ -118,7 +118,7 @@ export function LogoMark({
       sizes="120px"
       priority={priority}
       style={{ height, width: "auto" }}
-      className={`drop-shadow-[0_5px_16px_rgba(0,0,0,0.65)] ${className}`}
+      className={`rounded-lg bg-[#132b3d] px-2 py-1 ${className}`}
     />
   );
 }
@@ -139,7 +139,7 @@ export function LogoLockup({
       height={320}
       sizes="200px"
       style={{ width, height: "auto" }}
-      className={`drop-shadow-[0_6px_20px_rgba(0,0,0,0.7)] ${className}`}
+      className={`rounded-2xl bg-[#132b3d] p-3 ${className}`}
     />
   );
 }
@@ -155,7 +155,7 @@ export function LogoLockup({
  */
 export function Glow({
   className = "",
-  rgb = "242, 245, 249",
+  rgb = "162, 59, 92",
   opacity = 0.12,
   fade = 74,
 }: {

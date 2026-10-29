@@ -33,11 +33,11 @@ export function Journey() {
               From your first idea to your{" "}
               <span className="display-serif text-chrome-gradient">next chapter</span>
             </h2>
-            <p className="mt-6 max-w-md text-[17px] leading-relaxed text-silver/55">
+            <p className="mt-6 max-w-md text-[17px] leading-relaxed text-silver/70">
               A path you can actually follow. Each stage builds on the last, so
               momentum compounds instead of resetting.
             </p>
-            <div className="mt-10 inline-flex items-center gap-3 rounded-pill border border-silver/12 bg-silver/4 px-5 py-3 text-[13px] text-silver/55">
+            <div className="mt-10 inline-flex items-center gap-3 rounded-pill border border-silver/12 bg-silver/4 px-5 py-3 text-[13px] text-silver/70">
               <ArrowDown size={15} className="text-chrome" />
               Scroll to see the path
             </div>
@@ -52,7 +52,7 @@ export function Journey() {
               }}
               className="mt-12 border-t border-silver/8 pt-8"
             >
-              <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-silver/30">
+              <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-silver/70">
                 Backed by five pillars
               </p>
               <div className="mt-4 flex flex-wrap gap-2">
@@ -68,7 +68,7 @@ export function Journey() {
                       },
                     }}
                     whileHover={{ y: -2 }}
-                    className="inline-flex items-center gap-2 rounded-pill border border-silver/10 bg-silver/[0.03] px-3.5 py-2 text-[13px] text-silver/55 transition-colors duration-300 hover:border-chrome/35 hover:text-silver/90"
+                    className="inline-flex items-center gap-2 rounded-pill border border-silver/10 bg-silver/[0.03] px-3.5 py-2 text-[13px] text-silver/70 transition-colors duration-300 hover:border-chrome/35 hover:text-silver/90"
                   >
                     <span className="h-1.5 w-1.5 rounded-full bg-chrome/60" />
                     {pillar.title}
@@ -111,7 +111,7 @@ export function Journey() {
                       <h3 className="text-[23px] font-semibold tracking-[-0.03em] text-silver">
                         {step.title}
                       </h3>
-                      <p className="mt-2.5 text-[15.5px] leading-relaxed text-silver/55">
+                      <p className="mt-2.5 text-[15.5px] leading-relaxed text-silver/70">
                         {step.body}
                       </p>
                     </div>

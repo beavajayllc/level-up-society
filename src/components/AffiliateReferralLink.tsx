@@ -26,7 +26,7 @@ export function AffiliateReferralLink({ href }: { href: string }) {
         <h2 className="mt-5 text-[22px] font-semibold tracking-[-0.03em] text-silver">
           Share Level Up Pro
         </h2>
-        <p className="mt-2.5 text-[14px] leading-relaxed text-silver/50">
+        <p className="mt-2.5 text-[14px] leading-relaxed text-silver/70">
           Send people this link to open the Level Up Pro checkout on our website.
           Whop tracks eligible referrals to your account.
         </p>
@@ -35,7 +35,7 @@ export function AffiliateReferralLink({ href }: { href: string }) {
       <div>
         <label
           htmlFor="affiliate-referral-link"
-          className="mb-2 block text-[12px] text-silver/45"
+          className="mb-2 block text-[12px] text-silver/70"
         >
           Your referral link
         </label>
@@ -50,13 +50,13 @@ export function AffiliateReferralLink({ href }: { href: string }) {
           <button
             type="button"
             onClick={copyLink}
-            className="inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-pill bg-[linear-gradient(180deg,#ffffff_0%,#e7ecf3_46%,#c2cad5_100%)] px-5 text-sm font-medium text-ink transition hover:brightness-[1.06]"
+            className="inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-pill bg-[#19394f] px-5 text-sm font-medium text-white transition hover:brightness-[1.06]"
           >
             {copyState === "copied" ? <Check size={15} /> : <Copy size={15} />}
             {copyState === "copied" ? "Copied" : "Copy link"}
           </button>
         </div>
-        <p aria-live="polite" className="mt-2 min-h-5 text-[12px] text-silver/40">
+        <p aria-live="polite" className="mt-2 min-h-5 text-[12px] text-silver/70">
           {copyState === "error"
             ? "Copy wasn’t available. Select the link above and copy it manually."
             : copyState === "copied"

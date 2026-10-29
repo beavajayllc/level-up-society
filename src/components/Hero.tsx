@@ -72,7 +72,7 @@ export function Hero() {
           className="absolute -right-32 bottom-[6%] h-[560px] w-[560px]"
           style={reduce ? undefined : { animation: "drift 22s ease-in-out infinite reverse" }}
         >
-          <Glow className="inset-0" rgb="29, 39, 51" opacity={0.45} />
+          <Glow className="inset-0" rgb="29, 39, 51" opacity={0.08} />
         </div>
         <div className="grain-layer absolute inset-0 opacity-[0.05] mix-blend-overlay" />
       </div>
@@ -85,7 +85,7 @@ export function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
           >
-            <span className="inline-flex items-center gap-2 rounded-pill border border-chrome/25 bg-chrome/8 px-4 py-2 text-[12px] font-medium tracking-[0.14em] uppercase text-chrome">
+            <span className="inline-flex items-center gap-2 rounded-pill border border-rose-accent/25 bg-rose-accent/5 px-4 py-2 text-[12px] font-medium tracking-[0.14em] uppercase text-rose-accent">
               <Sparkles size={13} />
               Now Enrolling
             </span>
@@ -146,10 +146,10 @@ export function Hero() {
               <motion.li
                 key={chip}
                 variants={line}
-                className="inline-flex items-center gap-2 text-[13.5px] text-silver/50"
+                className="inline-flex items-center gap-2 text-[13.5px] text-silver/70"
               >
-                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-chrome/15">
-                  <Check size={11} className="text-chrome" strokeWidth={3} />
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-rose-accent/10">
+                  <Check size={11} className="text-rose-accent" strokeWidth={3} />
                 </span>
                 {chip}
               </motion.li>
@@ -174,10 +174,10 @@ export function Hero() {
             />
 
             {/* Main card */}
-            <div className="rounded-card-lg border border-silver/10 bg-gradient-to-b from-ink-2 to-ink p-6 shadow-[0_40px_100px_-30px_rgba(0,0,0,0.9)] sm:p-8">
+            <div className="rounded-card-lg border border-silver/10 bg-gradient-to-b from-ink-2 to-ink p-6 shadow-[0_40px_100px_-30px_rgba(19,43,61,0.22)] sm:p-8">
               <div className="flex items-center justify-between">
                 <SectionLabel index="LIVE" title="Inside the society" tone="light" />
-                <span className="flex items-center gap-2 rounded-pill bg-emerald-400/10 px-3 py-1.5 text-[11px] font-medium text-emerald-300">
+                <span className="flex items-center gap-2 rounded-pill bg-emerald-400/10 px-3 py-1.5 text-[11px] font-medium text-emerald-800">
                   <span className="relative flex h-2 w-2">
                     <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                     <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
@@ -190,7 +190,7 @@ export function Hero() {
 
               <div className="mt-4 grid grid-cols-2 gap-4">
                 <div className="rounded-card border border-silver/8 bg-silver/4 p-5">
-                  <p className="text-[11px] font-semibold tracking-[0.16em] uppercase text-silver/35">
+                  <p className="text-[11px] font-semibold tracking-[0.16em] uppercase text-silver/70">
                     Next live
                   </p>
                   <p className="mt-2 text-[15px] font-semibold text-silver">
@@ -199,13 +199,13 @@ export function Hero() {
                   <p className="mt-1 text-xs text-chrome/80">Thursday · 8PM</p>
                 </div>
                 <div className="rounded-card border border-silver/8 bg-silver/4 p-5">
-                  <p className="text-[11px] font-semibold tracking-[0.16em] uppercase text-silver/35">
+                  <p className="text-[11px] font-semibold tracking-[0.16em] uppercase text-silver/70">
                     Members
                   </p>
                   <p className="mt-2 text-[15px] font-semibold text-silver">
                     1,240+
                   </p>
-                  <p className="mt-1 text-xs text-silver/40">and growing</p>
+                  <p className="mt-1 text-xs text-silver/70">and growing</p>
                 </div>
               </div>
             </div>
@@ -216,7 +216,7 @@ export function Hero() {
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
               className="absolute -top-7 -right-7 rounded-card border border-silver/10 bg-ink-2/95 px-4 py-3 shadow-xl sm:-right-6"
             >
-              <p className="text-[11px] text-silver/45">Business funding</p>
+              <p className="text-[11px] text-silver/70">Business funding</p>
               <p className="text-sm font-semibold text-chrome">+ $250K approved</p>
             </motion.div>
 
@@ -230,7 +230,7 @@ export function Hero() {
               }}
               className="absolute -bottom-7 -left-7 rounded-card border border-silver/10 bg-ink-2/95 px-4 py-3 shadow-xl sm:-left-7"
             >
-              <p className="text-[11px] text-silver/45">This month</p>
+              <p className="text-[11px] text-silver/70">This month</p>
               <p className="text-sm font-semibold text-silver">
                 14 wins shared
               </p>
@@ -242,14 +242,14 @@ export function Hero() {
       {/* Marquee strip */}
       <motion.div
         style={reduce ? undefined : { y: orbY }}
-        className="relative border-y border-silver/8 bg-silver/[0.03] py-4"
+        className="relative border-y border-rose-accent/15 bg-rose-accent/[0.035] py-4"
       >
         <div className="flex overflow-hidden">
           <div className="flex shrink-0 animate-marquee items-center gap-10 pr-10">
             {[...heroChips, ...heroChips].map((chip, i) => (
               <span
                 key={`${chip}-${i}`}
-                className="flex shrink-0 items-center gap-10 text-sm font-medium tracking-[-0.01em] text-silver/35"
+                className="flex shrink-0 items-center gap-10 text-sm font-medium tracking-[-0.01em] text-silver/70"
               >
                 {chip}
                 <span className="h-1 w-1 rounded-full bg-chrome/60" />

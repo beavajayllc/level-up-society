@@ -49,8 +49,8 @@ export default async function ResetPasswordPage({
         <section className="max-w-lg rounded-card border border-silver/10 bg-silver/[0.035] p-8 text-center sm:p-10">
           <p className="text-[11px] uppercase tracking-[0.2em] text-chrome">Account recovery</p>
           <h1 className="mt-4 text-3xl font-semibold tracking-[-0.04em]">That reset link has expired.</h1>
-          <p className="mt-4 text-sm leading-relaxed text-silver/55">Request a new password reset link and open it in the same browser where you want to finish the reset.</p>
-          <Link href="/forgot-password" className="mt-7 inline-flex h-11 items-center justify-center rounded-pill bg-silver px-6 text-sm font-semibold text-ink transition hover:bg-white">Request a new link</Link>
+          <p className="mt-4 text-sm leading-relaxed text-silver/70">Request a new password reset link and open it in the same browser where you want to finish the reset.</p>
+          <Link href="/forgot-password" className="mt-7 inline-flex h-11 items-center justify-center rounded-pill bg-silver px-6 text-sm font-semibold text-ink transition hover:bg-silver/85">Request a new link</Link>
         </section>
       </main>
       <Footer />

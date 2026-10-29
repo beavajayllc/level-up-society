@@ -15,7 +15,7 @@ interface LusAuthFormProps {
 }
 
 const inputClassName =
-  "mt-2 block w-full rounded-xl border border-silver/15 bg-ink/70 px-4 py-3 text-[15px] text-silver outline-none transition placeholder:text-silver/30 focus:border-chrome/60 focus:ring-2 focus:ring-chrome/10";
+  "mt-2 block w-full rounded-xl border border-silver/15 bg-ink/70 px-4 py-3 text-[15px] text-silver outline-none transition placeholder:text-silver/70 focus:border-chrome/60 focus:ring-2 focus:ring-chrome/10";
 
 function errorCopy(error: string | undefined): string | null {
   if (!error) return null;
@@ -129,7 +129,7 @@ export function LusAuthForm({
             placeholder="Choose a username"
             required
           />
-          <span className="mt-2 block text-xs text-silver/35">3–24 characters: letters, numbers, or underscores.</span>
+          <span className="mt-2 block text-xs text-silver/70">3–24 characters: letters, numbers, or underscores.</span>
         </label>
       ) : null}
 
@@ -192,7 +192,7 @@ export function LusAuthForm({
       ) : null}
 
       {error ? (
-        <p role="alert" className="rounded-xl border border-red-300/20 bg-red-300/[0.06] px-4 py-3 text-sm text-red-100/80">
+        <p role="alert" className="rounded-xl border border-red-300/20 bg-red-300/[0.06] px-4 py-3 text-sm text-red-700">
           {error}
         </p>
       ) : null}
@@ -205,7 +205,7 @@ export function LusAuthForm({
       <button
         type="submit"
         disabled={busy || !authAvailable}
-        className="inline-flex h-12 w-full items-center justify-center rounded-pill bg-silver px-6 text-sm font-semibold text-ink transition hover:bg-white disabled:cursor-wait disabled:opacity-60"
+        className="inline-flex h-12 w-full items-center justify-center rounded-pill bg-silver px-6 text-sm font-semibold text-ink transition hover:bg-silver/85 disabled:cursor-wait disabled:opacity-60"
       >
         {busy
           ? "Please wait…"
@@ -219,7 +219,7 @@ export function LusAuthForm({
       </button>
 
       {mode === "login" ? (
-        <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-silver/50">
+        <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-silver/70">
           <Link href={`/signup?next=${encodeURIComponent(nextPath)}`} className="transition hover:text-chrome">
             Create an account
           </Link>
@@ -230,7 +230,7 @@ export function LusAuthForm({
       ) : null}
 
       {mode === "signup" ? (
-        <p className="text-center text-sm text-silver/50">
+        <p className="text-center text-sm text-silver/70">
           Already have an account?{" "}
           <Link href={`/login?next=${encodeURIComponent(nextPath)}`} className="text-chrome transition hover:text-silver">
             Sign in
@@ -239,7 +239,7 @@ export function LusAuthForm({
       ) : null}
 
       {mode === "forgot-password" ? (
-        <p className="text-center text-sm text-silver/50">
+        <p className="text-center text-sm text-silver/70">
           Remember your password? <Link href="/login" className="text-chrome hover:text-silver">Sign in</Link>
         </p>
       ) : null}

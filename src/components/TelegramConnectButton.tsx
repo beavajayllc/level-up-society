@@ -41,11 +41,11 @@ export function TelegramConnectButton({ enabled }: { enabled: boolean }) {
   if (!enabled) {
     return (
       <div className="mt-7">
-        <span className="inline-flex min-h-12 items-center gap-2 rounded-pill border border-silver/15 px-6 text-sm font-medium text-silver/50">
+        <span className="inline-flex min-h-12 items-center gap-2 rounded-pill border border-silver/15 px-6 text-sm font-medium text-silver/70">
           <MessageCircle size={16} />
           Secure access setup in progress
         </span>
-        <p className="mt-3 text-sm leading-relaxed text-silver/40">
+        <p className="mt-3 text-sm leading-relaxed text-silver/70">
           The personal Telegram connection will appear here once the bot is configured.
         </p>
       </div>
@@ -59,7 +59,7 @@ export function TelegramConnectButton({ enabled }: { enabled: boolean }) {
           href={telegramUrl}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex min-h-12 items-center gap-2 rounded-pill bg-[linear-gradient(180deg,#ffffff_0%,#e7ecf3_46%,#c2cad5_100%)] px-6 text-sm font-medium text-ink transition hover:brightness-[1.06]"
+          className="inline-flex min-h-12 items-center gap-2 rounded-pill bg-[#19394f] px-6 text-sm font-medium text-white transition hover:brightness-[1.06]"
         >
           Open Telegram
           <ArrowUpRight size={15} />
@@ -69,7 +69,7 @@ export function TelegramConnectButton({ enabled }: { enabled: boolean }) {
           type="button"
           onClick={createLink}
           disabled={busy}
-          className="inline-flex min-h-12 items-center gap-2 rounded-pill bg-[linear-gradient(180deg,#ffffff_0%,#e7ecf3_46%,#c2cad5_100%)] px-6 text-sm font-medium text-ink transition hover:brightness-[1.06] disabled:cursor-wait disabled:opacity-65"
+          className="inline-flex min-h-12 items-center gap-2 rounded-pill bg-[#19394f] px-6 text-sm font-medium text-white transition hover:brightness-[1.06] disabled:cursor-wait disabled:opacity-65"
         >
           {busy ? <LoaderCircle className="animate-spin" size={16} /> : <MessageCircle size={16} />}
           {busy ? "Creating your secure link" : "Connect Telegram"}
@@ -77,12 +77,12 @@ export function TelegramConnectButton({ enabled }: { enabled: boolean }) {
       )}
 
       {telegramUrl && (
-        <p className="mt-3 text-sm leading-relaxed text-silver/40">
+        <p className="mt-3 text-sm leading-relaxed text-silver/70">
           This personal link expires after 10 minutes. If it expires, create another one here.
         </p>
       )}
       {error && (
-        <p role="alert" className="mt-3 text-sm leading-relaxed text-rose-300">
+        <p role="alert" className="mt-3 text-sm leading-relaxed text-rose-700">
           {error}
         </p>
       )}

@@ -45,7 +45,7 @@ export default async function FundingCreditPage({
         <div className="container-x relative py-16 lg:py-20">
           <Link
             href="/members"
-            className="inline-flex items-center gap-2 text-[13px] text-silver/45 transition-colors duration-300 hover:text-chrome"
+            className="inline-flex items-center gap-2 text-[13px] text-silver/70 transition-colors duration-300 hover:text-chrome"
           >
             <ArrowLeft size={14} />
             Back to the members area
@@ -57,7 +57,7 @@ export default async function FundingCreditPage({
               <h1 className="text-[clamp(2rem,4vw,3.2rem)] font-semibold leading-[1.04] tracking-[-0.04em] text-silver">
                 Find your next step
               </h1>
-              <p className="mt-5 max-w-xl text-[16px] leading-relaxed text-silver/55">
+              <p className="mt-5 max-w-xl text-[16px] leading-relaxed text-silver/70">
                 Answer a few quick questions so you can see which credit or funding support may fit where you are right now.
               </p>
             </div>

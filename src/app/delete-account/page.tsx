@@ -14,7 +14,7 @@ export default function DeleteAccountPage() {
       <PublicPageNav />
       <main className="container-x flex-1 py-20 sm:py-28">
         <section className="mx-auto max-w-3xl rounded-[2rem] border border-silver/10 bg-ink-2 p-7 sm:p-12">
-          <p className="text-[11px] font-semibold tracking-[0.22em] uppercase text-silver/45">
+          <p className="text-[11px] font-semibold tracking-[0.22em] uppercase text-silver/70">
             Beava Jay LLC · Level Up Society
           </p>
           <h1 className="mt-5 text-4xl font-semibold tracking-[-0.045em] text-silver sm:text-6xl">

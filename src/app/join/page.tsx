@@ -38,7 +38,7 @@ export default async function JoinPage({
       <main className="flex min-h-screen items-center justify-center bg-ink px-6 py-16 text-silver">
         <section className="max-w-lg rounded-card border border-silver/10 bg-silver/[0.035] p-8 text-center">
           <h1 className="text-2xl font-semibold">Account setup is in progress</h1>
-          <p className="mt-3 text-sm leading-relaxed text-silver/55">Create or sign in to your Level Up Society account before checkout. Account sign-in is being connected right now.</p>
+          <p className="mt-3 text-sm leading-relaxed text-silver/70">Create or sign in to your Level Up Society account before checkout. Account sign-in is being connected right now.</p>
           <Link href="/" className="mt-6 inline-flex text-sm text-chrome underline">Back to Level Up Society</Link>
         </section>
       </main>
@@ -54,7 +54,7 @@ export default async function JoinPage({
       <main className="flex min-h-screen items-center justify-center bg-ink px-6 py-16 text-silver">
         <section className="max-w-lg rounded-card border border-silver/10 bg-silver/[0.035] p-8 text-center">
           <h1 className="text-2xl font-semibold">We could not verify your account</h1>
-          <p className="mt-3 text-sm leading-relaxed text-silver/55">Please sign in again before continuing to checkout.</p>
+          <p className="mt-3 text-sm leading-relaxed text-silver/70">Please sign in again before continuing to checkout.</p>
           <Link href={`/login?next=${encodeURIComponent(joinPath)}`} className="mt-6 inline-flex text-sm text-chrome underline">Sign in to Level Up Society</Link>
         </section>
       </main>
@@ -67,9 +67,9 @@ export default async function JoinPage({
         <section className="max-w-xl rounded-card border border-silver/10 bg-silver/[0.035] p-8 text-center sm:p-10">
           <p className="text-[11px] uppercase tracking-[0.2em] text-chrome">Level Up Pro</p>
           <h1 className="mt-4 text-3xl font-semibold tracking-[-0.04em]">Start with your LUS account.</h1>
-          <p className="mt-4 text-sm leading-relaxed text-silver/55">Create your Level Up Society username and password first, then continue to secure Whop checkout. Your LUS password is only for signing in to this website.</p>
+          <p className="mt-4 text-sm leading-relaxed text-silver/70">Create your Level Up Society username and password first, then continue to secure Whop checkout. Your LUS password is only for signing in to this website.</p>
           <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
-            <Link href={`/signup?next=${encodeURIComponent(joinPath)}`} className="inline-flex h-12 items-center justify-center rounded-pill bg-silver px-6 text-sm font-semibold text-ink transition hover:bg-white">Create account</Link>
+            <Link href={`/signup?next=${encodeURIComponent(joinPath)}`} className="inline-flex h-12 items-center justify-center rounded-pill bg-silver px-6 text-sm font-semibold text-ink transition hover:bg-silver/85">Create account</Link>
             <Link href={`/login?next=${encodeURIComponent(joinPath)}`} className="inline-flex h-12 items-center justify-center rounded-pill border border-silver/20 px-6 text-sm font-medium text-silver transition hover:border-chrome/60 hover:text-chrome">I already have an account</Link>
           </div>
         </section>
@@ -86,7 +86,7 @@ export default async function JoinPage({
       <main className="flex min-h-screen items-center justify-center bg-ink px-6 py-16 text-silver">
         <section className="max-w-lg rounded-card border border-silver/10 bg-silver/[0.035] p-8 text-center">
           <h1 className="text-2xl font-semibold">We could not check your membership link</h1>
-          <p className="mt-3 text-sm leading-relaxed text-silver/55">Please try again before continuing to checkout.</p>
+          <p className="mt-3 text-sm leading-relaxed text-silver/70">Please try again before continuing to checkout.</p>
         </section>
       </main>
     );
@@ -108,7 +108,7 @@ export default async function JoinPage({
         <main className="flex min-h-screen items-center justify-center bg-ink px-6 py-16 text-silver">
           <section className="max-w-lg rounded-card border border-silver/10 bg-silver/[0.035] p-8 text-center">
             <h1 className="text-2xl font-semibold">We could not verify your Whop membership</h1>
-            <p className="mt-3 text-sm leading-relaxed text-silver/55">Your membership connection is saved, but Whop did not answer our check. Please try again before starting another checkout.</p>
+            <p className="mt-3 text-sm leading-relaxed text-silver/70">Your membership connection is saved, but Whop did not answer our check. Please try again before starting another checkout.</p>
             <Link href="/members" className="mt-6 inline-flex text-sm text-chrome underline">Try member access again</Link>
           </section>
         </main>
@@ -123,7 +123,7 @@ export default async function JoinPage({
       <main className="flex min-h-screen items-center justify-center bg-ink px-6 py-16 text-silver">
         <section className="max-w-lg rounded-card border border-silver/10 bg-silver/[0.035] p-8 text-center">
           <h1 className="text-2xl font-semibold">Checkout is unavailable</h1>
-          <p className="mt-3 text-sm leading-relaxed text-silver/55">
+          <p className="mt-3 text-sm leading-relaxed text-silver/70">
             We couldn’t load the Level Up Pro checkout. Please return to the site and try again.
           </p>
           <Link href="/" className="mt-6 inline-flex text-sm text-chrome underline">
@@ -142,7 +142,7 @@ export default async function JoinPage({
       <div className="mx-auto max-w-6xl">
         <Link
           href="/"
-          className="text-xs font-medium uppercase tracking-[0.2em] text-silver/45 transition hover:text-chrome"
+          className="text-xs font-medium uppercase tracking-[0.2em] text-silver/70 transition hover:text-chrome"
         >
           Level Up Society
         </Link>
@@ -153,13 +153,13 @@ export default async function JoinPage({
           <h1 className="mt-4 text-[clamp(2rem,5vw,3.5rem)] font-semibold leading-tight tracking-[-0.04em]">
             Your next level starts here.
           </h1>
-          <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-silver/55 sm:text-base">
+          <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-silver/70 sm:text-base">
             {pageError === "no_membership"
               ? "Your LUS account is ready. Complete the secure Whop checkout below to activate your membership."
               : "Complete your secure membership checkout below."}
           </p>
           {!linkedAccount ? (
-            <p className="mx-auto mt-4 max-w-xl text-xs leading-relaxed text-silver/40">
+            <p className="mx-auto mt-4 max-w-xl text-xs leading-relaxed text-silver/70">
               Already have a Level Up Pro membership on Whop? <Link href={`/connect-whop?next=${encodeURIComponent(joinPath)}`} className="text-chrome underline">Connect that account first</Link> so you don’t purchase twice.
             </p>
           ) : null}

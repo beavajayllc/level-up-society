@@ -1,16 +1,17 @@
 @import "tailwindcss";
 
 @theme {
-  /* Brand palette — chrome on black, matched to the Level Up Society mark */
-  --color-ink: #08090b;
-  --color-ink-2: #0f1013;
-  --color-ink-3: #17191d;
-  --color-silver: #e7eaef;
-  --color-silver-2: #d6dae1;
-  --color-chrome: #f2f5f9;
-  --color-chrome-deep: #99a2af;
-  --color-chrome-soft: #ffffff;
-  --color-muted: #8a9099;
+  /* Jersey-inspired whites, deep navy and a restrained raspberry accent. */
+  --color-ink: #f9fafb;
+  --color-ink-2: #f0f3f5;
+  --color-ink-3: #e5eaed;
+  --color-silver: #132b3d;
+  --color-silver-2: #263f50;
+  --color-chrome: #19394f;
+  --color-chrome-deep: #a23b5c;
+  --color-chrome-soft: #31546a;
+  --color-rose-accent: #a23b5c;
+  --color-muted: #5b6b76;
 
   /* Rounded, never sharp */
   --radius-pill: 999px;
@@ -62,7 +63,7 @@
 :root {
   --background: var(--color-ink);
   --foreground: var(--color-silver);
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 html {
@@ -91,7 +92,7 @@ html.lenis, html.lenis body { height: auto; }
 ::-webkit-scrollbar { width: 10px; }
 ::-webkit-scrollbar-track { background: var(--color-ink); }
 ::-webkit-scrollbar-thumb {
-  background: #2a2a31;
+  background: #aab8c1;
   border-radius: 999px;
   border: 2px solid var(--color-ink);
 }
@@ -110,7 +111,15 @@ html.lenis, html.lenis body { height: auto; }
   }
 }
 
-/* Fine film grain over dark sections */
+/* Sections designed around dark text on a pale surface use the same palette. */
+.light-section {
+  --color-ink: #132b3d;
+  --color-silver: #f5f7f9;
+  --color-silver-2: #edf1f3;
+  --color-chrome: #8b3151;
+}
+
+/* Fine film grain */
 @utility grain {
   position: relative;
 }
@@ -125,14 +134,13 @@ html.lenis, html.lenis body { height: auto; }
   letter-spacing: -0.01em;
 }
 
-/* Brushed-chrome text, straight off the logo */
+/* Deep navy lettering with a soft metallic finish. */
 @utility text-chrome-gradient {
   background-image: linear-gradient(
     155deg,
-    #ffffff 0%,
-    #e4eaf1 34%,
-    #9aa4b0 68%,
-    #f0f4f8 100%
+    #132b3d 0%,
+    #31546a 55%,
+    #132b3d 100%
   );
   -webkit-background-clip: text;
   background-clip: text;

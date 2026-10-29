@@ -59,7 +59,7 @@ export function WhopPlanCheckout({
           affiliateCode={affiliateCode ?? undefined}
           returnUrl={returnUrl}
           fallback={
-            <div className="flex min-h-[38rem] items-center justify-center text-sm text-silver/55">
+            <div className="flex min-h-[38rem] items-center justify-center text-sm text-silver/70">
               Loading secure checkout…
             </div>
           }

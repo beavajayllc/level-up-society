@@ -23,7 +23,7 @@ export function AffiliateEnrollmentForm() {
       <h2 className="text-[22px] font-semibold tracking-[-0.03em] text-silver">
         Activate your Level Up Pro affiliate access
       </h2>
-      <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-silver/50">
+      <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-silver/70">
         Already a Whop affiliate? That’s okay. Activate here to connect your
         account to Level Up Society’s program. Your personal link and referral
         stats will then appear on this page.
@@ -32,7 +32,7 @@ export function AffiliateEnrollmentForm() {
         <button
           type="submit"
           disabled={pending}
-          className="inline-flex h-12 items-center justify-center gap-2 rounded-pill bg-[linear-gradient(180deg,#ffffff_0%,#e7ecf3_46%,#c2cad5_100%)] px-6 text-sm font-medium text-ink transition hover:brightness-[1.06] disabled:cursor-wait disabled:opacity-60"
+          className="inline-flex h-12 items-center justify-center gap-2 rounded-pill bg-[#19394f] px-6 text-sm font-medium text-white transition hover:brightness-[1.06] disabled:cursor-wait disabled:opacity-60"
         >
           {pending ? "Activating…" : "Activate my affiliate access"}
           {!pending ? <ArrowRight size={15} /> : null}
@@ -42,7 +42,7 @@ export function AffiliateEnrollmentForm() {
         <p
           role={state.status === "error" ? "alert" : "status"}
           className={`mt-4 text-[13px] ${
-            state.status === "error" ? "text-red-300" : "text-silver/55"
+            state.status === "error" ? "text-red-700" : "text-silver/70"
           }`}
         >
           {state.message}

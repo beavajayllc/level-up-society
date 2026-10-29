@@ -46,26 +46,26 @@ export function MembersArea({
                 Welcome inside,{" "}
                 <span className="display-serif text-chrome-gradient">{name}</span>
               </h1>
-              <p className="mt-6 max-w-lg text-[17px] leading-relaxed text-silver/55">
+              <p className="mt-6 max-w-lg text-[17px] leading-relaxed text-silver/70">
                 Your membership is active. Everything below is yours — go build.
               </p>
             </Reveal>
 
             <Reveal delay={0.1}>
               <div className="mt-10 flex flex-wrap items-center gap-3">
-                <span className="inline-flex items-center gap-2.5 rounded-pill border border-chrome/25 bg-chrome/10 px-4 py-2 text-[13px] text-chrome">
+                <span className="inline-flex items-center gap-2.5 rounded-pill border border-rose-accent/25 bg-rose-accent/5 px-4 py-2 text-[13px] text-rose-accent">
                   <span className="relative flex h-2 w-2">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-chrome opacity-60" />
-                    <span className="relative inline-flex h-2 w-2 rounded-full bg-chrome" />
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-rose-accent opacity-60" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-rose-accent" />
                   </span>
                   Membership active
                 </span>
-                <span className="inline-flex items-center gap-2 rounded-pill border border-silver/12 bg-silver/4 px-4 py-2 text-[13px] text-silver/55">
+                <span className="inline-flex items-center gap-2 rounded-pill border border-silver/12 bg-silver/4 px-4 py-2 text-[13px] text-silver/70">
                   <ShieldCheck size={14} className="text-chrome/80" />
                   Level Up Pro · $97/mo
                 </span>
                 {lusEmail ? (
-                  <span className="rounded-pill border border-silver/10 px-4 py-2 text-[13px] text-silver/45">
+                  <span className="rounded-pill border border-silver/10 px-4 py-2 text-[13px] text-silver/70">
                     {lusEmail}
                   </span>
                 ) : null}
@@ -102,7 +102,7 @@ export function MembersArea({
                     <span className="flex h-12 w-12 items-center justify-center rounded-tile border border-silver/10 bg-ink text-chrome transition-colors duration-500 group-hover:border-chrome/60">
                       <Icon size={20} strokeWidth={1.8} />
                     </span>
-                    <span className="rounded-pill border border-silver/10 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.14em] text-silver/40">
+                    <span className="rounded-pill border border-silver/10 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.14em] text-silver/70">
                       {resource.tag}
                     </span>
                   </div>
@@ -115,11 +115,11 @@ export function MembersArea({
                       </span>
                     ) : null}
                   </h3>
-                  <p className="mt-2.5 flex-1 text-[15px] leading-relaxed text-silver/50">
+                  <p className="mt-2.5 flex-1 text-[15px] leading-relaxed text-silver/70">
                     {resource.body}
                   </p>
 
-                  <span className="mt-6 inline-flex items-center gap-1.5 text-[13px] font-medium text-silver/40 transition-colors duration-300 group-hover:text-chrome">
+                  <span className="mt-6 inline-flex items-center gap-1.5 text-[13px] font-medium text-silver/70 transition-colors duration-300 group-hover:text-chrome">
                     {resource.cta ?? "Open"}
                     <ArrowUpRight
                       size={14}

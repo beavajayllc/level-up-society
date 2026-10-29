@@ -45,7 +45,7 @@ export default async function TradeIdeasPage({
         <div className="container-x relative py-16 lg:py-20">
           <Link
             href="/members"
-            className="inline-flex items-center gap-2 text-[13px] text-silver/45 transition-colors duration-300 hover:text-chrome"
+            className="inline-flex items-center gap-2 text-[13px] text-silver/70 transition-colors duration-300 hover:text-chrome"
           >
             <ArrowLeft size={14} />
             Back to the members area
@@ -57,7 +57,7 @@ export default async function TradeIdeasPage({
               <h1 className="text-[clamp(2rem,4vw,3.2rem)] font-semibold leading-[1.04] tracking-[-0.04em] text-silver">
                 Get ready for the trade ideas chat
               </h1>
-              <p className="mt-5 max-w-xl text-[16px] leading-relaxed text-silver/55">
+              <p className="mt-5 max-w-xl text-[16px] leading-relaxed text-silver/70">
                 Connect your Telegram account to your active Level Up Pro membership. The bot checks your access before approving your private join request and removes access when your membership expires.
               </p>
             </div>
@@ -77,14 +77,14 @@ export default async function TradeIdeasPage({
                 <h2 className="mt-7 text-[24px] font-semibold tracking-[-0.03em] text-silver">
                   Download Telegram
                 </h2>
-                <p className="mt-3 flex-1 text-[15px] leading-relaxed text-silver/55">
+                <p className="mt-3 flex-1 text-[15px] leading-relaxed text-silver/70">
                   Install Telegram on your phone or computer. If you already have it, you can go straight to Step 2.
                 </p>
                 <a
                   href="https://telegram.org/dl/"
                   target="_blank"
                   rel="noreferrer"
-                  className="mt-7 inline-flex h-12 w-fit items-center gap-2 rounded-pill bg-[linear-gradient(180deg,#ffffff_0%,#e7ecf3_46%,#c2cad5_100%)] px-6 text-sm font-medium text-ink transition hover:brightness-[1.06]"
+                  className="mt-7 inline-flex h-12 w-fit items-center gap-2 rounded-pill bg-[#19394f] px-6 text-sm font-medium text-white transition hover:brightness-[1.06]"
                 >
                   Download Telegram
                   <ArrowUpRight size={15} />
@@ -105,7 +105,7 @@ export default async function TradeIdeasPage({
                 <h2 className="mt-7 text-[24px] font-semibold tracking-[-0.03em] text-silver">
                   Connect your member account
                 </h2>
-                <p className="mt-3 flex-1 text-[15px] leading-relaxed text-silver/55">
+                <p className="mt-3 flex-1 text-[15px] leading-relaxed text-silver/70">
                   Sign in to the Telegram bot with the secure link below. It checks your Level Up Pro membership, then sends a personal join request link. The bot checks again before letting you into the chat.
                 </p>
                 <TelegramConnectButton enabled={isTelegramGatewayConfigured()} />

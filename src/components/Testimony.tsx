@@ -52,7 +52,7 @@ export function Testimony() {
                 <p className="truncate text-sm font-medium text-silver">
                   {current.name}
                 </p>
-                <p className="text-xs text-silver/40">{current.meta}</p>
+                <p className="text-xs text-silver/70">{current.meta}</p>
               </div>
             </div>
             <p className="mt-3.5 min-h-[96px] text-[14.5px] leading-relaxed text-silver/78">
@@ -93,7 +93,7 @@ export function Testimony() {
             </button>
           ))}
         </div>
-        <p className="text-[11px] tracking-[0.14em] text-silver/30 tabular-nums">
+        <p className="text-[11px] tracking-[0.14em] text-silver/70 tabular-nums">
           {String(index + 1).padStart(2, "0")} / {String(testimonies.length).padStart(2, "0")}
         </p>
       </div>

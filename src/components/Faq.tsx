@@ -11,7 +11,7 @@ export function Faq() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="relative bg-silver py-24 text-ink lg:py-32">
+    <section id="faq" className="light-section relative bg-silver py-24 text-ink lg:py-32">
       <div className="container-x grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
         <div className="lg:sticky lg:top-28 lg:self-start">
           <Reveal>
@@ -21,7 +21,7 @@ export function Faq() {
               <br />
               <span className="display-serif">asked</span>
             </h2>
-            <p className="mt-6 max-w-sm text-[16px] leading-relaxed text-ink/55">
+            <p className="mt-6 max-w-sm text-[16px] leading-relaxed text-ink/70">
               Still deciding? Grab a free pass to the newsletter and see what
               the community is about first.
             </p>

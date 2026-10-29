@@ -60,7 +60,7 @@ export function AccessNotice({ reason }: { reason: string }) {
           <h1 className="mt-7 text-[clamp(1.75rem,4vw,2.5rem)] font-semibold leading-[1.05] tracking-[-0.035em] text-silver">
             {content.title}
           </h1>
-          <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-silver/55">
+          <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-silver/70">
             {content.body}
           </p>
           <div className="mt-9 flex flex-wrap items-center justify-center gap-3">

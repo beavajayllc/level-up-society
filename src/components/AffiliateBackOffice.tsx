@@ -52,7 +52,7 @@ function MetricCard({
   return (
     <article className="rounded-card border border-silver/10 bg-silver/[0.035] p-6 sm:p-7">
       <div className="flex items-center justify-between gap-4">
-        <span className="text-[13px] text-silver/50">{label}</span>
+        <span className="text-[13px] text-silver/70">{label}</span>
         <span className="flex h-10 w-10 items-center justify-center rounded-tile border border-chrome/15 bg-chrome/5 text-chrome">
           <Icon size={17} strokeWidth={1.8} />
         </span>
@@ -60,7 +60,7 @@ function MetricCard({
       <p className="mt-7 text-[clamp(1.8rem,4vw,2.5rem)] font-semibold tracking-[-0.045em] text-silver">
         {value}
       </p>
-      <p className="mt-2 text-[12px] text-silver/35">{detail}</p>
+      <p className="mt-2 text-[12px] text-silver/70">{detail}</p>
     </article>
   );
 }
@@ -80,7 +80,7 @@ export function AffiliateBackOffice({
       <div className="container-x relative py-16 lg:py-20">
         <Link
           href="/members"
-          className="inline-flex items-center gap-2 text-[13px] text-silver/45 transition-colors duration-300 hover:text-chrome"
+          className="inline-flex items-center gap-2 text-[13px] text-silver/70 transition-colors duration-300 hover:text-chrome"
         >
           <ArrowLeft size={14} />
           Back to the members area
@@ -93,7 +93,7 @@ export function AffiliateBackOffice({
               Your growth,{" "}
               <span className="display-serif text-chrome-gradient">in motion.</span>
             </h1>
-            <p className="mt-5 max-w-2xl text-[16px] leading-relaxed text-silver/55">
+            <p className="mt-5 max-w-2xl text-[16px] leading-relaxed text-silver/70">
               See how your referrals are growing Level Up Society. Your stats come directly from Whop and are private to your signed-in account.
             </p>
           </div>
@@ -115,7 +115,7 @@ export function AffiliateBackOffice({
                     Your referral snapshot
                   </h2>
                 </div>
-                <p className="max-w-sm text-[12px] leading-relaxed text-silver/35">
+                <p className="max-w-sm text-[12px] leading-relaxed text-silver/70">
                   Whop totals, refreshed when you open this page.
                 </p>
               </div>
@@ -194,19 +194,19 @@ export function AffiliateBackOffice({
                         Product performance
                       </h2>
                     </div>
-                    <p className="text-[12px] text-silver/35">
+                    <p className="text-[12px] text-silver/70">
                       Specific to the Level Up Pro products that unlock membership
                     </p>
                   </div>
                   <div className="mt-6 grid gap-3 sm:grid-cols-2">
                     <div className="rounded-card border border-silver/8 bg-ink/55 p-6">
-                      <p className="text-[13px] text-silver/45">Level Up Pro referrals</p>
+                      <p className="text-[13px] text-silver/70">Level Up Pro referrals</p>
                       <p className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-silver">
                         {result.stats.product.referrals.toLocaleString("en-US")}
                       </p>
                     </div>
                     <div className="rounded-card border border-silver/8 bg-ink/55 p-6">
-                      <p className="text-[13px] text-silver/45">Level Up Pro rewards</p>
+                      <p className="text-[13px] text-silver/70">Level Up Pro rewards</p>
                       <p className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-silver">
                         {result.stats.product.rewardsUsd}
                       </p>
@@ -216,7 +216,7 @@ export function AffiliateBackOffice({
               </Reveal>
             ) : null}
 
-            <p className="mt-6 max-w-3xl text-[12px] leading-relaxed text-silver/30">
+            <p className="mt-6 max-w-3xl text-[12px] leading-relaxed text-silver/70">
               Whop provides these referral and earnings totals. Your tracked link sends people to the Level Up Pro checkout on our website.
             </p>
           </>
@@ -227,7 +227,7 @@ export function AffiliateBackOffice({
             <h2 className="text-[22px] font-semibold tracking-[-0.03em] text-silver">
               Your affiliate stats couldn’t load
             </h2>
-            <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-silver/50">
+            <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-silver/70">
               Whop didn’t return your referral data just now. Try again in a moment; your link and stats will load when Whop responds.
             </p>
           </section>

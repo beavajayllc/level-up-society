@@ -303,7 +303,7 @@ export function LiveCallsRoom({
       <div className="container-x relative py-16 lg:py-20">
         <Link
           href="/members"
-          className="inline-flex items-center gap-2 text-[13px] text-silver/45 transition-colors duration-300 hover:text-chrome"
+          className="inline-flex items-center gap-2 text-[13px] text-silver/70 transition-colors duration-300 hover:text-chrome"
         >
           <ArrowLeft size={14} />
           Back to the members area
@@ -321,7 +321,7 @@ export function LiveCallsRoom({
 
         <div className="mt-8 flex flex-wrap items-center gap-3">
           {isLive ? (
-            <span className="inline-flex items-center gap-2.5 rounded-pill border border-[#ff3b30]/40 bg-[#ff3b30]/12 px-4 py-2 text-[12px] font-semibold tracking-[0.16em] uppercase text-[#ff8a82]">
+            <span className="inline-flex items-center gap-2.5 rounded-pill border border-[#ff3b30]/40 bg-[#ff3b30]/12 px-4 py-2 text-[12px] font-semibold tracking-[0.16em] uppercase text-red-700">
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#ff3b30] opacity-70" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-[#ff3b30]" />
@@ -329,7 +329,7 @@ export function LiveCallsRoom({
               Live now
             </span>
           ) : (
-            <span className="inline-flex items-center gap-2.5 rounded-pill border border-silver/12 bg-silver/4 px-4 py-2 text-[13px] text-silver/50">
+            <span className="inline-flex items-center gap-2.5 rounded-pill border border-silver/12 bg-silver/4 px-4 py-2 text-[13px] text-silver/70">
               <CalendarClock size={14} className="text-chrome/70" />
               {nextCall
                 ? `Next call ${DATE_FORMAT.format(new Date(nextCall.scheduled_at ?? ""))} · ${TIME_FORMAT.format(new Date(nextCall.scheduled_at ?? ""))}`
@@ -337,7 +337,7 @@ export function LiveCallsRoom({
             </span>
           )}
           {!isLive ? (
-            <span className="inline-flex items-center gap-2.5 rounded-pill border border-silver/12 bg-silver/4 px-4 py-2 text-[13px] text-silver/50">
+            <span className="inline-flex items-center gap-2.5 rounded-pill border border-silver/12 bg-silver/4 px-4 py-2 text-[13px] text-silver/70">
               No call is live right now
             </span>
           ) : null}
@@ -351,7 +351,7 @@ export function LiveCallsRoom({
                   (isLive ? "Level Up Pro live call" : "The live stage")}
               </h2>
               {state.live ? (
-                <span className="inline-flex items-center gap-1.5 font-mono text-[12px] text-silver/45">
+                <span className="inline-flex items-center gap-1.5 font-mono text-[12px] text-silver/70">
                   <Radio size={12} />
                   {formatElapsed(state.live.started_at, now)}
                 </span>
@@ -399,7 +399,7 @@ export function LiveCallsRoom({
                     <span className="relative inline-flex h-16 w-16 items-center justify-center rounded-tile border border-silver/10 bg-ink/80 text-chrome">
                       <Video size={24} strokeWidth={1.6} />
                     </span>
-                    <p className="relative max-w-sm text-[15px] leading-relaxed text-silver/55">
+                    <p className="relative max-w-sm text-[15px] leading-relaxed text-silver/70">
                       Nothing is on air right now. The live video will appear
                       here automatically when the host goes live.
                     </p>
@@ -424,7 +424,7 @@ export function LiveCallsRoom({
 
         {!isLive ? (
           <section className="mt-12">
-            <h3 className="text-[13px] font-semibold tracking-[0.16em] uppercase text-silver/40">
+            <h3 className="text-[13px] font-semibold tracking-[0.16em] uppercase text-silver/70">
               Latest calls
             </h3>
             {state.recordings.length > 0 ? (
@@ -448,7 +448,7 @@ export function LiveCallsRoom({
                       <p className="truncate text-[15px] font-medium text-silver">
                         {recording.title}
                       </p>
-                      <p className="mt-1 text-[12px] text-silver/40">
+                      <p className="mt-1 text-[12px] text-silver/70">
                         {DATE_FORMAT.format(
                           new Date(recording.ended_at ?? recording.started_at ?? ""),
                         )}
@@ -462,7 +462,7 @@ export function LiveCallsRoom({
                 ))}
               </ul>
             ) : (
-              <p className="mt-4 text-[15px] text-silver/40">
+              <p className="mt-4 text-[15px] text-silver/70">
                 No calls recorded yet.
               </p>
             )}
@@ -502,7 +502,7 @@ function ChatPanel({
         </span>
         <div className="min-w-0">
           <p className="text-[15px] font-medium text-silver">Live chat</p>
-          <p className="text-[12px] text-silver/40">
+          <p className="text-[12px] text-silver/70">
             {chat.connected
               ? `${chat.messages.length} message${chat.messages.length === 1 ? "" : "s"}`
               : chat.requiresReauthorization
@@ -545,7 +545,7 @@ function ChatPanel({
                   <span className="text-[13px] font-medium text-silver">
                     {message.author}
                   </span>
-                  <span className="font-mono text-[11px] text-silver/30">
+                  <span className="font-mono text-[11px] text-silver/70">
                     {messageTime(message.createdAt)}
                   </span>
                 </p>
@@ -560,7 +560,7 @@ function ChatPanel({
             <span className="inline-flex h-12 w-12 items-center justify-center rounded-tile border border-silver/10 bg-ink text-chrome/70">
               <MessageCircle size={19} strokeWidth={1.6} />
             </span>
-            <p className="max-w-[16rem] text-[14px] leading-relaxed text-silver/45">
+            <p className="max-w-[16rem] text-[14px] leading-relaxed text-silver/70">
               {chat.connected
                 ? "No messages yet. Say hello and get it started."
                 : chat.requiresReauthorization
@@ -583,7 +583,7 @@ function ChatPanel({
 
       <div className="border-t border-silver/8 p-4">
         {sendError ? (
-          <p className="mb-3 text-[12px] text-[#ff8a82]">{sendError}</p>
+          <p className="mb-3 text-[12px] text-red-700">{sendError}</p>
         ) : null}
         <form
           onSubmit={(event) => {
@@ -599,7 +599,7 @@ function ChatPanel({
               isLive ? `Say something, ${memberName}` : "Chat opens when the call is live"
             }
             disabled={!isLive || !chat.connected || sending}
-            className="h-11 min-w-0 flex-1 rounded-pill border border-silver/12 bg-ink px-5 text-[14px] text-silver outline-none transition-colors duration-300 placeholder:text-silver/30 focus:border-chrome/45 disabled:opacity-60"
+            className="h-11 min-w-0 flex-1 rounded-pill border border-silver/12 bg-ink px-5 text-[14px] text-silver outline-none transition-colors duration-300 placeholder:text-silver/70 focus:border-chrome/45 disabled:opacity-60"
           />
           <button
             type="submit"
@@ -607,7 +607,7 @@ function ChatPanel({
               !isLive || !chat.connected || sending || draft.trim().length === 0
             }
             aria-label="Send message"
-            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-pill bg-[linear-gradient(180deg,#ffffff_0%,#e7ecf3_46%,#c2cad5_100%)] text-ink transition-[filter,opacity] duration-300 hover:brightness-105 disabled:opacity-35"
+            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-pill bg-[#19394f] text-white transition-[filter,opacity] duration-300 hover:brightness-105 disabled:opacity-35"
           >
             <Send size={15} />
           </button>

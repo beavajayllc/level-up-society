@@ -8,7 +8,7 @@ import { SectionLabel } from "./ui";
 
 export function Philosophy() {
   return (
-    <section id="why" className="relative bg-silver-2 py-24 text-ink lg:py-32">
+    <section id="why" className="light-section relative bg-silver-2 py-24 text-ink lg:py-32">
       <div className="container-x">
         <div className="mx-auto max-w-3xl text-center">
           <Reveal className="flex justify-center">

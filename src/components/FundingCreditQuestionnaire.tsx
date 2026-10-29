@@ -97,7 +97,7 @@ function CalendlyInlineEmbed({ url }: { url: string }) {
   return (
     <div className="mt-7">
       {!loadError && (
-        <p className="mb-3 text-[13px] text-silver/45" aria-live="polite">
+        <p className="mb-3 text-[13px] text-silver/70" aria-live="polite">
           Choose an available time below to book your call.
         </p>
       )}
@@ -205,7 +205,7 @@ export function FundingCreditQuestionnaire({
             <p className="font-mono text-[12px] uppercase tracking-[0.16em] text-chrome">
               Question {step + 1} of {questions.length}
             </p>
-            <p className="text-[13px] text-silver/40">About a minute</p>
+            <p className="text-[13px] text-silver/70">About a minute</p>
           </div>
           <div
             className="mt-4 h-1 overflow-hidden rounded-full bg-silver/10"
@@ -248,7 +248,7 @@ export function FundingCreditQuestionnaire({
                           [questions[step].id]: option,
                         }))
                       }
-                      className="mr-3 h-4 w-4 accent-[#d8e0eb]"
+                      className="mr-3 h-4 w-4 accent-[#a23b5c]"
                     />
                     {option}
                   </label>
@@ -278,7 +278,7 @@ export function FundingCreditQuestionnaire({
                 }
                 setStep((current) => current + 1);
               }}
-              className="inline-flex h-11 items-center gap-2 rounded-pill bg-[linear-gradient(180deg,#ffffff_0%,#e7ecf3_46%,#c2cad5_100%)] px-6 text-sm font-medium text-ink transition hover:brightness-[1.06] disabled:cursor-not-allowed disabled:opacity-40"
+              className="inline-flex h-11 items-center gap-2 rounded-pill bg-[#19394f] px-6 text-sm font-medium text-white transition hover:brightness-[1.06] disabled:cursor-not-allowed disabled:opacity-40"
             >
               {step === questions.length - 1 ? "See your next step" : "Continue"}
               <ArrowRight size={15} />
@@ -296,7 +296,7 @@ export function FundingCreditQuestionnaire({
           <p className="mt-3 max-w-2xl text-[16px] leading-relaxed text-silver/60">
             Thanks for letting us know. A member of our team can talk with you about credit repair and help you figure out the next step that fits.
           </p>
-          <p className="mt-4 text-[14px] text-silver/45">
+          <p className="mt-4 text-[14px] text-silver/70">
             Your answer: <span className="text-silver/75">{answers.creditRepair}</span>
           </p>
           {bookingUrl ? (
@@ -311,7 +311,7 @@ export function FundingCreditQuestionnaire({
                 <button
                   type="button"
                   onClick={() => setShowCalendar(true)}
-                  className="mt-5 inline-flex h-12 items-center gap-2 rounded-pill bg-[linear-gradient(180deg,#ffffff_0%,#e7ecf3_46%,#c2cad5_100%)] px-6 text-sm font-medium text-ink transition hover:brightness-[1.06]"
+                  className="mt-5 inline-flex h-12 items-center gap-2 rounded-pill bg-[#19394f] px-6 text-sm font-medium text-white transition hover:brightness-[1.06]"
                 >
                   <CalendarDays size={16} />
                   Schedule a call today
@@ -320,7 +320,7 @@ export function FundingCreditQuestionnaire({
               )}
             </>
           ) : (
-            <p className="mt-7 rounded-tile border border-silver/10 bg-ink/50 p-4 text-sm text-silver/50">
+            <p className="mt-7 rounded-tile border border-silver/10 bg-ink/50 p-4 text-sm text-silver/70">
               The booking link needs to be connected before members can schedule here.
             </p>
           )}
@@ -369,7 +369,7 @@ export function FundingCreditQuestionnaire({
             <dl className="mt-4 space-y-3">
               {questions.map((question) => (
                 <div key={question.id} className="grid gap-1 sm:grid-cols-[1fr_auto] sm:gap-5">
-                  <dt className="text-[13px] text-silver/40">{question.prompt}</dt>
+                  <dt className="text-[13px] text-silver/70">{question.prompt}</dt>
                   <dd className="text-[13px] text-silver/75 sm:text-right">
                     {answers[question.id]}
                   </dd>
@@ -378,7 +378,7 @@ export function FundingCreditQuestionnaire({
             </dl>
           </div>
 
-          <p className="mt-5 text-[12px] leading-relaxed text-silver/35">
+          <p className="mt-5 text-[12px] leading-relaxed text-silver/70">
             This is a starting point, not financial advice. Your answers stay in this page and aren&apos;t submitted or saved.
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
@@ -392,7 +392,7 @@ export function FundingCreditQuestionnaire({
             </button>
             <Link
               href="/members"
-              className="inline-flex h-11 items-center gap-2 rounded-pill bg-[linear-gradient(180deg,#ffffff_0%,#e7ecf3_46%,#c2cad5_100%)] px-5 text-sm font-medium text-ink transition hover:brightness-[1.06]"
+              className="inline-flex h-11 items-center gap-2 rounded-pill bg-[#19394f] px-5 text-sm font-medium text-white transition hover:brightness-[1.06]"
             >
               Back to members area
               <ArrowRight size={15} />

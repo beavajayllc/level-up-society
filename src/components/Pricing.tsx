@@ -47,7 +47,7 @@ export function Pricing() {
             </h2>
           </Reveal>
           <Reveal delay={0.14}>
-            <p className="mx-auto mt-6 max-w-xl text-[17px] leading-relaxed text-silver/55">
+            <p className="mx-auto mt-6 max-w-xl text-[17px] leading-relaxed text-silver/70">
               One membership, everything included — the education, the training
               and the people that help you build a business and a life you love.
             </p>
@@ -78,7 +78,7 @@ export function Pricing() {
                     <p className="text-lg font-semibold tracking-[-0.02em] text-silver">
                       Level Up Pro
                     </p>
-                    <p className="text-[13px] text-silver/45">
+                    <p className="text-[13px] text-silver/70">
                       The complete membership
                     </p>
                   </div>
@@ -94,9 +94,9 @@ export function Pricing() {
                     <span className="text-[64px] font-semibold leading-none tracking-[-0.05em] text-silver">
                       $<CountUp target={97} />
                     </span>
-                    <span className="pb-2 text-lg text-silver/45">/mo</span>
+                    <span className="pb-2 text-lg text-silver/70">/mo</span>
                   </div>
-                  <p className="mt-4 text-[15px] leading-relaxed text-silver/50">
+                  <p className="mt-4 text-[15px] leading-relaxed text-silver/70">
                     Business education, skills training, personal growth, funding and
                     credit support, live sessions and entrepreneur calls —
                     everything an entrepreneur needs, in one membership.
@@ -105,7 +105,7 @@ export function Pricing() {
                     <PillButton href={checkoutHref()} size="lg" className="w-full">
                       Join Level Up Pro
                     </PillButton>
-                    <p className="mt-4 text-center text-[12.5px] text-silver/35">
+                    <p className="mt-4 text-center text-[12.5px] text-silver/70">
                       Renews monthly · Cancel any time
                     </p>
                   </div>
@@ -123,7 +123,7 @@ export function Pricing() {
                         </span>
                       ))}
                     </div>
-                    <p className="text-[13px] leading-snug text-silver/45">
+                    <p className="text-[13px] leading-snug text-silver/70">
                       Join{" "}
                       <span className="font-semibold text-silver">1,240+</span>{" "}
                       entrepreneurs already inside

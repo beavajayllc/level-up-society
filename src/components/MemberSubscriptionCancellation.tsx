@@ -52,7 +52,7 @@ function SubscriptionCancellationForm({
         <p className="text-sm font-medium text-silver/75">
           Thank you for being part of Level Up Society.
         </p>
-        <p className="mt-1.5 text-[13px] leading-relaxed text-silver/45">
+        <p className="mt-1.5 text-[13px] leading-relaxed text-silver/70">
           We’re grateful you joined us, and we wish you the very best on your
           journey. {endsAt
             ? `Your access continues through ${endsAt}. `
@@ -72,7 +72,7 @@ function SubscriptionCancellationForm({
           Your Level Up Pro subscription is set to end
           {endsAt ? ` on ${endsAt}` : " at the end of this billing period"}.
         </p>
-        <p className="mt-1.5 text-[13px] leading-relaxed text-silver/45">
+        <p className="mt-1.5 text-[13px] leading-relaxed text-silver/70">
           You’ll keep access until then, and it won’t renew again.
         </p>
       </div>
@@ -91,7 +91,7 @@ function SubscriptionCancellationForm({
           <p className="text-sm font-medium text-silver/75">
             Did you really sign up just to quit?
           </p>
-          <p className="mt-1.5 text-[13px] leading-relaxed text-silver/45">
+          <p className="mt-1.5 text-[13px] leading-relaxed text-silver/70">
             We’d hate to see you go, but the choice is yours.
           </p>
           <div className="mt-4 flex flex-wrap items-center gap-3">
@@ -116,7 +116,7 @@ function SubscriptionCancellationForm({
           <p className="text-sm font-medium text-silver/75">
             Are you sure you want to quit on your path to success?
           </p>
-          <p className="mt-1.5 text-[13px] leading-relaxed text-silver/45">
+          <p className="mt-1.5 text-[13px] leading-relaxed text-silver/70">
             {subscription.isTrialing
               ? endsAt
                 ? `Your access will continue through ${endsAt}. Canceling now prevents your trial from converting to a paid membership.`
@@ -147,7 +147,7 @@ function SubscriptionCancellationForm({
               Keep my membership
             </button>
             {actionError ? (
-              <span role="alert" className="text-[13px] text-red-300">
+              <span role="alert" className="text-[13px] text-red-700">
                 {actionError}
               </span>
             ) : null}
@@ -167,7 +167,7 @@ export function MemberSubscriptionCancellation({
 
   return (
     <section className="mt-10 border-t border-silver/8 pt-6">
-      <p className="text-[13px] text-silver/40">
+      <p className="text-[13px] text-silver/70">
         To cancel your subscription,{" "}
         <button
           type="button"
@@ -186,12 +186,12 @@ export function MemberSubscriptionCancellation({
           className="mt-5 grid gap-3"
         >
           {subscriptions === null ? (
-            <p className="rounded-tile border border-silver/10 bg-ink/60 p-5 text-[13px] leading-relaxed text-silver/55">
+            <p className="rounded-tile border border-silver/10 bg-ink/60 p-5 text-[13px] leading-relaxed text-silver/70">
               Whop cancellation details are temporarily unavailable. Please
               refresh or contact support for help.
             </p>
           ) : subscriptions.length === 0 ? (
-            <p className="rounded-tile border border-silver/10 bg-ink/60 p-5 text-[13px] leading-relaxed text-silver/55">
+            <p className="rounded-tile border border-silver/10 bg-ink/60 p-5 text-[13px] leading-relaxed text-silver/70">
               We couldn’t find a recurring Level Up Pro subscription on this
               Whop account. If you’re currently being billed, contact support
               and we’ll help check it.
@@ -209,7 +209,7 @@ export function MemberSubscriptionCancellation({
             <button
               type="button"
               onClick={() => setOpen(false)}
-              className="justify-self-start px-1 py-1 text-[12px] text-silver/35 transition hover:text-silver/65"
+              className="justify-self-start px-1 py-1 text-[12px] text-silver/70 transition hover:text-silver/65"
             >
               Keep my membership
             </button>

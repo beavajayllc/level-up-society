@@ -9,7 +9,7 @@ import { SectionLabel } from "./ui";
 
 export function Pillars() {
   return (
-    <section id="platform" className="relative bg-silver py-24 text-ink lg:py-32">
+    <section id="platform" className="light-section relative bg-silver py-24 text-ink lg:py-32">
       <div className="container-x">
         <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-end">
           <Reveal>
@@ -71,7 +71,7 @@ export function Pillars() {
                       {pillar.body}
                     </p>
 
-                    <span className="mt-6 inline-flex items-center gap-1.5 text-[13px] font-medium text-ink/40 transition-colors duration-300 group-hover:text-ink">
+                    <span className="mt-6 inline-flex items-center gap-1.5 text-[13px] font-medium text-ink/70 transition-colors duration-300 group-hover:text-ink">
                       Learn more
                       <ArrowUpRight
                         size={14}

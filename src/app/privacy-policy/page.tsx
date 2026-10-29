@@ -51,7 +51,7 @@ export default function PrivacyPolicyPage() {
       <PublicPageNav />
       <main className="container-x flex-1 py-20 sm:py-28">
         <div className="mx-auto max-w-4xl">
-          <p className="text-[11px] font-semibold tracking-[0.22em] uppercase text-silver/45">
+          <p className="text-[11px] font-semibold tracking-[0.22em] uppercase text-silver/70">
             Beava Jay LLC · Effective October 26, 2026
           </p>
           <h1 className="mt-5 text-4xl font-semibold tracking-[-0.045em] text-silver sm:text-6xl">

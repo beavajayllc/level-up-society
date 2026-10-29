@@ -17,7 +17,7 @@ export default async function ResourcesPage() {
           <Link key={slug} href={`/members/resources/${slug}`} className="group flex min-h-56 flex-col rounded-card border border-silver/10 bg-silver/[0.035] p-7 transition-colors hover:border-chrome/30 hover:bg-silver/[0.06] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-chrome">
             <span className="flex h-12 w-12 items-center justify-center rounded-tile border border-silver/10 bg-ink text-chrome"><Icon size={20} /></span>
             <h2 className="mt-6 text-xl font-semibold tracking-[-0.025em] text-silver">{title}</h2>
-            <p className="mt-2 flex-1 text-sm leading-relaxed text-silver/55">{description}</p>
+            <p className="mt-2 flex-1 text-sm leading-relaxed text-silver/70">{description}</p>
             <span className="mt-5 inline-flex items-center gap-1.5 text-sm text-chrome/75">Explore <ArrowUpRight size={15} /></span>
           </Link>
         ))}

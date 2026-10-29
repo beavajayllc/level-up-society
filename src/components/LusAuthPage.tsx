@@ -52,12 +52,12 @@ export function LusAuthPage({
           <h1 className="mt-4 text-[clamp(2rem,5vw,3rem)] font-semibold leading-[1.04] tracking-[-0.045em]">
             {content.title}
           </h1>
-          <p className="mt-4 max-w-lg text-sm leading-relaxed text-silver/55 sm:text-base">
+          <p className="mt-4 max-w-lg text-sm leading-relaxed text-silver/70 sm:text-base">
             {content.body}
           </p>
 
           {mode === "signup" ? (
-            <div className="mt-5 rounded-xl border border-silver/10 bg-ink/45 px-4 py-3 text-sm leading-relaxed text-silver/55">
+            <div className="mt-5 rounded-xl border border-silver/10 bg-ink/45 px-4 py-3 text-sm leading-relaxed text-silver/70">
               Your username and password are for this website. Whop handles checkout and keeps your membership record. After checkout, connect the Whop account you used to join.
             </div>
           ) : null}
@@ -78,7 +78,7 @@ export function LusAuthPage({
           </div>
 
           {mode !== "login" ? (
-            <Link href="/" className="mt-7 block text-center text-sm text-silver/40 transition hover:text-silver/75">
+            <Link href="/" className="mt-7 block text-center text-sm text-silver/70 transition hover:text-silver/75">
               Back to Level Up Society
             </Link>
           ) : null}
