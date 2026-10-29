@@ -2,11 +2,14 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
 import {
   ArrowLeft,
   ArrowRight,
   ArrowUpRight,
   CalendarDays,
+  Play,
   RotateCcw,
 } from "lucide-react";
 
@@ -128,6 +131,44 @@ function CalendlyInlineEmbed({ url }: { url: string }) {
   );
 }
 
+function CreditDeskNextStepsVideo({ src }: { src?: string }) {
+  if (src) {
+    return (
+      <video
+        className="mt-7 aspect-video w-full rounded-tile border border-silver/10 bg-ink object-contain"
+        controls
+        playsInline
+        preload="metadata"
+        poster="/brand/lus-lockup.png"
+        aria-label="Credit desk next steps video"
+        src={src}
+      />
+    );
+  }
+
+  return (
+    <div
+      role="img"
+      aria-label="Level Up Society logo placeholder for the credit desk next steps video"
+      className="relative mt-7 flex aspect-video w-full flex-col items-center justify-center overflow-hidden rounded-tile border border-silver/10 bg-[#101113] px-6 py-8"
+    >
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(194,202,213,0.08),transparent_65%)]" />
+      <Image
+        src="/brand/lus-lockup.png"
+        alt=""
+        width={310}
+        height={160}
+        className="relative h-auto w-[min(72%,310px)] opacity-90"
+        priority={false}
+      />
+      <div className="relative mt-5 inline-flex items-center gap-2 rounded-full border border-silver/10 bg-black/30 px-4 py-2 text-[12px] text-silver/65">
+        <Play size={12} aria-hidden="true" />
+        Credit desk walkthrough · Coming soon
+      </div>
+    </div>
+  );
+}
+
 const questions = [
   {
     id: "creditRepair",
@@ -180,16 +221,27 @@ function recommendation(answers: Answers): string {
 }
 
 export function FundingCreditQuestionnaire({
+  videoSrc,
   bookingUrl,
 }: {
+  videoSrc?: string;
   bookingUrl?: string;
 }) {
+  const pathname = usePathname();
+  const [previousPathname, setPreviousPathname] = useState(pathname);
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Answers>({});
   const [showCalendar, setShowCalendar] = useState(false);
   const complete = step === questions.length;
-  const needsCall =
-    answers.creditRepair === "Yes" || answers.creditRepair === "I'm not sure";
+  const needsCall = answers.creditRepair === "I'm not sure";
+  const needsVideo = answers.creditRepair === "Yes";
+
+  if (pathname !== previousPathname) {
+    setPreviousPathname(pathname);
+    setAnswers({});
+    setStep(0);
+    setShowCalendar(false);
+  }
 
   function restart() {
     setAnswers({});
@@ -272,7 +324,7 @@ export function FundingCreditQuestionnaire({
               type="button"
               disabled={!answers[questions[step].id]}
               onClick={() => {
-                if (step === 0 && needsCall) {
+                if (step === 0 && (needsCall || needsVideo)) {
                   setStep(questions.length);
                   return;
                 }
@@ -285,6 +337,53 @@ export function FundingCreditQuestionnaire({
             </button>
           </div>
         </>
+      ) : needsVideo ? (
+        <div>
+          <p className="font-mono text-[12px] uppercase tracking-[0.16em] text-chrome">
+            Your next step
+          </p>
+          <h2 className="mt-4 text-[25px] font-semibold tracking-[-0.03em] text-silver">
+            Here&apos;s what happens next
+          </h2>
+          <p className="mt-3 max-w-2xl text-[16px] leading-relaxed text-silver/60">
+            Thanks for letting us know. This short walkthrough will explain what to expect and how to get ready for your next step.
+          </p>
+          <p className="mt-4 text-[14px] text-silver/70">
+            Your answer: <span className="text-silver/75">{answers.creditRepair}</span>
+          </p>
+          <CreditDeskNextStepsVideo src={videoSrc} />
+          {!videoSrc ? (
+            <p className="mt-3 text-[13px] text-silver/45">
+              The walkthrough video is being prepared. The placeholder will be replaced when it&apos;s ready.
+            </p>
+          ) : null}
+          <div className="mt-7 flex flex-wrap gap-3">
+            <button
+              type="button"
+              onClick={() => {
+                setStep(0);
+              }}
+              className="inline-flex h-11 items-center gap-2 rounded-pill border border-silver/15 px-5 text-sm text-silver/70 transition hover:border-silver/35 hover:text-silver"
+            >
+              <ArrowLeft size={14} />
+              Change answer
+            </button>
+            <button
+              type="button"
+              onClick={restart}
+              className="inline-flex h-11 items-center gap-2 rounded-pill border border-silver/15 px-5 text-sm text-silver/70 transition hover:border-silver/35 hover:text-silver"
+            >
+              <RotateCcw size={14} />
+              Start over
+            </button>
+            <Link
+              href="/members"
+              className="inline-flex h-11 items-center gap-2 rounded-pill border border-silver/15 px-5 text-sm text-silver/70 transition hover:border-silver/35 hover:text-silver"
+            >
+              Back to members area
+            </Link>
+          </div>
+        </div>
       ) : needsCall ? (
         <div>
           <p className="font-mono text-[12px] uppercase tracking-[0.16em] text-chrome">
