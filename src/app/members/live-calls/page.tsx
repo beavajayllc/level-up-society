@@ -1,33 +1,20 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { AccessNotice } from "@/components/AccessNotice";
-import { LiveCallsRoom } from "@/components/LiveCallsRoom";
+import { EducatorSchedule } from "@/components/EducatorSchedule";
 import { isAuthConfigured, isLusAuthConfigured } from "@/lib/env";
 import { requireMember } from "@/lib/member-access";
-import { getLiveCalls } from "@/lib/whop-livestream";
-import type { WhopUserInfo } from "@/lib/whop-oauth";
 
-/**
- * The dedicated live calls page.
- *
- * Members land here from the "Live calls" card in the members area. It shows
- * the call that is on air right now and the live chat beside it. Nothing on
- * this page pretends a call is live when it is not, so a quiet week looks
- * quiet.
- */
 export const instant = false;
 
 export const metadata: Metadata = {
-  title: "Live calls — Level Up Society",
-  description: "The Level Up Society live room and live chat.",
+  title: "Live call schedule — Level Up Society",
+  description: "The Level Up Society educator schedule.",
   robots: { index: false, follow: false },
 };
-
-function displayName(user: WhopUserInfo): string {
-  const raw = user.name ?? user.preferred_username ?? user.email ?? "member";
-  return raw.split(" ")[0] ?? raw;
-}
 
 export default async function LiveCallsPage({
   searchParams,
@@ -35,24 +22,23 @@ export default async function LiveCallsPage({
   searchParams: Promise<{ error?: string }>;
 }) {
   const { error } = await searchParams;
+  if (error) return <AccessNotice reason={error} />;
+  if (!isAuthConfigured() || !isLusAuthConfigured()) return <AccessNotice reason="not_configured" />;
 
-  if (error) {
-    return <AccessNotice reason={error} />;
-  }
-
-  // Never throw a 500 at a signed-out visitor when WHOP is not wired up yet.
-  if (!isAuthConfigured() || !isLusAuthConfigured()) {
-    return <AccessNotice reason="not_configured" />;
-  }
-
-  const { lusUser } = await requireMember("/members/live-calls");
-  const liveCalls = await getLiveCalls();
+  await requireMember("/members/live-calls");
   const today = new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
 
   return (
     <>
       <Nav memberArea />
-      <LiveCallsRoom initial={liveCalls} memberName={lusUser.username || "member"} today={today} />
+      <main className="relative flex-1 bg-ink">
+        <div className="container-x relative py-16 lg:py-20">
+          <Link href="/members" className="inline-flex items-center gap-2 text-[13px] text-silver/70 transition-colors hover:text-chrome">
+            <ArrowLeft size={14} /> Back to the members area
+          </Link>
+          <EducatorSchedule today={today} />
+        </div>
+      </main>
       <Footer />
     </>
   );

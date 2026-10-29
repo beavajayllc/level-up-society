@@ -15,7 +15,6 @@ import {
 import type { LiveCallsState } from "@/lib/whop-livestream";
 import type { ChatMessage, ChatState } from "@/lib/whop-chat";
 import { CloudflareLivePlayer } from "./CloudflareLivePlayer";
-import { EducatorSchedule } from "./EducatorSchedule";
 import { Reveal } from "./Reveal";
 import { Glow, SectionLabel } from "./ui";
 
@@ -78,11 +77,9 @@ function messageTime(value: string): string {
 export function LiveCallsRoom({
   initial,
   memberName,
-  today,
 }: {
   initial: LiveCallsState;
   memberName: string;
-  today: string;
 }) {
   const [state, setState] = useState<LiveCallsState>(initial);
   const [manifestUrl, setManifestUrl] = useState<string | null>(null);
@@ -305,11 +302,11 @@ export function LiveCallsRoom({
 
       <div className="container-x relative py-16 lg:py-20">
         <Link
-          href="/members"
+          href="/members/live-calls"
           className="inline-flex items-center gap-2 text-[13px] text-silver/70 transition-colors duration-300 hover:text-chrome"
         >
           <ArrowLeft size={14} />
-          Back to the members area
+          Back to the educator schedule
         </Link>
 
         <Reveal>
@@ -344,9 +341,6 @@ export function LiveCallsRoom({
               No call is live right now
             </span>
           ) : null}
-          <a href="#educator-schedule" className="inline-flex items-center gap-2 rounded-pill border border-chrome/20 px-4 py-2 text-[13px] font-medium text-chrome transition hover:bg-chrome/5">
-            <CalendarClock size={14} /> Educator schedule
-          </a>
         </div>
 
         <div className="mt-10 grid gap-4 lg:grid-cols-[1.55fr_1fr]">
@@ -427,8 +421,6 @@ export function LiveCallsRoom({
             scroller={scroller}
           />
         </div>
-
-        <EducatorSchedule today={today} />
 
         {!isLive ? (
           <section className="mt-12">
@@ -579,7 +571,7 @@ function ChatPanel({
             </p>
             {chat.requiresReauthorization ? (
               <a
-                href="/login?next=%2Fmembers%2Flive-calls"
+                href="/login?next=%2Fmembers%2Flive-calls%2Fwatch"
                 className="text-[13px] font-medium text-chrome underline underline-offset-4"
               >
                 Reconnect Whop
