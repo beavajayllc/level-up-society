@@ -99,10 +99,10 @@ export function SectionLabel({
   );
 }
 
-/** The LS mark, tinted to match the site palette. */
+/** The complete logo for the navigation, tinted to match the site palette. */
 export function LogoMark({
   className = "",
-  height = 34,
+  height = 58,
   priority = false,
 }: {
   className?: string;
@@ -111,10 +111,10 @@ export function LogoMark({
 }) {
   return (
     <Image
-      src="/brand/lus-mark.png"
+      src="/brand/lus-lockup.png"
       alt="Level Up Society"
-      width={560}
-      height={250}
+      width={620}
+      height={320}
       sizes="120px"
       priority={priority}
       style={{ height, width: "auto" }}
