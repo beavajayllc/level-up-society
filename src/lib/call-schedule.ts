@@ -9,14 +9,15 @@ export type Educator = {
   schedule: string;
   portrait?: string;
   portraitAiCreated?: boolean;
+  portraitAiEdited?: boolean;
   portraitPosition?: string;
   instagram?: { url: string; handle: string };
 };
 
 export const educators: Educator[] = [
-  { id: "pj", name: "PJ LaBeach", subject: "Fitness", initials: "PJ", description: "PJ LaBeach is a powerbuilding coach and powerlifter who helps people build strength and muscle. His coaching focuses on consistent training and working toward new personal bests.", schedule: "Every other Thursday · 8:00 PM Eastern", portrait: "/educators/pj-labeach-solid.png", portraitAiCreated: true, instagram: { url: "https://www.instagram.com/iampjlabeach/", handle: "iampjlabeach" } },
+  { id: "pj", name: "PJ LaBeach", subject: "Fitness", initials: "PJ", description: "PJ LaBeach is a powerbuilding coach and powerlifter who helps people build strength and muscle. His coaching focuses on consistent training and working toward new personal bests.", schedule: "Every other Thursday · 8:00 PM Eastern", portrait: "/educators/pj-labeach-standing.png", portraitAiCreated: true, instagram: { url: "https://www.instagram.com/iampjlabeach/", handle: "iampjlabeach" } },
   { id: "delphine", name: "Delphine Njuguna", subject: "Forex", initials: "DN", description: "Join Delphine for live sessions exploring forex and the markets with the Level Up community.", schedule: "Sunday, Monday & Wednesday · 11:00 PM Eastern", portrait: "/educators/delphine-njuguna-solid.png", portraitAiCreated: true },
-  { id: "beava", name: "Beava Jay", subject: "Credit / Sales", initials: "BJ", description: "Join Beava for conversations on credit and sales, sharing tools to help you grow your business.", schedule: "Every Tuesday · 8:00 PM Eastern", portrait: "/educators/beava-jay.jpg", portraitPosition: "center 15%" },
+  { id: "beava", name: "Beava Jay", subject: "Credit / Sales", initials: "BJ", description: "Join Beava for conversations on credit and sales, sharing tools to help you grow your business.", schedule: "Every Tuesday · 8:00 PM Eastern", portrait: "/educators/beava-jay-lavender.png", portraitAiEdited: true },
 ];
 
 export type ScheduledCall = {

@@ -320,7 +320,7 @@ export function LiveCallsRoom({
             {educator?.portrait ? (
               <figure className="shrink-0">
                 <Image src={educator.portrait} alt={`${educator.portraitAiCreated ? "AI-created portrait" : "Portrait"} of ${educator.name}`} width={144} height={144} style={{ objectPosition: educator.portraitPosition }} className="h-28 w-28 rounded-2xl border border-chrome/20 object-cover shadow-sm sm:h-36 sm:w-36" />
-                {educator.portraitAiCreated ? <figcaption className="mt-1.5 text-center text-[10px] text-silver/60">AI-created portrait</figcaption> : null}
+                {educator.portraitAiCreated || educator.portraitAiEdited ? <figcaption className="mt-1.5 text-center text-[10px] text-silver/60">{educator.portraitAiCreated ? "AI-created portrait" : "AI-edited portrait"}</figcaption> : null}
               </figure>
             ) : null}
             <div>
