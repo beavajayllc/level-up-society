@@ -47,7 +47,7 @@ export function Hero() {
     <section
       id="top"
       ref={ref}
-      className="grain relative isolate overflow-hidden bg-ink pt-[74px]"
+      className="dark-surface grain relative isolate overflow-hidden bg-ink pt-[74px]"
     >
       {/* ambient light */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
@@ -177,7 +177,7 @@ export function Hero() {
             <div className="rounded-card-lg border border-pink/25 bg-gradient-to-b from-ink-2 to-ink p-6 shadow-[0_30px_80px_-30px_rgba(13,11,51,0.18)] sm:p-8">
               <div className="flex items-center justify-between">
                 <SectionLabel index="LIVE" title="Inside the society" tone="light" />
-                <span className="flex items-center gap-2 rounded-pill bg-emerald-400/10 px-3 py-1.5 text-[11px] font-medium text-emerald-800">
+                <span className="flex items-center gap-2 rounded-pill bg-emerald-400/10 px-3 py-1.5 text-[11px] font-medium text-emerald-200">
                   <span className="relative flex h-2 w-2">
                     <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                     <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />

@@ -39,7 +39,7 @@ export function PillButton({
   className = "",
   onClick,
 }: ButtonProps) {
-  const classes = `group relative inline-flex items-center justify-center gap-2 rounded-pill font-medium tracking-[-0.01em] transition-colors duration-300 overflow-hidden ${sizes[size]} ${variants[variant]} ${className}`;
+  const classes = `group relative inline-flex items-center justify-center gap-2 rounded-pill font-medium tracking-[-0.01em] transition-colors duration-300 overflow-hidden ${variant === "chrome" ? "primary-action" : ""} ${sizes[size]} ${variants[variant]} ${className}`;
 
   const inner = (
     <>

@@ -43,7 +43,7 @@ export function NavClient({ isSignedIn, memberArea = false }: { isSignedIn: bool
           className={`transition-all duration-500 ${
             scrolled
               ? "border-b border-silver/8 bg-ink/95"
-              : "border-b border-transparent bg-transparent"
+              : "border-b border-transparent bg-ink/95"
           }`}
         >
           <nav className="container-x flex h-[74px] items-center justify-between gap-6">
