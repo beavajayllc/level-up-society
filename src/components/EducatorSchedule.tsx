@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { addDays, callsForDate, educators, startOfWeek, type EducatorId } from "@/lib/call-schedule";
@@ -67,7 +68,9 @@ export function EducatorSchedule({ today }: { today: string }) {
           {educators.map((educator) => (
             <Link key={educator.id} href={`/members/live-calls/educators/${educator.id}`} aria-label={`Visit ${educator.name}'s page`}
               className={`inline-flex items-center gap-2 rounded-pill border px-3 py-2 text-xs font-medium transition hover:brightness-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-chrome ${educatorColors[educator.id]}`}>
-              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/70 text-[10px] font-semibold">{educator.initials}</span>
+              <span className="relative h-7 w-7 shrink-0 overflow-hidden rounded-full bg-white/70" aria-hidden="true">
+                {educator.portrait ? <Image src={educator.portrait} alt="" fill sizes="28px" className={`object-cover object-top origin-top ${educator.id === "pj" ? "scale-[2.5]" : educator.id === "beava" ? "scale-[2.2]" : "scale-[1.8]"}`} /> : null}
+              </span>
               <span>{educator.name} <span className="opacity-70">· {educator.subject}</span></span>
               <ArrowUpRight size={13} aria-hidden="true" />
             </Link>
