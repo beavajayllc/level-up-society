@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft, ArrowUpRight, CalendarDays, HeartPulse } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { Footer } from "@/components/Footer";
 import { FitnessPlanner } from "@/components/FitnessPlanner";
 import { Nav } from "@/components/Nav";
@@ -12,7 +12,7 @@ export const instant = false;
 
 export const metadata: Metadata = {
   title: "Fitness — Level Up Society",
-  description: "Fitness calls and the Level Up Society member calendar.",
+  description: "Build a fitness starting plan based on your goals and schedule.",
   robots: { index: false, follow: false },
 };
 
@@ -37,18 +37,6 @@ export default async function FitnessPage() {
             </div>
           </Reveal>
           <FitnessPlanner />
-          <Reveal delay={0.08} className="mt-10 max-w-2xl">
-            <section className="rounded-card border border-silver/10 bg-silver/[0.035] p-7 sm:p-9">
-              <div className="flex items-center justify-between gap-4">
-                <span className="rounded-pill border border-silver/10 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.14em] text-silver/70">Every other week</span>
-                <span className="flex h-12 w-12 items-center justify-center rounded-tile border border-silver/10 bg-ink text-chrome"><HeartPulse size={20} /></span>
-              </div>
-              <h2 className="mt-6 text-[24px] font-semibold tracking-[-0.03em] text-silver">PJ LaBeach | Fitness</h2>
-              <p className="mt-3 inline-flex items-center gap-2 text-[15px] text-silver/65"><CalendarDays size={16} className="text-chrome" /> Every other Thursday · 8:00 PM Eastern</p>
-              <p className="mt-3 text-sm leading-relaxed text-silver/70">Starting October 29, 2026. Check the calendar for upcoming dates.</p>
-              <Link href="/members#weekly-calls" className="mt-7 inline-flex items-center gap-1.5 text-sm font-medium text-chrome transition-colors hover:text-silver">View the calls calendar <ArrowUpRight size={15} /></Link>
-            </section>
-          </Reveal>
         </div>
       </main>
       <Footer />
