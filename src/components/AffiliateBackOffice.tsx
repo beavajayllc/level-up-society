@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { AffiliateEnrollmentForm } from "@/components/AffiliateEnrollmentForm";
+import { AffiliateBackOfficeTabs } from "@/components/AffiliateBackOfficeTabs";
 import { AffiliateReferralLink } from "@/components/AffiliateReferralLink";
 import { Reveal } from "@/components/Reveal";
 import { Glow, SectionLabel } from "@/components/ui";
@@ -106,7 +107,9 @@ export function AffiliateBackOffice({
         ) : null}
 
         {result.status === "ready" ? (
-          <>
+          <AffiliateBackOfficeTabs
+            performance={
+              <>
             <Reveal delay={0.12}>
               <div className="mt-12 flex flex-wrap items-end justify-between gap-4">
                 <div>
@@ -219,7 +222,9 @@ export function AffiliateBackOffice({
             <p className="mt-6 max-w-3xl text-[12px] leading-relaxed text-silver/70">
               Whop provides these referral and earnings totals. Your tracked link sends people to the Level Up Pro checkout on our website.
             </p>
-          </>
+              </>
+            }
+          />
         ) : result.status === "not-enrolled" ? (
           <AffiliateEnrollmentForm />
         ) : (

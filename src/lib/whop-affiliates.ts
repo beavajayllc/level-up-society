@@ -22,6 +22,17 @@ export type AffiliateBackOfficeResult =
   | { status: "not-enrolled" }
   | { status: "unavailable" };
 
+export interface InactiveAffiliateMember {
+  displayName: string;
+  inactiveSince: string | null;
+  membershipStatus: "canceled" | "expired" | "completed";
+}
+
+export type InactiveAffiliateMembersResult =
+  | { status: "ready"; members: InactiveAffiliateMember[] }
+  | { status: "not-enrolled" }
+  | { status: "unavailable"; reason: "product_not_configured" | "lookup_failed" };
+
 let cachedClient: WhopClient | null = null;
 
 function getClient(): WhopClient {
@@ -54,6 +65,152 @@ function productIds(): string[] {
         .filter((id) => id.startsWith("prod_")),
     ),
   ];
+}
+
+/**
+ * Lists only this affiliate's Level Up Pro referrals that no longer have
+ * product access. This runs on demand from the back-office tab and returns
+ * display names only; Whop email addresses never leave this server function.
+ */
+export async function getInactiveAffiliateMembers(
+  userId: string,
+  username: string | undefined,
+): Promise<InactiveAffiliateMembersResult> {
+  try {
+    const env = getEnv();
+    const normalizedUsername = username?.trim() ?? "";
+    if (!normalizedUsername) return { status: "not-enrolled" };
+
+    const ids = productIds();
+    if (ids.length === 0) {
+      return { status: "unavailable", reason: "product_not_configured" };
+    }
+
+    const affiliate = await findAffiliate(
+      userId,
+      normalizedUsername,
+      env.WHOP_ACCOUNT_ID,
+    );
+    if (!affiliate) return { status: "not-enrolled" };
+
+    const client = getClient();
+    const referrals = new Map<
+      string,
+      {
+        inactiveSince: string | null;
+        membershipStatus: "canceled" | "expired" | "completed";
+      }
+    >();
+    let membershipPage = await client.memberships.list({
+      account_id: env.WHOP_ACCOUNT_ID,
+      product_ids: ids,
+      statuses: ["canceled", "expired", "completed"],
+      first: 100,
+    });
+
+    while (true) {
+      for (const membership of membershipPage.data) {
+        if (
+          (membership.status !== "canceled" &&
+            membership.status !== "expired" &&
+            membership.status !== "completed") ||
+          (membership.status === "completed" &&
+            membership.renewal_price === null) ||
+          membership.affiliate?.user_id !== userId ||
+          !membership.user_id
+        ) {
+          continue;
+        }
+
+        const inactiveSince =
+          membership.current_period_end ??
+          membership.canceled_at ??
+          membership.updated_at;
+        const previous = referrals.get(membership.user_id);
+        if (
+          !previous ||
+          (inactiveSince &&
+            (!previous.inactiveSince ||
+              new Date(inactiveSince).getTime() >
+                new Date(previous.inactiveSince).getTime()))
+        ) {
+          referrals.set(membership.user_id, {
+            inactiveSince,
+            membershipStatus: membership.status,
+          });
+        }
+      }
+
+      if (!membershipPage.hasNextPage()) break;
+      membershipPage = await membershipPage.getNextPage();
+    }
+
+    const referralUserIds = [...referrals.keys()];
+    const members: InactiveAffiliateMember[] = [];
+
+    // Whop member filters accept a list of user ids. Chunk large affiliates'
+    // lists so a long-running back-office request doesn't exceed URL limits.
+    for (let offset = 0; offset < referralUserIds.length; offset += 50) {
+      const userIds = referralUserIds.slice(offset, offset + 50);
+      const [activePage, inactivePage] = await Promise.all([
+        client.members.list({
+          account_id: env.WHOP_ACCOUNT_ID,
+          product_ids: ids,
+          user_ids: userIds,
+          membership_status: "active",
+          first: 100,
+        }),
+        client.members.list({
+          account_id: env.WHOP_ACCOUNT_ID,
+          product_ids: ids,
+          user_ids: userIds,
+          membership_status: "inactive",
+          first: 100,
+        }),
+      ]);
+
+      const activeUserIds = new Set<string>();
+      for await (const member of activePage) {
+        if (member.user?.id) activeUserIds.add(member.user.id);
+      }
+
+      for await (const member of inactivePage) {
+        const referredUserId = member.user?.id;
+        if (!referredUserId || activeUserIds.has(referredUserId)) continue;
+
+        const referral = referrals.get(referredUserId);
+        if (!referral) continue;
+
+        members.push({
+          displayName: member.display_name,
+          inactiveSince: referral.inactiveSince,
+          membershipStatus: referral.membershipStatus,
+        });
+      }
+    }
+
+    return {
+      status: "ready",
+      members: members.sort((left, right) => {
+        if (!left.inactiveSince) return 1;
+        if (!right.inactiveSince) return -1;
+        return (
+          new Date(right.inactiveSince).getTime() -
+          new Date(left.inactiveSince).getTime()
+        );
+      }),
+    };
+  } catch (error) {
+    const status =
+      typeof error === "object" && error !== null && "status" in error
+        ? error.status
+        : undefined;
+    console.error("[whop] inactive affiliate member lookup failed", {
+      name: error instanceof Error ? error.name : "UnknownError",
+      status,
+    });
+    return { status: "unavailable", reason: "lookup_failed" };
+  }
 }
 
 async function findAffiliate(
