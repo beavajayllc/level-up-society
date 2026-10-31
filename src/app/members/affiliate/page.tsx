@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { connection } from "next/server";
 import { AccessNotice } from "@/components/AccessNotice";
 import { AffiliateBackOffice } from "@/components/AffiliateBackOffice";
 import { Footer } from "@/components/Footer";
@@ -22,6 +23,7 @@ export default async function AffiliateBackOfficePage({
 }: {
   searchParams: Promise<{ error?: string }>;
 }) {
+  await connection();
   const { error } = await searchParams;
 
   if (error) {
@@ -32,12 +34,12 @@ export default async function AffiliateBackOfficePage({
     return <AccessNotice reason="not_configured" />;
   }
 
-  const { user } = await requireMember("/members/affiliate");
+  const { user, lusUser } = await requireMember("/members/affiliate");
   const result = await getAffiliateBackOfficeStats(
     user.sub,
     user.preferred_username,
   );
-  const affiliateHandle = await getAffiliateLinkHandle(user.sub);
+  const affiliateHandle = await getAffiliateLinkHandle(lusUser.id);
   let referralLink: string | null = null;
   if (affiliateHandle) {
     referralLink = new URL(

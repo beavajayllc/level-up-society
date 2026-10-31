@@ -32,10 +32,10 @@ export async function activateAffiliate(
     };
   }
 
-  const { user } = await requireMember("/members/affiliate");
+  const { user, lusUser } = await requireMember("/members/affiliate");
 
   try {
-    const existing = await getAffiliateLinkHandle(user.sub);
+    const existing = await getAffiliateLinkHandle(lusUser.id);
     if (existing) {
       if (existing.handle === handle) {
         return {
@@ -53,7 +53,7 @@ export async function activateAffiliate(
       user.sub,
       user.preferred_username,
     );
-    await saveAffiliateLinkHandle(user.sub, handle, whopUsername);
+    await saveAffiliateLinkHandle(lusUser.id, handle, whopUsername);
   } catch (error) {
     if (error instanceof AffiliateHandleTakenError) {
       return {
