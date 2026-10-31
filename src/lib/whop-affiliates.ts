@@ -39,6 +39,13 @@ export type InactiveAffiliateMembersResult =
 
 let cachedClient: WhopClient | null = null;
 
+export class AffiliateTrackingUsernameMissingError extends Error {
+  constructor() {
+    super("The Whop affiliate profile has no tracking username.");
+    this.name = "AffiliateTrackingUsernameMissingError";
+  }
+}
+
 function getClient(): WhopClient {
   if (cachedClient) return cachedClient;
 
@@ -51,13 +58,27 @@ function getClient(): WhopClient {
   return cachedClient;
 }
 
-/** Enroll a verified Level Up Society member as an affiliate on our Whop account. */
-export async function createMemberAffiliate(userId: string): Promise<void> {
+/** Enroll a verified Level Up Society member and return Whop's tracking username. */
+export async function createMemberAffiliate(
+  userId: string,
+  username?: string,
+): Promise<string> {
   const env = getEnv();
-  await getClient().affiliates.create({
+  const affiliate = username?.trim()
+    ? await findAffiliate(userId, username.trim(), env.WHOP_ACCOUNT_ID)
+    : null;
+  const record =
+    affiliate ??
+    (await getClient().affiliates.create({
     account_id: env.WHOP_ACCOUNT_ID,
     user_identifier: userId,
-  });
+    }));
+
+  if (!record.user.username?.trim()) {
+    throw new AffiliateTrackingUsernameMissingError();
+  }
+
+  return record.user.username.trim();
 }
 
 function productIds(): string[] {

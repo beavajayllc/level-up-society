@@ -2,7 +2,16 @@
 
 import { revalidatePath } from "next/cache";
 import { requireMember } from "@/lib/member-access";
-import { createMemberAffiliate } from "@/lib/whop-affiliates";
+import {
+  AffiliateHandleTakenError,
+  getAffiliateLinkHandle,
+  saveAffiliateLinkHandle,
+} from "@/lib/affiliate-links";
+import { normalizeAffiliateHandle } from "@/lib/affiliate-handle-format";
+import {
+  AffiliateTrackingUsernameMissingError,
+  createMemberAffiliate,
+} from "@/lib/whop-affiliates";
 
 export type AffiliateEnrollmentState = {
   status: "idle" | "success" | "error";
@@ -11,16 +20,48 @@ export type AffiliateEnrollmentState = {
 
 export async function activateAffiliate(
   _previousState: AffiliateEnrollmentState,
-  _formData: FormData,
+  formData: FormData,
 ): Promise<AffiliateEnrollmentState> {
   void _previousState;
-  void _formData;
+
+  const handle = normalizeAffiliateHandle(formData.get("affiliateUsername"));
+  if (!handle) {
+    return {
+      status: "error",
+      message: "Choose 3–24 characters using only letters, numbers, and underscores.",
+    };
+  }
 
   const { user } = await requireMember("/members/affiliate");
 
   try {
-    await createMemberAffiliate(user.sub);
+    const existing = await getAffiliateLinkHandle(user.sub);
+    if (existing) {
+      if (existing.handle === handle) {
+        return {
+          status: "success",
+          message: "Your affiliate link is already set and ready to share.",
+        };
+      }
+      return {
+        status: "error",
+        message: "Your affiliate username is already set and can’t currently be changed.",
+      };
+    }
+
+    const whopUsername = await createMemberAffiliate(
+      user.sub,
+      user.preferred_username,
+    );
+    await saveAffiliateLinkHandle(user.sub, handle, whopUsername);
   } catch (error) {
+    if (error instanceof AffiliateHandleTakenError) {
+      return {
+        status: "error",
+        message: "That affiliate username is already taken. Please choose another.",
+      };
+    }
+
     const status =
       typeof error === "object" && error !== null && "status" in error
         ? error.status
@@ -31,12 +72,17 @@ export async function activateAffiliate(
       status,
     });
 
+    let message =
+      "Whop couldn’t activate your affiliate profile. Please try again or contact support.";
+    if (status === 403) {
+      message = "Affiliate activation isn’t enabled yet. Please contact Level Up Society support.";
+    } else if (error instanceof AffiliateTrackingUsernameMissingError) {
+      message = "Set a username on your Whop profile first, then try again. Whop uses it to credit referrals.";
+    }
+
     return {
       status: "error",
-      message:
-        status === 403
-          ? "Affiliate activation isn’t enabled yet. Please contact Level Up Society support."
-          : "Whop couldn’t activate your affiliate profile. Please try again or contact support.",
+      message,
     };
   }
 
@@ -44,6 +90,6 @@ export async function activateAffiliate(
 
   return {
     status: "success",
-    message: "Your affiliate access is active. Your link and stats are ready below.",
+    message: "Your affiliate link is ready and your referrals will be tracked by Whop.",
   };
 }

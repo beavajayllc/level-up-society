@@ -158,6 +158,11 @@ export default async function JoinPage({
               ? "Your LUS account is ready. Complete the secure Whop checkout below to activate your membership."
               : "Complete your secure membership checkout below."}
           </p>
+          {pageError === "affiliate_link_not_found" ? (
+            <p className="mx-auto mt-3 max-w-xl text-xs leading-relaxed text-silver/60">
+              This affiliate link is no longer active. You can still continue to checkout.
+            </p>
+          ) : null}
           {!linkedAccount ? (
             <p className="mx-auto mt-4 max-w-xl text-xs leading-relaxed text-silver/70">
               Already have a Level Up Pro membership on Whop? <Link href={`/connect-whop?next=${encodeURIComponent(joinPath)}`} className="text-chrome underline">Connect that account first</Link> so you don’t purchase twice.

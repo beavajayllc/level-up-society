@@ -72,9 +72,11 @@ function MetricCard({
 export function AffiliateBackOffice({
   result,
   referralLink,
+  hasAffiliateHandle,
 }: {
   result: AffiliateBackOfficeResult;
   referralLink: string | null;
+  hasAffiliateHandle: boolean;
 }) {
   return (
     <main className="relative flex-1 overflow-hidden bg-ink">
@@ -111,13 +113,24 @@ export function AffiliateBackOffice({
 
         {result.status === "ready" ? (
           <>
-            {!result.affiliateEnrolled ? <AffiliateEnrollmentForm /> : null}
+            {!hasAffiliateHandle ? <AffiliateEnrollmentForm /> : null}
             <AffiliateBackOfficeTabs
               performance={<AffiliatePerformance stats={result.stats} />}
             />
           </>
         ) : result.status === "not-enrolled" ? (
-          <AffiliateEnrollmentForm />
+          hasAffiliateHandle ? (
+            <section className="mt-10 rounded-card border border-silver/10 bg-silver/[0.035] p-7 sm:p-9">
+              <h2 className="text-[22px] font-semibold tracking-[-0.03em] text-silver">
+                Your Whop affiliate profile needs attention
+              </h2>
+              <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-silver/70">
+                Your custom link is saved, but Whop didn’t return an active affiliate profile. Contact support so we can check the connection before you share it.
+              </p>
+            </section>
+          ) : (
+            <AffiliateEnrollmentForm />
+          )
         ) : (
           <section className="mt-10 rounded-card border border-silver/10 bg-silver/[0.035] p-7 sm:p-9">
             <h2 className="text-[22px] font-semibold tracking-[-0.03em] text-silver">

@@ -43,6 +43,28 @@ export interface Database {
         };
         Relationships: [];
       };
+      affiliate_links: {
+        Row: {
+          lus_user_id: string;
+          handle: string;
+          whop_username: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          lus_user_id: string;
+          handle: string;
+          whop_username: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          handle?: string;
+          whop_username?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;

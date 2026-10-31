@@ -5,6 +5,7 @@ import { Footer } from "@/components/Footer";
 import { Nav } from "@/components/Nav";
 import { isAuthConfigured, isLusAuthConfigured } from "@/lib/env";
 import { requireMember } from "@/lib/member-access";
+import { getAffiliateLinkHandle } from "@/lib/affiliate-links";
 import { getAffiliateBackOfficeStats } from "@/lib/whop-affiliates";
 import { PUBLIC_SITE_URL } from "@/lib/checkout";
 
@@ -36,15 +37,13 @@ export default async function AffiliateBackOfficePage({
     user.sub,
     user.preferred_username,
   );
+  const affiliateHandle = await getAffiliateLinkHandle(user.sub);
   let referralLink: string | null = null;
-  if (
-    result.status === "ready" &&
-    result.affiliateEnrolled &&
-    user.preferred_username
-  ) {
-    const referralUrl = new URL("/join", PUBLIC_SITE_URL);
-    referralUrl.searchParams.set("a", user.preferred_username);
-    referralLink = referralUrl.toString();
+  if (affiliateHandle) {
+    referralLink = new URL(
+      `/r/${encodeURIComponent(affiliateHandle.handle)}`,
+      PUBLIC_SITE_URL,
+    ).toString();
   }
 
   return (
@@ -53,6 +52,7 @@ export default async function AffiliateBackOfficePage({
       <AffiliateBackOffice
         result={result}
         referralLink={referralLink}
+        hasAffiliateHandle={affiliateHandle !== null}
       />
       <Footer />
     </>
