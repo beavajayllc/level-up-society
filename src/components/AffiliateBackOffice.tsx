@@ -13,7 +13,10 @@ import { AffiliateBackOfficeTabs } from "@/components/AffiliateBackOfficeTabs";
 import { AffiliateReferralLink } from "@/components/AffiliateReferralLink";
 import { Reveal } from "@/components/Reveal";
 import { Glow, SectionLabel } from "@/components/ui";
-import type { AffiliateBackOfficeResult } from "@/lib/whop-affiliates";
+import type {
+  AffiliateBackOfficeResult,
+  AffiliateBackOfficeStats,
+} from "@/lib/whop-affiliates";
 
 function money(value: string | null): string {
   if (value === null) return "—";
@@ -107,124 +110,12 @@ export function AffiliateBackOffice({
         ) : null}
 
         {result.status === "ready" ? (
-          <AffiliateBackOfficeTabs
-            performance={
-              <>
-            <Reveal delay={0.12}>
-              <div className="mt-12 flex flex-wrap items-end justify-between gap-4">
-                <div>
-                  <SectionLabel index="01" title="Performance" tone="light" />
-                  <h2 className="mt-4 text-[26px] font-semibold tracking-[-0.035em] text-silver">
-                    Your referral snapshot
-                  </h2>
-                </div>
-                <p className="max-w-sm text-[12px] leading-relaxed text-silver/70">
-                  Whop totals, refreshed when you open this page.
-                </p>
-              </div>
-            </Reveal>
-
-            <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-              <MetricCard
-                icon={Users}
-                label="Total referrals"
-                value={result.stats.referrals.toLocaleString("en-US")}
-                detail={
-                  result.stats.activeReferrals === null
-                    ? "Level Up Pro referrals recorded by Whop"
-                    : "People referred through your affiliate links"
-                }
-              />
-              <MetricCard
-                icon={Activity}
-                label="Active referrals"
-                value={result.stats.activeReferrals?.toLocaleString("en-US") ?? "—"}
-                detail={
-                  result.stats.activeReferrals === null
-                    ? "Whop will show this after your first referrals"
-                    : "Referred customers with active memberships"
-                }
-              />
-              <MetricCard
-                icon={BadgeDollarSign}
-                label="Commission earned"
-                value={money(result.stats.commissionEarnedUsd)}
-                detail={
-                  result.stats.commissionEarnedUsd === null
-                    ? "Whop will show this after your first attributed sale"
-                    : "All-time commissions from your referrals"
-                }
-              />
-              <MetricCard
-                icon={CircleDollarSign}
-                label="Revenue generated"
-                value={money(result.stats.revenueGeneratedUsd)}
-                detail={
-                  result.stats.revenueGeneratedUsd === null
-                    ? "Whop will show this after your first attributed sale"
-                    : "Total revenue from your referrals"
-                }
-              />
-              <MetricCard
-                icon={ChartNoAxesCombined}
-                label="Monthly recurring revenue"
-                value={money(result.stats.monthlyRecurringRevenueUsd)}
-                detail={
-                  result.stats.monthlyRecurringRevenueUsd === null
-                    ? "Whop will show this when referred memberships renew"
-                    : "Current monthly revenue from your referrals"
-                }
-              />
-              <MetricCard
-                icon={Activity}
-                label="90-day retention"
-                value={percentage(result.stats.retentionRateNinetyDays)}
-                detail={
-                  result.stats.retentionRate === null
-                    ? "Retention appears as your referrals build history"
-                    : "Overall customer retention: " + percentage(result.stats.retentionRate)
-                }
-              />
-            </div>
-
-            {result.stats.product ? (
-              <Reveal delay={0.16}>
-                <section className="mt-8 rounded-card border border-silver/10 bg-silver/[0.025] p-7 sm:p-9">
-                  <div className="flex flex-wrap items-end justify-between gap-3">
-                    <div>
-                      <SectionLabel index="02" title="Level Up Pro" tone="light" />
-                      <h2 className="mt-4 text-[22px] font-semibold tracking-[-0.03em] text-silver">
-                        Product performance
-                      </h2>
-                    </div>
-                    <p className="text-[12px] text-silver/70">
-                      Specific to the Level Up Pro products that unlock membership
-                    </p>
-                  </div>
-                  <div className="mt-6 grid gap-3 sm:grid-cols-2">
-                    <div className="rounded-card border border-silver/8 bg-ink/55 p-6">
-                      <p className="text-[13px] text-silver/70">Level Up Pro referrals</p>
-                      <p className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-silver">
-                        {result.stats.product.referrals.toLocaleString("en-US")}
-                      </p>
-                    </div>
-                    <div className="rounded-card border border-silver/8 bg-ink/55 p-6">
-                      <p className="text-[13px] text-silver/70">Level Up Pro rewards</p>
-                      <p className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-silver">
-                        {result.stats.product.rewardsUsd}
-                      </p>
-                    </div>
-                  </div>
-                </section>
-              </Reveal>
-            ) : null}
-
-            <p className="mt-6 max-w-3xl text-[12px] leading-relaxed text-silver/70">
-              Whop provides these referral and earnings totals. Your tracked link sends people to the Level Up Pro checkout on our website.
-            </p>
-              </>
-            }
-          />
+          <>
+            {!result.affiliateEnrolled ? <AffiliateEnrollmentForm /> : null}
+            <AffiliateBackOfficeTabs
+              performance={<AffiliatePerformance stats={result.stats} />}
+            />
+          </>
         ) : result.status === "not-enrolled" ? (
           <AffiliateEnrollmentForm />
         ) : (
@@ -239,5 +130,125 @@ export function AffiliateBackOffice({
         )}
       </div>
     </main>
+  );
+}
+
+function AffiliatePerformance({ stats }: { stats: AffiliateBackOfficeStats }) {
+  return (
+    <>
+      <Reveal delay={0.12}>
+        <div className="mt-12 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <SectionLabel index="01" title="Performance" tone="light" />
+            <h2 className="mt-4 text-[26px] font-semibold tracking-[-0.035em] text-silver">
+              Your referral snapshot
+            </h2>
+          </div>
+          <p className="max-w-sm text-[12px] leading-relaxed text-silver/70">
+            Whop totals, refreshed when you open this page.
+          </p>
+        </div>
+      </Reveal>
+
+      <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+        <MetricCard
+          icon={Users}
+          label="Total referrals"
+          value={stats.referrals.toLocaleString("en-US")}
+          detail={
+            stats.activeReferrals === null
+              ? "Level Up Pro referrals recorded by Whop"
+              : "People referred through your affiliate links"
+          }
+        />
+        <MetricCard
+          icon={Activity}
+          label="Active referrals"
+          value={stats.activeReferrals?.toLocaleString("en-US") ?? "—"}
+          detail={
+            stats.activeReferrals === null
+              ? "Whop will show this after your first referrals"
+              : "Referred customers with active memberships"
+          }
+        />
+        <MetricCard
+          icon={BadgeDollarSign}
+          label="Commission earned"
+          value={money(stats.commissionEarnedUsd)}
+          detail={
+            stats.commissionEarnedUsd === null
+              ? "Whop will show this after your first attributed sale"
+              : "All-time commissions from your referrals"
+          }
+        />
+        <MetricCard
+          icon={CircleDollarSign}
+          label="Revenue generated"
+          value={money(stats.revenueGeneratedUsd)}
+          detail={
+            stats.revenueGeneratedUsd === null
+              ? "Whop will show this after your first attributed sale"
+              : "Total revenue from your referrals"
+          }
+        />
+        <MetricCard
+          icon={ChartNoAxesCombined}
+          label="Monthly recurring revenue"
+          value={money(stats.monthlyRecurringRevenueUsd)}
+          detail={
+            stats.monthlyRecurringRevenueUsd === null
+              ? "Whop will show this when referred memberships renew"
+              : "Current monthly revenue from your referrals"
+          }
+        />
+        <MetricCard
+          icon={Activity}
+          label="90-day retention"
+          value={percentage(stats.retentionRateNinetyDays)}
+          detail={
+            stats.retentionRate === null
+              ? "Retention appears as your referrals build history"
+              : "Overall customer retention: " + percentage(stats.retentionRate)
+          }
+        />
+      </div>
+
+      {stats.product ? (
+        <Reveal delay={0.16}>
+          <section className="mt-8 rounded-card border border-silver/10 bg-silver/[0.025] p-7 sm:p-9">
+            <div className="flex flex-wrap items-end justify-between gap-3">
+              <div>
+                <SectionLabel index="02" title="Level Up Pro" tone="light" />
+                <h2 className="mt-4 text-[22px] font-semibold tracking-[-0.03em] text-silver">
+                  Product performance
+                </h2>
+              </div>
+              <p className="text-[12px] text-silver/70">
+                Specific to the Level Up Pro products that unlock membership
+              </p>
+            </div>
+            <div className="mt-6 grid gap-3 sm:grid-cols-2">
+              <div className="rounded-card border border-silver/8 bg-ink/55 p-6">
+                <p className="text-[13px] text-silver/70">Level Up Pro referrals</p>
+                <p className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-silver">
+                  {stats.product.referrals.toLocaleString("en-US")}
+                </p>
+              </div>
+              <div className="rounded-card border border-silver/8 bg-ink/55 p-6">
+                <p className="text-[13px] text-silver/70">Level Up Pro rewards</p>
+                <p className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-silver">
+                  {stats.product.rewardsUsd}
+                </p>
+              </div>
+            </div>
+          </section>
+        </Reveal>
+      ) : null}
+
+      <p className="mt-6 max-w-3xl text-[12px] leading-relaxed text-silver/70">
+        Whop provides these referral and earnings totals. Your tracked link sends
+        people to the Level Up Pro checkout on our website.
+      </p>
+    </>
   );
 }

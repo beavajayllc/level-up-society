@@ -37,7 +37,11 @@ export default async function AffiliateBackOfficePage({
     user.preferred_username,
   );
   let referralLink: string | null = null;
-  if (result.status === "ready" && user.preferred_username) {
+  if (
+    result.status === "ready" &&
+    result.affiliateEnrolled &&
+    user.preferred_username
+  ) {
     const referralUrl = new URL("/join", PUBLIC_SITE_URL);
     referralUrl.searchParams.set("a", user.preferred_username);
     referralLink = referralUrl.toString();

@@ -13,6 +13,9 @@ export async function activateAffiliate(
   _previousState: AffiliateEnrollmentState,
   _formData: FormData,
 ): Promise<AffiliateEnrollmentState> {
+  void _previousState;
+  void _formData;
+
   const { user } = await requireMember("/members/affiliate");
 
   try {

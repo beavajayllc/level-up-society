@@ -18,7 +18,11 @@ export interface AffiliateBackOfficeStats {
 }
 
 export type AffiliateBackOfficeResult =
-  | { status: "ready"; stats: AffiliateBackOfficeStats }
+  | {
+      status: "ready";
+      affiliateEnrolled: boolean;
+      stats: AffiliateBackOfficeStats;
+    }
   | { status: "not-enrolled" }
   | { status: "unavailable" };
 
@@ -301,6 +305,7 @@ export async function getAffiliateBackOfficeStats(
 
     return {
       status: "ready",
+      affiliateEnrolled: affiliate !== null,
       stats: {
         referrals: affiliate?.total_referrals_count ?? product?.referrals ?? 0,
         activeReferrals: affiliate?.active_members_count ?? null,
