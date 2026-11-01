@@ -70,7 +70,7 @@ export default async function AiAutomationPage({
             </p>
           </Reveal>
 
-          <div className="mt-10 overflow-hidden rounded-card border border-silver/10 bg-black">
+          <div className="mx-auto mt-10 w-full max-w-4xl overflow-hidden rounded-card border border-silver/10 bg-black">
             <video
               aria-label="Introduction to KEB OS"
               autoPlay
@@ -83,7 +83,7 @@ export default async function AiAutomationPage({
               Your browser does not support video playback.
             </video>
           </div>
-          <p className="mt-3 text-[13px] text-silver/60">If the video doesn’t start automatically, press play.</p>
+          <p className="mx-auto mt-3 max-w-4xl text-[13px] text-silver/60">If the video doesn’t start automatically, press play.</p>
 
           <section className="mt-14" aria-labelledby="download-title">
             <h2 id="download-title" className="text-[clamp(1.5rem,3vw,2.25rem)] font-semibold tracking-[-0.03em] text-silver">
