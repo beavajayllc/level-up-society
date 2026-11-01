@@ -69,6 +69,36 @@
   color-scheme: light;
 }
 
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-ink: #100c1c;
+  --color-ink-2: #1b1428;
+  --color-ink-3: #281d39;
+  --color-silver: #f6effb;
+  --color-silver-2: #e7d9f0;
+  --color-chrome: #d6b8ee;
+  --color-chrome-deep: #c7a8ed;
+  --color-chrome-soft: #c7a8ed;
+  --color-accent: #c7a8ed;
+  --color-accent-soft: #463353;
+  --color-accent-strong: #dfb7ef;
+  --color-pink: #e28ac7;
+  --color-muted: #b5a7be;
+}
+
+:root[data-theme="dark"] :is(.bg-white, .bg-white\/55, .bg-white\/70, .bg-white\/85) {
+  background-color: var(--color-ink-2);
+}
+:root[data-theme="dark"] .bg-accent-strong {
+  background-color: #634077;
+}
+:root[data-theme="dark"] .brand-logo {
+  filter: brightness(0) invert(0.92);
+}
+:root[data-theme="dark"] .text-chrome-gradient {
+  background-image: linear-gradient(155deg, #f1d9ff, #c9a5ee 55%, #e8c4f0);
+}
+
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
@@ -120,6 +150,13 @@ html.lenis, html.lenis body { height: auto; }
   --color-silver: #f8f2fa;
   --color-silver-2: #f2e9f5;
   --color-chrome: #4c2f6f;
+}
+
+:root[data-theme="dark"] .light-section {
+  --color-ink: #f6effb;
+  --color-silver: #1b1428;
+  --color-silver-2: #20172f;
+  --color-chrome: #d6b8ee;
 }
 
 /* Tint the existing transparent mark to match the purple palette. */

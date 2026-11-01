@@ -51,8 +51,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} h-full antialiased`}
     >
+      <head><script dangerouslySetInnerHTML={{ __html: `try { if (localStorage.getItem("lus-theme") === "dark") document.documentElement.dataset.theme = "dark"; } catch {}` }} /></head>
       <body className="min-h-full flex flex-col bg-ink text-silver">{children}</body>
     </html>
   );
