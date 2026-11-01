@@ -34,7 +34,7 @@ function ProductSlideshow() {
         <div className="flex gap-1"><button type="button" onClick={() => move(-1)} aria-label="Previous product" className="rounded-full border border-silver/10 p-1.5 text-silver/70 hover:text-silver"><ChevronLeft size={15} /></button><button type="button" onClick={() => move(1)} aria-label="Next product" className="rounded-full border border-silver/10 p-1.5 text-silver/70 hover:text-silver"><ChevronRight size={15} /></button></div>
       </div>
       <div aria-live="polite" className="mt-4 flex items-center gap-4">
-        <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-[#dedede]"><Image unoptimized src={product.image} alt={product.name} fill sizes="96px" className="object-contain" /></div>
+        <div className="relative h-32 w-32 shrink-0 overflow-hidden rounded-xl bg-[#dedede]"><Image unoptimized src={product.image} alt={product.name} fill sizes="128px" className="object-contain" /></div>
         <div><p className="text-xs uppercase tracking-wider text-silver/55">The Super Patch Company</p><p className="mt-1 font-semibold text-silver">{product.name}</p><a href={superPatchShop} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-accent-strong hover:underline">Explore the shop <ArrowUpRight size={13} /></a></div>
       </div>
       <p className="mt-3 text-xs text-silver/50">{index + 1} / {featuredProducts.length}</p>
