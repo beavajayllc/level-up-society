@@ -42,6 +42,37 @@ function ProductSlideshow() {
   );
 }
 
+function TradeResults() {
+  const results = [
+    { title: "Weekly results", period: "October 26–30, 2026", pips: "+5,880", trades: "29*", days: "5 / 5", flyer: "/member-dashboard/trade-results-oct-26-30.png" },
+    { title: "Monthly results", period: "October 1–30, 2026", pips: "+24,180", trades: "107*", days: "22 / 22" },
+  ];
+
+  return (
+    <section aria-labelledby="trade-results-title" className="rounded-card border border-silver/10 bg-silver/[0.035] p-5 sm:p-6">
+      <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-accent-strong">Level Up Society trades</p>
+      <h2 id="trade-results-title" className="mt-2 text-lg font-semibold text-silver">Trade results</h2>
+      <div className="mt-4 grid gap-4 sm:grid-cols-2">
+        {results.map((result) => (
+          <div key={result.title} className="rounded-xl border border-silver/10 p-3">
+            <div className="flex flex-wrap items-start justify-between gap-2">
+              <div><h3 className="text-sm font-semibold text-silver">{result.title}</h3><p className="mt-1 text-xs text-silver/60">{result.period} · reported recap</p></div>
+              {result.flyer && <a href={result.flyer} target="_blank" rel="noopener noreferrer" aria-label={`Share: open the ${result.period} results image`} className="inline-flex items-center gap-1 text-xs font-semibold text-accent-strong hover:underline">Share <ArrowUpRight size={13} /></a>}
+            </div>
+            <dl className="mt-3 space-y-2 border-t border-silver/10 pt-3 text-xs">
+              <div className="flex justify-between gap-2"><dt className="text-silver/60">Net pips</dt><dd className="font-semibold text-silver">{result.pips}</dd></div>
+              <div className="flex justify-between gap-2"><dt className="text-silver/60">Trades taken</dt><dd className="font-semibold text-silver">{result.trades}</dd></div>
+              <div className="flex justify-between gap-2"><dt className="text-silver/60">Positive days</dt><dd className="font-semibold text-silver">{result.days}</dd></div>
+            </dl>
+          </div>
+        ))}
+      </div>
+      <p className="mt-3 text-xs leading-relaxed text-silver/55">*Some trade counts were estimated. October 30’s itemized total differs from the daily recap; these totals use the recap.</p>
+      <p className="mt-2 text-xs leading-relaxed text-silver/55">Past performance does not guarantee future results. Trading involves substantial risk. Individual results vary.</p>
+    </section>
+  );
+}
+
 function displayName(user: WhopUserInfo): string {
   const raw = user.name ?? user.preferred_username ?? user.email ?? "member";
   return raw.split(" ")[0] ?? raw;
@@ -62,7 +93,7 @@ export function MembersArea({ user, lusUsername, lusEmail, subscriptions, today,
           <MemberMenu />
           <div className="min-w-0 space-y-6">
             <div className="grid items-stretch gap-5 xl:grid-cols-2"><div className="-mt-6"><WeeklyCallsCalendar today={today} /></div><MemberAnnouncements view={announcements} /></div>
-            <div className="grid gap-5 xl:grid-cols-2"><ProductSlideshow /><section aria-labelledby="trade-results-title" className="rounded-card border border-silver/10 bg-silver/[0.035] p-5 sm:p-6"><div className="flex flex-wrap items-start justify-between gap-3"><div><p className="font-mono text-[10px] uppercase tracking-[0.16em] text-accent-strong">Level Up Society trades</p><h2 id="trade-results-title" className="mt-2 text-lg font-semibold text-silver">Weekly trade results</h2><p className="mt-1 text-xs text-silver/60">October 26–30, 2026 · reported recap</p></div><a href="/member-dashboard/trade-results-oct-26-30.png" target="_blank" rel="noopener noreferrer" aria-label="Share: open the October 26–30 results image" className="inline-flex items-center gap-1 rounded-pill border border-silver/15 px-3 py-2 text-xs font-semibold text-accent-strong hover:border-accent-strong/50">Share <ArrowUpRight size={13} /></a></div><div className="mt-4 grid grid-cols-3 gap-3 border-t border-silver/10 pt-4"><div><p className="text-xl font-semibold text-silver">+5,880</p><p className="mt-1 text-xs text-silver/60">Net pips</p></div><div><p className="text-xl font-semibold text-silver">29*</p><p className="mt-1 text-xs text-silver/60">Trades taken</p></div><div><p className="text-xl font-semibold text-silver">5 / 5</p><p className="mt-1 text-xs text-silver/60">Positive days</p></div></div><p className="mt-3 text-xs leading-relaxed text-silver/55">*Some trade counts were estimated. October 30’s itemized total differs from the daily recap; the total above uses the recap.</p><p className="mt-2 text-xs leading-relaxed text-silver/55">Past performance does not guarantee future results. Trading involves substantial risk. Individual results vary.</p></section></div>
+            <div className="grid gap-5 xl:grid-cols-2"><ProductSlideshow /><TradeResults /></div>
             <div className="grid gap-5 md:grid-cols-2">
             <section aria-labelledby="affiliate-earnings-title" className="rounded-card border border-silver/10 bg-silver/[0.035] p-5 sm:p-6"><p className="font-mono text-[10px] uppercase tracking-[0.16em] text-accent-strong">Your affiliate back office</p><h2 id="affiliate-earnings-title" className="mt-2 text-lg font-semibold text-silver">Affiliate earnings</h2>{affiliate.status === "ready" ? <><p className="mt-3 text-xs text-silver/60">All-time commissions</p><p className="mt-1 text-2xl font-semibold text-silver">{affiliate.stats.commissionEarnedUsd ?? affiliate.stats.product?.rewardsUsd ?? "Unavailable"}</p><p className="mt-2 text-xs leading-relaxed text-silver/60">A monthly commission total is not available here yet.</p></> : <p className="mt-3 text-sm leading-relaxed text-silver/65">{affiliate.status === "not-enrolled" ? "Activate your affiliate profile to start tracking referrals." : "Your earnings couldn’t be loaded right now."}</p>}<Link href="/members/affiliate" className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-accent-strong hover:underline">Open affiliate back office <ArrowUpRight size={13} /></Link></section>
             <section aria-labelledby="monthly-call-title" className="rounded-card border border-silver/10 bg-silver/[0.035] p-5 sm:p-6"><p className="font-mono text-[10px] uppercase tracking-[0.16em] text-accent-strong">Get together</p><h2 id="monthly-call-title" className="mt-2 text-lg font-semibold text-silver">Call of the month</h2><div className="mt-4 flex flex-wrap items-center gap-5"><Image src="/brand/monthly-level-up-call.png" alt="Monthly Level Up Call with a special guest, the first week of every month" width={160} height={160} className="h-32 w-32 rounded-xl object-cover" /><div><p className="text-sm text-silver/70">Join us for the monthly Level Up Call with a special guest.</p><Link href="/members/live-calls" className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-accent-strong hover:underline">Explore live calls <ArrowDownRight size={14} /></Link></div></div></section>
