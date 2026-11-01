@@ -45,7 +45,7 @@ function ProductSlideshow() {
 function TradeResults() {
   const results = [
     { title: "Weekly results", period: "October 26–30, 2026", pips: "+5,880", trades: "29*", days: "5 / 5", flyer: "/member-dashboard/trade-results-oct-26-30.png" },
-    { title: "Monthly results", period: "October 1–30, 2026", pips: "+24,180", trades: "107*", days: "22 / 22" },
+    { title: "Monthly results", period: "October 1–30, 2026", pips: "+24,180", trades: "107*", days: "22 / 22", flyer: "/member-dashboard/trade-results-oct-1-30.png" },
   ];
 
   return (
