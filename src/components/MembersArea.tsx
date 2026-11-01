@@ -15,9 +15,9 @@ import type { AnnouncementView } from "@/lib/member-announcements";
 import type { AffiliateBackOfficeResult } from "@/lib/whop-affiliates";
 
 const featuredProducts = [
-  { name: "BOOST Patch", image: "https://us.superpatch.com/cdn/shop/files/NA_SP_Boost_30PK.webp?v=1773064983" },
-  { name: "FOCUS Patch", image: "https://us.superpatch.com/cdn/shop/files/NA_SP_Focus_30PK.webp?v=1773065124" },
-  { name: "REM Patch", image: "https://us.superpatch.com/cdn/shop/files/NA_SP_REM_30PK.webp?v=1773065560" },
+  { name: "BOOST Patch", description: "Designed to support energy throughout your day, without caffeine.", image: "https://us.superpatch.com/cdn/shop/files/NA_SP_Boost_30PK.webp?v=1773064983" },
+  { name: "FOCUS Patch", description: "Designed to support concentration and attention as you work or study.", image: "https://us.superpatch.com/cdn/shop/files/NA_SP_Focus_30PK.webp?v=1773065124" },
+  { name: "REM Patch", description: "Designed to support restful sleep and your nighttime routine.", image: "https://us.superpatch.com/cdn/shop/files/NA_SP_REM_30PK.webp?v=1773065560" },
 ];
 const superPatchShop = "https://shop.superpatch.com/#/shop/from/111115011";
 
@@ -35,7 +35,7 @@ function ProductSlideshow() {
       </div>
       <div aria-live="polite" className="mt-4 flex items-center gap-4">
         <div className="relative h-32 w-32 shrink-0 overflow-hidden rounded-xl bg-[#dedede]"><Image unoptimized src={product.image} alt={product.name} fill sizes="128px" className="object-contain" /></div>
-        <div><p className="text-xs uppercase tracking-wider text-silver/55">The Super Patch Company</p><p className="mt-1 font-semibold text-silver">{product.name}</p><a href={superPatchShop} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-accent-strong hover:underline">Explore the shop <ArrowUpRight size={13} /></a></div>
+        <div><p className="text-xs uppercase tracking-wider text-silver/55">The Super Patch Company</p><p className="mt-1 font-semibold text-silver">{product.name}</p><p className="mt-1 text-xs leading-relaxed text-silver/65">{product.description}</p><a href={superPatchShop} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-accent-strong hover:underline">Explore the shop <ArrowUpRight size={13} /></a></div>
       </div>
       <p className="mt-3 text-xs text-silver/50">{index + 1} / {featuredProducts.length}</p>
     </section>
