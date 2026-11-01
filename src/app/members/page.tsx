@@ -6,6 +6,7 @@ import { MembersArea } from "@/components/MembersArea";
 import { isAuthConfigured, isLusAuthConfigured } from "@/lib/env";
 import { requireMember } from "@/lib/member-access";
 import { getSubscriptionCancellationOptions } from "@/lib/whop-access";
+import { getAnnouncementView } from "@/lib/member-announcements";
 
 /**
  * The members area reads the WHOP session cookie on every request, so it can
@@ -39,12 +40,13 @@ export default async function MembersPage({
 
   const { user, lusUser } = await requireMember();
   const subscriptions = await getSubscriptionCancellationOptions(user.sub);
+  const announcements = await getAnnouncementView(lusUser.id);
   const today = new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
 
   return (
     <>
       <Nav memberArea />
-      <MembersArea user={user} lusUsername={lusUser.username} lusEmail={lusUser.email} subscriptions={subscriptions} today={today} />
+      <MembersArea user={user} lusUsername={lusUser.username} lusEmail={lusUser.email} subscriptions={subscriptions} today={today} announcements={announcements} />
       <Footer />
     </>
   );
