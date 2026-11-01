@@ -21,7 +21,7 @@ export default async function MasteryFormatPage({ params }: { params: Promise<{ 
   return (
     <ResourceLibraryShell backHref={`/members/resources/${mastery.slug}`} backLabel={`Back to ${mastery.title}`} label={mastery.title} title={selected.title} description={selected.description}>
       <p className="mt-8 text-sm leading-relaxed text-silver/70">These free resources open on their original platforms, where the creators and publishers receive credit.</p>
-      <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-6 grid gap-4 sm:grid-cols-2 2xl:grid-cols-3">
         {resourceCatalog[mastery.slug][selected.slug].map((resource) => (
           <article key={resource.href} className="relative flex h-full flex-col rounded-card border border-silver/10 bg-silver/[0.035] p-7">
             <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-chrome/60">{resource.source}</span>

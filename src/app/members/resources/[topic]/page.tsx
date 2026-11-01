@@ -18,7 +18,7 @@ export default async function MasteryPage({ params }: { params: Promise<{ topic:
   await requireMember(`/members/resources/${mastery.slug}`);
   return (
     <ResourceLibraryShell backHref="/members/resources" backLabel="Back to Resource Library" label="Resource Library" title={mastery.title} description={`${mastery.description} Choose how you want to learn.`}>
-        <div className="mt-10 grid gap-4 md:grid-cols-3">
+        <div className="mt-10 grid gap-4 sm:grid-cols-2 2xl:grid-cols-3">
           {mindsetFormats.map(({ slug, title, description }) => {
             const Icon = formatIcons[slug];
             return (
