@@ -5,6 +5,7 @@ import {
   HeartPulse,
   Landmark,
   Mic,
+  Sparkles,
   ChartNoAxesCombined,
   TrendingUp,
   Users,
@@ -278,5 +279,14 @@ export const memberResources: MemberResource[] = [
     tag: "Member perk",
     href: "/members/affiliate",
     cta: "View performance",
+  },
+  {
+    id: "ai-automation",
+    title: "AI Automation",
+    body: "Meet KEB OS and discover a new way to bring AI into your everyday work.",
+    icon: Sparkles,
+    tag: "Member resource",
+    href: "/members/ai-automation",
+    cta: "Explore AI Automation",
   },
 ];
