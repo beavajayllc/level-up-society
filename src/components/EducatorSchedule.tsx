@@ -13,6 +13,7 @@ const educatorColors: Record<EducatorId, string> = {
   pj: "border-[#d7c4e6] bg-[#f2eaf8] text-[#4c2f6f]",
   delphine: "border-[#cfc9ed] bg-[#eceaf8] text-[#403b80]",
   beava: "border-[#e7c8df] bg-[#faedf6] text-[#7d376c]",
+  tyrell: "border-[#d7c4e6] bg-[#f2eaf8] text-[#4c2f6f]",
 };
 
 function dateLabel(date: string): string {
@@ -69,7 +70,7 @@ export function EducatorSchedule({ today }: { today: string }) {
             <Link key={educator.id} href={`/members/live-calls/educators/${educator.id}`} aria-label={`Visit ${educator.name}'s page`}
               className={`inline-flex items-center gap-2 rounded-pill border px-3 py-2 text-xs font-medium transition hover:brightness-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-chrome ${educatorColors[educator.id]}`}>
               <span className="relative h-7 w-7 shrink-0 overflow-hidden rounded-full bg-white/70" aria-hidden="true">
-                {educator.portrait ? <Image src={educator.portrait} alt="" fill sizes="28px" style={{ objectPosition: educator.portraitPosition }} className={`object-cover object-top origin-top ${educator.id === "pj" ? "scale-100" : educator.id === "beava" ? "scale-[2.2]" : "scale-[1.8]"}`} /> : null}
+                {educator.portrait ? <Image src={educator.portrait} alt="" fill sizes="28px" style={{ objectPosition: educator.portraitPosition }} className={`object-cover object-top origin-top ${educator.id === "pj" ? "scale-100" : educator.id === "beava" ? "scale-[2.2]" : "scale-[1.8]"}`} /> : <span className="flex h-full w-full items-center justify-center font-semibold">{educator.initials}</span>}
               </span>
               <span>{educator.name} <span className="opacity-70">· {educator.subject}</span></span>
               <ArrowUpRight size={13} aria-hidden="true" />

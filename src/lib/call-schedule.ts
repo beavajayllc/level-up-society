@@ -1,4 +1,4 @@
-export type EducatorId = "pj" | "delphine" | "beava";
+export type EducatorId = "pj" | "delphine" | "beava" | "tyrell";
 
 export type Educator = {
   id: EducatorId;
@@ -18,6 +18,7 @@ export const educators: Educator[] = [
   { id: "pj", name: "PJ LaBeach", subject: "Fitness", initials: "PJ", description: "PJ LaBeach is a powerbuilding coach and powerlifter who helps people build strength and muscle. His coaching focuses on consistent training and working toward new personal bests.", schedule: "Every other Thursday · 8:00 PM Eastern", portrait: "/educators/pj-labeach-photo-cutout.png", portraitAiEdited: true, portraitPosition: "center 25%", instagram: { url: "https://www.instagram.com/iampjlabeach/", handle: "iampjlabeach" } },
   { id: "delphine", name: "Delphine Njuguna", subject: "Forex", initials: "DN", description: "Join Delphine for live sessions exploring forex and the markets with the Level Up community.", schedule: "Sunday, Monday & Wednesday · 11:00 PM Eastern", portrait: "/educators/delphine-njuguna-cutout.png", portraitAiCreated: true },
   { id: "beava", name: "Beava Jay", subject: "Credit / Sales", initials: "BJ", description: "Beava Jay is an entrepreneur and founder of Level Up Society who shares guidance on credit, sales, and personal growth. Through live sessions and mentorship, he helps entrepreneurs build skills and work toward their goals.", schedule: "Every Tuesday · 8:00 PM Eastern", portrait: "/educators/beava-jay-cutout.png", portraitAiEdited: true, instagram: { url: "https://www.instagram.com/beava_jay/", handle: "beava_jay" } },
+  { id: "tyrell", name: "Tyrell", subject: "Master KEB OS", initials: "T", description: "Join Tyrell for weekly Master KEB OS calls with the Level Up community.", schedule: "Every Monday · 8:00 PM Eastern" },
 ];
 
 export type ScheduledCall = {
@@ -49,6 +50,11 @@ export function callsForDate(date: string): ScheduledCall[] {
   const scheduledCalls = [...(oneOffCalls[date] ?? [])];
   const timestamp = Date.parse(`${date}T00:00:00Z`);
   const weekday = new Date(timestamp).getUTCDay();
+  const firstKebOsCall = Date.parse("2026-11-02T00:00:00Z");
+  const kebOsDays = (timestamp - firstKebOsCall) / 86_400_000;
+  if (kebOsDays >= 0 && kebOsDays % 7 === 0) {
+    scheduledCalls.push({ title: "Tyrell | Master KEB OS", time: "8:00 PM ET", hour: 20, educatorId: "tyrell", href: "/members/live-calls/educators/tyrell" });
+  }
   if (timestamp >= Date.parse("2026-10-25T00:00:00Z") && [0, 1, 3].includes(weekday)) {
     scheduledCalls.push({ title: "Delphine - Forex", time: "11:00 PM ET", hour: 23, educatorId: "delphine", href: "/members/live-calls" });
   }
