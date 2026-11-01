@@ -19,7 +19,7 @@ export default async function MasteryFormatPage({ params }: { params: Promise<{ 
   const action = selected.slug === "audiobooks" ? "Listen on LibriVox" : selected.slug === "books" ? "Read on Project Gutenberg" : "Watch on YouTube";
 
   return (
-    <ResourceLibraryShell backHref={`/members/resources/${mastery.slug}`} backLabel={`Back to ${mastery.title}`} label={mastery.title} title={selected.title} description={selected.description}>
+    <ResourceLibraryShell backHref={`/members/resources/${mastery.slug}`} backLabel={`Back to ${mastery.title}`} label={mastery.title} title={selected.title} description={selected.description} activeTopic={mastery.slug}>
       <p className="mt-8 text-sm leading-relaxed text-silver/70">These free resources open on their original platforms, where the creators and publishers receive credit.</p>
       <div className="mt-6 grid gap-4 sm:grid-cols-2 2xl:grid-cols-3">
         {resourceCatalog[mastery.slug][selected.slug].map((resource) => (

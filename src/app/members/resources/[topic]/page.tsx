@@ -17,7 +17,7 @@ export default async function MasteryPage({ params }: { params: Promise<{ topic:
   if (!mastery) notFound();
   await requireMember(`/members/resources/${mastery.slug}`);
   return (
-    <ResourceLibraryShell backHref="/members/resources" backLabel="Back to Resource Library" label="Resource Library" title={mastery.title} description={`${mastery.description} Choose how you want to learn.`}>
+    <ResourceLibraryShell backHref="/members/resources" backLabel="Back to Resource Library" label="Resource Library" title={mastery.title} description={`${mastery.description} Choose how you want to learn.`} activeTopic={mastery.slug}>
         <div className="mt-10 grid gap-4 sm:grid-cols-2 2xl:grid-cols-3">
           {mindsetFormats.map(({ slug, title, description }) => {
             const Icon = formatIcons[slug];
