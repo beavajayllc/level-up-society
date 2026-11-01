@@ -258,9 +258,9 @@ export const memberResources: MemberResource[] = [
   {
     id: "fitness",
     title: "Fitness",
-    body: "Make time for movement and join PJ LaBeach for fitness calls every other Thursday.",
+    body: "Build healthy habits and create a fitness plan around your goals and routine.",
     icon: HeartPulse,
-    tag: "Every other week",
+    tag: "On demand",
     href: "/members/fitness",
     cta: "Explore fitness",
   },
