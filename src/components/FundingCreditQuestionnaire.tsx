@@ -139,7 +139,7 @@ function CreditDeskNextStepsVideo({ src }: { src?: string }) {
         controls
         playsInline
         preload="metadata"
-        poster="/brand/lus-lockup.png"
+        poster="/media/credit-repair-onboarding-poster.jpg"
         aria-label="Credit desk next steps video"
         src={src}
       />
@@ -166,6 +166,70 @@ function CreditDeskNextStepsVideo({ src }: { src?: string }) {
         Credit desk walkthrough · Coming soon
       </div>
     </div>
+  );
+}
+
+type OnboardingLinkUrls = {
+  smartCredit: string;
+  documentUpload: string;
+};
+
+function CreditRepairOnboardingLinks({ links }: { links?: OnboardingLinkUrls }) {
+  const items = [
+    {
+      title: "SmartCredit",
+      description:
+        "Your credit monitoring software. It's $30 a month and stays paid and active for the entire credit repair process.",
+      href: links?.smartCredit,
+    },
+    {
+      title: "Document upload",
+      description:
+        "Securely upload your proof of address, Social Security card, photo ID and proof of payment.",
+      href: links?.documentUpload,
+    },
+  ];
+
+  return (
+    <>
+      <div className="mt-7 grid gap-3 sm:grid-cols-2">
+        {items.map(({ title, description, href }, index) => {
+          const content = (
+            <>
+              <p className="font-mono text-[12px] uppercase tracking-[0.16em] text-chrome">
+                Link {index + 1}
+              </p>
+              <h3 className="mt-3 flex items-center gap-2 text-[18px] font-semibold text-silver">
+                {title}
+                {href ? <ArrowUpRight size={16} aria-hidden="true" /> : null}
+              </h3>
+              <p className="mt-2 text-[14px] leading-relaxed text-silver/60">{description}</p>
+            </>
+          );
+
+          return href ? (
+            <a
+              key={title}
+              href={href}
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-tile border border-silver/10 bg-ink/50 p-5 transition-colors hover:border-chrome/65"
+            >
+              {content}
+            </a>
+          ) : (
+            <div key={title} className="rounded-tile border border-silver/10 bg-ink/50 p-5">
+              {content}
+            </div>
+          );
+        })}
+      </div>
+      {!links ? (
+        <p className="mt-4 rounded-tile border border-silver/10 bg-ink/50 p-4 text-sm text-silver/70">
+          These links need to be connected before members can start here.
+        </p>
+      ) : null}
+    </>
   );
 }
 
@@ -223,15 +287,18 @@ function recommendation(answers: Answers): string {
 export function FundingCreditQuestionnaire({
   videoSrc,
   bookingUrl,
+  onboardingLinks,
 }: {
   videoSrc?: string;
   bookingUrl?: string;
+  onboardingLinks?: OnboardingLinkUrls;
 }) {
   const pathname = usePathname();
   const [previousPathname, setPreviousPathname] = useState(pathname);
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Answers>({});
   const [showCalendar, setShowCalendar] = useState(false);
+  const [showOnboardingLinks, setShowOnboardingLinks] = useState(false);
   const complete = step === questions.length;
   const needsCall = answers.creditRepair === "I'm not sure";
   const needsVideo = answers.creditRepair === "Yes";
@@ -241,12 +308,14 @@ export function FundingCreditQuestionnaire({
     setAnswers({});
     setStep(0);
     setShowCalendar(false);
+    setShowOnboardingLinks(false);
   }
 
   function restart() {
     setAnswers({});
     setStep(0);
     setShowCalendar(false);
+    setShowOnboardingLinks(false);
   }
 
   return (
@@ -337,6 +406,35 @@ export function FundingCreditQuestionnaire({
             </button>
           </div>
         </>
+      ) : needsVideo && showOnboardingLinks ? (
+        <div>
+          <p className="font-mono text-[12px] uppercase tracking-[0.16em] text-chrome">
+            Your next step
+          </p>
+          <h2 className="mt-4 text-[25px] font-semibold tracking-[-0.03em] text-silver">
+            Start your onboarding
+          </h2>
+          <p className="mt-3 max-w-2xl text-[16px] leading-relaxed text-silver/60">
+            Complete both links to get your credit repair process started.
+          </p>
+          <CreditRepairOnboardingLinks links={onboardingLinks} />
+          <div className="mt-7 flex flex-wrap gap-3">
+            <button
+              type="button"
+              onClick={() => setShowOnboardingLinks(false)}
+              className="inline-flex h-11 items-center gap-2 rounded-pill border border-silver/15 px-5 text-sm text-silver/70 transition hover:border-silver/35 hover:text-silver"
+            >
+              <ArrowLeft size={14} />
+              Back to the video
+            </button>
+            <Link
+              href="/members"
+              className="inline-flex h-11 items-center gap-2 rounded-pill border border-silver/15 px-5 text-sm text-silver/70 transition hover:border-silver/35 hover:text-silver"
+            >
+              Back to members area
+            </Link>
+          </div>
+        </div>
       ) : needsVideo ? (
         <div>
           <p className="font-mono text-[12px] uppercase tracking-[0.16em] text-chrome">
@@ -358,6 +456,14 @@ export function FundingCreditQuestionnaire({
             </p>
           ) : null}
           <div className="mt-7 flex flex-wrap gap-3">
+            <button
+              type="button"
+              onClick={() => setShowOnboardingLinks(true)}
+              className="inline-flex h-11 items-center gap-2 rounded-pill bg-[#4c2f6f] px-6 text-sm font-medium text-white transition hover:brightness-[1.06]"
+            >
+              Next
+              <ArrowRight size={15} />
+            </button>
             <button
               type="button"
               onClick={() => {
